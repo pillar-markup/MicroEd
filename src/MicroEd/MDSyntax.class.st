@@ -78,7 +78,7 @@ MDSyntax >> next [
 
 { #category : #parsing }
 MDSyntax >> parse: aText [
-	^ (super parse: aText asString) asPillar
+	^ self parser new parse: aText asString
 ]
 
 { #category : #accessing }

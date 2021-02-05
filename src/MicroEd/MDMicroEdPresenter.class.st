@@ -1,3 +1,6 @@
+"
+A little editor for Microdown. 
+"
 Class {
 	#name : #MDMicroEdPresenter,
 	#superclass : #SpApplicationWithToolbar,
@@ -64,7 +67,7 @@ MDMicroEdPresenter >> cleanAction [
 MDMicroEdPresenter >> configAction [
 	"CONFIG button is pressed: open window"
 	| selectedDir |
-	selectedDir := FDOpenDirectoryDialog new defaultName: 'pillar'; title: 'Select pillar directory in your installation'; openModal.
+	selectedDir := FDOpenDirectoryDialog new title: 'Select your directory'; openModal.
 	selectedDir ifNotNil: [ self folder: selectedDir].
 ]
 
@@ -195,14 +198,7 @@ MDMicroEdPresenter >> menu [
 						description: 'Render your input text';
 						action: [ self renderAction	]
 				].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Change input syntax';
-						description: 'Switch with MicroDown or Pillar';
-						icon: (self iconNamed: #changeUpdateIcon);
-						action: [ self changeAction ] 
-				].
+		
 			group
 				addItem: [ :item | 
 					item
@@ -210,14 +206,7 @@ MDMicroEdPresenter >> menu [
 						description: 'Give a text input example in current syntax';
 						icon: (self iconNamed: #smallFindIcon);
 						action: [ self exampleAction ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Convert';
-						description: 'Open a new editor with input text converted in the other syntax';
-						icon: (self iconNamed: #glamorousRestartIcon);
-						action: [ self convertAction ] 
-				]	
+		
 		];
 	"addGroup: [ :group | 
 			group
