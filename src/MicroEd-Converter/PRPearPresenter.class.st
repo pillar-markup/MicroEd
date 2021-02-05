@@ -160,7 +160,7 @@ PRPearPresenter >> initialExtent [
 { #category : #initialization }
 PRPearPresenter >> initializePresenters [
 	| initialText initialSyntaxState |
-	initialSyntaxState := MDPillarSyntax new.
+	initialSyntaxState := MDPillarState new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
 	self initializePresentersWithText: initialText withSyntax: initialSyntaxState
 ]

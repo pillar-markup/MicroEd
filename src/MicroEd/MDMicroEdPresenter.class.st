@@ -115,7 +115,7 @@ MDMicroEdPresenter >> initialExtent [
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
 	| initialText initialSyntaxState |
-	initialSyntaxState := MDPillarSyntax new.
+	initialSyntaxState := MDMicroDownSyntax new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
 	self initializePresentersWithText: initialText withSyntax: initialSyntaxState
 ]

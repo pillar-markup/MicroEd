@@ -1,11 +1,19 @@
+"
+I'm just a little helper to support uniformly Microdown and Pillar 
+- sample,
+- file extension,
+- writer,
+- parser
+I'm used by the editor and the converter. 
+"
 Class {
-	#name : #MDMicroDownSyntax,
-	#superclass : #MDSyntax,
+	#name : #MDSyntax,
+	#superclass : #Object,
 	#category : #MicroEd
 }
 
 { #category : #accessing }
-MDMicroDownSyntax >> exampleText [
+MDSyntax >> exampleText [
 	^ '# Header
 
 A figure:
@@ -54,26 +62,31 @@ A codeblock:
 ]
 
 { #category : #accessing }
-MDMicroDownSyntax >> extension [
-	^ 'micd'
+MDSyntax >> extension [
+	^ 'microdown'
 ]
 
 { #category : #accessing }
-MDMicroDownSyntax >> name [
+MDSyntax >> name [
 	^ 'MicroDown'
 ]
 
+{ #category : #accessing }
+MDSyntax >> next [
+	^ MDPillarState new
+]
+
 { #category : #parsing }
-MDMicroDownSyntax >> parse: aText [
+MDSyntax >> parse: aText [
 	^ (super parse: aText asString) asPillar
 ]
 
 { #category : #accessing }
-MDMicroDownSyntax >> parser [
+MDSyntax >> parser [
 	^ MicroDownParser 
 ]
 
 { #category : #accessing }
-MDMicroDownSyntax >> writer [
+MDSyntax >> writer [
 	^ PRMicrodownWriter
 ]

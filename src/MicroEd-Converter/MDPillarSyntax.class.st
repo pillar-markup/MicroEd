@@ -1,6 +1,6 @@
 Class {
 	#name : #MDPillarSyntax,
-	#superclass : #MDEditorSyntax,
+	#superclass : #MDSyntax,
 	#category : #'MicroEd-Converter'
 }
 
@@ -40,29 +40,4 @@ Point class >> new
 ! Heading one 
 
 '
-]
-
-{ #category : #accessing }
-MDPillarSyntax >> extension [
-	^ 'pillar'
-]
-
-{ #category : #accessing }
-MDPillarSyntax >> name [
-	^ 'Pillar'
-]
-
-{ #category : #accessing }
-MDPillarSyntax >> next [
-	^ MDMicroDownSyntax new
-]
-
-{ #category : #accessing }
-MDPillarSyntax >> parser [
-	^ PRPillarParser
-]
-
-{ #category : #accessing }
-MDPillarSyntax >> writer [
-	^ PRPillarWriter
 ]
