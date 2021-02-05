@@ -17,7 +17,7 @@ Class {
 		'confirmButton',
 		'cancelButton'
 	],
-	#category : #MicroEd
+	#category : #'MicroEd-Converter'
 }
 
 { #category : #specs }

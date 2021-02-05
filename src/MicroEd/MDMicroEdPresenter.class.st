@@ -1,33 +1,5 @@
-"
-**Pear** is an editor and RichText renderer for both Pillar and MicroDown syntaxes, developed by Laurine Dargaud (2020). PEAR stands for Pillar Editor And Renderer. It is implemented a Spec2.
-
-Open me executing the following method: `PRPearPresenter class>>#open`
-
-### Features
-- **New:** open a new file
-- **Open:** open a existing text file from your directories
-- **Save:** save your new file or your opened file
-- **Clean:** delete text content in your opened file
-- **Render:** see the RichText result of your markuped text
-- **Get example:** print an example markuped text which covers characteristic grammar
-- **Change input syntax:** switch between Pillar or MicroDown markup syntax
-- **Convert:** open a new presenter with your input text converted into the other syntax using associate writer
-
-_For now, export feature is unavailable, so it has been removed from menu - but relative classes and methods in code exist_
-
-**Note: **I implemented a **state-like pattern** to switch between syntax Pillar and MicroDown: `PRPearSyntaxState`
-
-## How to add a new feature?
-
-1. Add a button in the Menu bar in `PRPearPresenter>>#menu`
-2. Create the action method to launch when your button is pressed (see examples in **actions** protocol, like _saveAction_ or _renderAction_)
-
-
-
-
-"
 Class {
-	#name : #PRPearPresenter,
+	#name : #MDMicroEdPresenter,
 	#superclass : #SpApplicationWithToolbar,
 	#instVars : [
 		'syntaxState',
@@ -43,7 +15,7 @@ Class {
 }
 
 { #category : #specs }
-PRPearPresenter class >> defaultSpec [
+MDMicroEdPresenter class >> defaultSpec [
 	 ^ SpBoxLayout newVertical
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #screen withConstraints: [:c | c expand: false];
@@ -55,7 +27,7 @@ PRPearPresenter class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
-PRPearPresenter class >> menuCommandOn: aBuilder [
+MDMicroEdPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Pear')
 		parent: #Tools;
@@ -67,13 +39,13 @@ PRPearPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #examples }
-PRPearPresenter class >> open [
+MDMicroEdPresenter class >> open [
 	<example>
 	^ self new openWithSpec
 ]
 
 { #category : #examples }
-PRPearPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState [
+MDMicroEdPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState [
 	| presenter |
 	presenter := self new.
 	presenter initializePresentersWithText: anInputText withSyntax: aSyntaxState.
@@ -81,7 +53,7 @@ PRPearPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState
 ]
 
 { #category : #actions }
-PRPearPresenter >> changeAction [
+MDMicroEdPresenter >> changeAction [
 	"CHANGE button is pressed: change input syntax with next syntax state"
 	syntaxState := syntaxState next.
 	parser := syntaxState parser.
@@ -91,14 +63,14 @@ PRPearPresenter >> changeAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> cleanAction [
+MDMicroEdPresenter >> cleanAction [
 	"CLEAN button is pressed: erase both input and output text content"
 	textInput text: ''.
 	textOutput text: ''
 ]
 
 { #category : #actions }
-PRPearPresenter >> configAction [
+MDMicroEdPresenter >> configAction [
 	"CONFIG button is pressed: open window"
 	| selectedDir |
 	selectedDir := FDOpenDirectoryDialog new defaultName: 'pillar'; title: 'Select pillar directory in your installation'; openModal.
@@ -106,17 +78,17 @@ PRPearPresenter >> configAction [
 ]
 
 { #category : #accessing }
-PRPearPresenter >> configPillarFolder [
+MDMicroEdPresenter >> configPillarFolder [
 	^ configPillarFolder
 ]
 
 { #category : #accessing }
-PRPearPresenter >> configPillarFolder: aDirectory [
+MDMicroEdPresenter >> configPillarFolder: aDirectory [
 	configPillarFolder := aDirectory 
 ]
 
 { #category : #actions }
-PRPearPresenter >> convertAction [
+MDMicroEdPresenter >> convertAction [
 	| convertedInput |
 	convertedInput := syntaxState write: textInput text.
 	self class openWithText: convertedInput withSyntaxState: syntaxState next.
@@ -124,24 +96,24 @@ PRPearPresenter >> convertAction [
 ]
 
 { #category : #accessing }
-PRPearPresenter >> currentFile [
+MDMicroEdPresenter >> currentFile [
 	^ currentFile ifNil: [ ^ currentFile := PRPearNewFile new ]
 ]
 
 { #category : #accessing }
-PRPearPresenter >> currentFile: aPREditorFile [
+MDMicroEdPresenter >> currentFile: aPREditorFile [
 	currentFile := aPREditorFile
 ]
 
 { #category : #actions }
-PRPearPresenter >> exampleAction [
+MDMicroEdPresenter >> exampleAction [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 	textInput text: syntaxState exampleText.
 	textOutput text: ''.
 ]
 
 { #category : #actions }
-PRPearPresenter >> exportAction [
+MDMicroEdPresenter >> exportAction [
 	"EXPORT button is pressed: open export window"
 	"check conditions to export"
 	self saveAction.
@@ -153,12 +125,12 @@ PRPearPresenter >> exportAction [
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initialExtent [
+MDMicroEdPresenter >> initialExtent [
 	^ 800@600
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializePresenters [
+MDMicroEdPresenter >> initializePresenters [
 	| initialText initialSyntaxState |
 	initialSyntaxState := PRPearPillarState new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
@@ -166,7 +138,7 @@ PRPearPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
+MDMicroEdPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
 	morphWriter := PRRichTextComposer new.
 	syntaxState := aSyntaxState.
 	parser := syntaxState parser.
@@ -190,7 +162,7 @@ PRPearPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntax
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializeWindow: aWindowPresenter [
+MDMicroEdPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent;
@@ -198,7 +170,7 @@ PRPearPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #api }
-PRPearPresenter >> menu [
+MDMicroEdPresenter >> menu [
 	^ menu ifNil: [ ^ menu := self newMenuBar
 		addGroup: [ :group | 
 			group 
@@ -282,7 +254,7 @@ PRPearPresenter >> menu [
 ]
 
 { #category : #actions }
-PRPearPresenter >> newDocAction [
+MDMicroEdPresenter >> newDocAction [
 	"NEW button is pressed: reset tool"
 	self cleanAction.
 	currentFile := PRPearNewFile new.
@@ -290,7 +262,7 @@ PRPearPresenter >> newDocAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> openAction [
+MDMicroEdPresenter >> openAction [
 	"OPEN button is pressed: open window"
 	| openFileDialog |
 	openFileDialog := FDOpenFileDialog new whenSelected: [
@@ -304,7 +276,7 @@ PRPearPresenter >> openAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> renderAction [
+MDMicroEdPresenter >> renderAction [
 	"RENDER button is pressed: render RichText result in output text"
 	| document |
 	document := syntaxState parse: textInput text.
@@ -312,7 +284,7 @@ PRPearPresenter >> renderAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> saveAction [
+MDMicroEdPresenter >> saveAction [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 	self currentFile: (self currentFile save: textInput withExtension: syntaxState extension).
 	self updateTitle.
@@ -321,32 +293,32 @@ PRPearPresenter >> saveAction [
 ]
 
 { #category : #api }
-PRPearPresenter >> screenLabelWith: aName [
+MDMicroEdPresenter >> screenLabelWith: aName [
 	screen label: 'Your current syntax is: ', aName string
 ]
 
 { #category : #accessing }
-PRPearPresenter >> syntaxState [
+MDMicroEdPresenter >> syntaxState [
 	^ syntaxState
 ]
 
 { #category : #accessing }
-PRPearPresenter >> syntaxState: aSyntaxState [
+MDMicroEdPresenter >> syntaxState: aSyntaxState [
 	syntaxState := aSyntaxState.
 	parser := aSyntaxState parser.
 ]
 
 { #category : #accessing }
-PRPearPresenter >> textInputText: aStringOrNil [
+MDMicroEdPresenter >> textInputText: aStringOrNil [
 	textInput text: aStringOrNil asString
 ]
 
 { #category : #accessing }
-PRPearPresenter >> title [
+MDMicroEdPresenter >> title [
 	^ 'PEAR - ', self currentFile basename
 ]
 
 { #category : #api }
-PRPearPresenter >> updateTitle [
+MDMicroEdPresenter >> updateTitle [
 	self window title: self title.
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #PRPearMicroDownState,
 	#superclass : #PRPearSyntaxState,
-	#category : #MicroEd
+	#category : #'MicroEd-Converter'
 }
 
 { #category : #accessing }

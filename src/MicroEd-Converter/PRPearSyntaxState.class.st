@@ -4,7 +4,7 @@ I am a state pattern to switch syntax between **MicroDown** and **Pillar** for n
 Class {
 	#name : #PRPearSyntaxState,
 	#superclass : #Object,
-	#category : #MicroEd
+	#category : #'MicroEd-Converter'
 }
 
 { #category : #accessing }

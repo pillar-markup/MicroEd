@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'file'
 	],
-	#category : #MicroEd
+	#category : #'MicroEd-Converter'
 }
 
 { #category : #accessing }

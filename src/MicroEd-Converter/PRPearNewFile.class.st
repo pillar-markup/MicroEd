@@ -1,7 +1,7 @@
 Class {
 	#name : #PRPearNewFile,
 	#superclass : #PRPearFile,
-	#category : #MicroEd
+	#category : #'MicroEd-Converter'
 }
 
 { #category : #accessing }
