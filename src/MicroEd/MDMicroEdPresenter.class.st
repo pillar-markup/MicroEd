@@ -1,5 +1,10 @@
 "
 A little editor for Microdown. 
+
+Todo: 
+- menu
+- cmd+s should save and render
+- when typing at space we can render?
 "
 Class {
 	#name : #MDMicroEdPresenter,
@@ -117,17 +122,15 @@ MDMicroEdPresenter >> initialExtent [
 
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
-	| initialText initialSyntaxState |
-	initialSyntaxState := MDMicroDownSyntax new.
-	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
-	self initializePresentersWithText: initialText withSyntax: initialSyntaxState
+	| initialText  |
+	self syntaxState: MDMicroDownSyntax new.
+	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self syntaxState exampleText.
+	self initializePresentersWithText: initialText
 ]
 
 { #category : #initialization }
-MDMicroEdPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
+MDMicroEdPresenter >> initializePresentersWithText: anInputText [
 	morphWriter := PRRichTextComposer new.
-	syntaxHelper := aSyntaxState.
-	parser := syntaxHelper parser.
 
 	self menu applyTo: self.
 	
@@ -298,5 +301,5 @@ MDMicroEdPresenter >> title [
 
 { #category : #api }
 MDMicroEdPresenter >> updateTitle [
-	self window title: self title.
+	self window title: self title
 ]

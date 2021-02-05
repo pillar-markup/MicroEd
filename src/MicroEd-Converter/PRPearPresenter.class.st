@@ -174,9 +174,7 @@ PRPearPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntax
 	self menu applyTo: self.
 	
 	textInput := self newText.
-	textInput 
-		autoAccept: true; 
-		text: anInputText.
+	textInput text: anInputText.
 	
 	textOutput := self newText.
 	textOutput text: ''.
