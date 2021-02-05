@@ -1,26 +1,26 @@
 Class {
-	#name : #PRPearOpenedFile,
-	#superclass : #PRPearFile,
-	#category : #'MicroEd-Converter'
+	#name : #MDEditorOpenedFile,
+	#superclass : #MDEditorFile,
+	#category : #MicroEd
 }
 
 { #category : #accessing }
-PRPearOpenedFile >> basename [
+MDEditorOpenedFile >> basename [
 	^ self file basename
 ]
 
 { #category : #accessing }
-PRPearOpenedFile >> fullName [
+MDEditorOpenedFile >> fullName [
 	^ self file fullName
 ]
 
 { #category : #testing }
-PRPearOpenedFile >> isNew [
+MDEditorOpenedFile >> isNew [
 	^ false
 ]
 
 { #category : #action }
-PRPearOpenedFile >> save: aText withExtension: anExtension [
+MDEditorOpenedFile >> save: aText withExtension: anExtension [
 	self file writeStreamDo: [ 
 		:str | str nextPutAll: aText text asString; truncate: aText text asString size 
 	].

@@ -2,43 +2,43 @@
 I am a state pattern to switch syntax between **MicroDown** and **Pillar** for now. We can think of adding GitHub Markdown.
 "
 Class {
-	#name : #PRPearSyntaxState,
+	#name : #MDEditorSyntax,
 	#superclass : #Object,
-	#category : #'MicroEd-Converter'
+	#category : #MicroEd
 }
 
 { #category : #accessing }
-PRPearSyntaxState >> exampleText [
+MDEditorSyntax >> exampleText [
 	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
-PRPearSyntaxState >> label [
+MDEditorSyntax >> label [
 	^ 'Change to ', self next new name, ' syntax'.
 ]
 
 { #category : #accessing }
-PRPearSyntaxState >> name [
+MDEditorSyntax >> name [
 	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
-PRPearSyntaxState >> next [
+MDEditorSyntax >> next [
 	^ self subclassResponsibility 
 ]
 
 { #category : #parsing }
-PRPearSyntaxState >> parse: aText [
+MDEditorSyntax >> parse: aText [
 	^ self parser new parse: aText asString
 ]
 
 { #category : #accessing }
-PRPearSyntaxState >> parser [
+MDEditorSyntax >> parser [
 	^ self subclassResponsibility 
 ]
 
 { #category : #writing }
-PRPearSyntaxState >> write: aStringOrStream [
+MDEditorSyntax >> write: aStringOrStream [
 	| parsedAsPillar writtenText|
 	parsedAsPillar := self parse: aStringOrStream.
 	writtenText := self next writer new start: parsedAsPillar; contents.
@@ -46,6 +46,6 @@ PRPearSyntaxState >> write: aStringOrStream [
 ]
 
 { #category : #accessing }
-PRPearSyntaxState >> writer [
+MDEditorSyntax >> writer [
 	^ self subclassResponsibility 
 ]

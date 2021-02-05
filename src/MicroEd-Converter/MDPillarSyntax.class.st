@@ -1,11 +1,11 @@
 Class {
-	#name : #PRPearPillarState,
-	#superclass : #PRPearSyntaxState,
+	#name : #MDPillarSyntax,
+	#superclass : #MDEditorSyntax,
 	#category : #'MicroEd-Converter'
 }
 
 { #category : #accessing }
-PRPearPillarState >> exampleText [
+MDPillarSyntax >> exampleText [
 	^ '! Heading one 
 
 !!Heading Twoo 
@@ -43,26 +43,26 @@ Point class >> new
 ]
 
 { #category : #accessing }
-PRPearPillarState >> extension [
+MDPillarSyntax >> extension [
 	^ 'pillar'
 ]
 
 { #category : #accessing }
-PRPearPillarState >> name [
+MDPillarSyntax >> name [
 	^ 'Pillar'
 ]
 
 { #category : #accessing }
-PRPearPillarState >> next [
-	^ PRPearMicroDownState new
+MDPillarSyntax >> next [
+	^ MDMicroDownSyntax new
 ]
 
 { #category : #accessing }
-PRPearPillarState >> parser [
+MDPillarSyntax >> parser [
 	^ PRPillarParser
 ]
 
 { #category : #accessing }
-PRPearPillarState >> writer [
+MDPillarSyntax >> writer [
 	^ PRPillarWriter
 ]

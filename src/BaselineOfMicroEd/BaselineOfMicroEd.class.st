@@ -19,10 +19,10 @@ BaselineOfMicroEd >> baseline: spec [
 
 		spec 
 			package: 'MicroEd'
-			with: [ spec requires: #('FileDialog' 'MicroEd-Converter') ].
+			with: [ spec requires: #('FileDialog' ) ].
 		spec 
 			package: 'MicroEd-Converter'
-			with: [ spec requires: #('FileDialog') ].
+			with: [ spec requires: #('MicroEd') ].
 
 	]
 ]

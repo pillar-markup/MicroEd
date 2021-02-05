@@ -1,11 +1,11 @@
 Class {
-	#name : #PRPearMicroDownState,
-	#superclass : #PRPearSyntaxState,
-	#category : #'MicroEd-Converter'
+	#name : #MDMicroDownSyntax,
+	#superclass : #MDEditorSyntax,
+	#category : #MicroEd
 }
 
 { #category : #accessing }
-PRPearMicroDownState >> exampleText [
+MDMicroDownSyntax >> exampleText [
 	^ '# Header
 
 A figure:
@@ -54,31 +54,31 @@ A codeblock:
 ]
 
 { #category : #accessing }
-PRPearMicroDownState >> extension [
+MDMicroDownSyntax >> extension [
 	^ 'microdown'
 ]
 
 { #category : #accessing }
-PRPearMicroDownState >> name [
+MDMicroDownSyntax >> name [
 	^ 'MicroDown'
 ]
 
 { #category : #accessing }
-PRPearMicroDownState >> next [
-	^ PRPearPillarState new
+MDMicroDownSyntax >> next [
+	^ MDPillarSyntax new
 ]
 
 { #category : #parsing }
-PRPearMicroDownState >> parse: aText [
+MDMicroDownSyntax >> parse: aText [
 	^ (super parse: aText asString) asPillar
 ]
 
 { #category : #accessing }
-PRPearMicroDownState >> parser [
+MDMicroDownSyntax >> parser [
 	^ MicroDownParser 
 ]
 
 { #category : #accessing }
-PRPearMicroDownState >> writer [
+MDMicroDownSyntax >> writer [
 	^ PRMicrodownWriter
 ]

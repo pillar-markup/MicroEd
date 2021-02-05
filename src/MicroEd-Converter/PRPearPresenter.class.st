@@ -125,7 +125,7 @@ PRPearPresenter >> convertAction [
 
 { #category : #accessing }
 PRPearPresenter >> currentFile [
-	^ currentFile ifNil: [ ^ currentFile := PRPearNewFile new ]
+	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
 ]
 
 { #category : #accessing }
@@ -160,7 +160,7 @@ PRPearPresenter >> initialExtent [
 { #category : #initialization }
 PRPearPresenter >> initializePresenters [
 	| initialText initialSyntaxState |
-	initialSyntaxState := PRPearPillarState new.
+	initialSyntaxState := MDPillarSyntax new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
 	self initializePresentersWithText: initialText withSyntax: initialSyntaxState
 ]
@@ -285,7 +285,7 @@ PRPearPresenter >> menu [
 PRPearPresenter >> newDocAction [
 	"NEW button is pressed: reset tool"
 	self cleanAction.
-	currentFile := PRPearNewFile new.
+	currentFile := MDEditorNewFile new.
 	self updateTitle
 ]
 
@@ -295,7 +295,7 @@ PRPearPresenter >> openAction [
 	| openFileDialog |
 	openFileDialog := FDOpenFileDialog new whenSelected: [
 		:selectedFile |
-			self currentFile: (PRPearOpenedFile new file: selectedFile).
+			self currentFile: (MDEditorOpenedFile new file: selectedFile).
 			textInput text: selectedFile contents.
 			textOutput text: ''.
 			self updateTitle

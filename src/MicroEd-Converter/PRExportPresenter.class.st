@@ -23,7 +23,7 @@ Class {
 { #category : #specs }
 PRExportPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical 
-			add: (SpBoxLayout newHorizontal	add: #formatLabel; add: #formatInput) withConstraints: [:c | c height: self toolbarHeight ];
+			add: (SpBoxLayout newHorizontal add: #formatLabel; add: #formatInput) withConstraints: [:c | c height: self toolbarHeight ];
 			add: #syntaxScreen withConstraints: [:c | c height: self toolbarHeight ];
 			add: #directoryScreen withConstraints: [:c | c height: self toolbarHeight ];
 			add: (SpBoxLayout newHorizontal	add: #cancelButton; add: #confirmButton) withConstraints: [:c | c height: self toolbarHeight ];

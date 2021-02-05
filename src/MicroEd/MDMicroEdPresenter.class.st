@@ -54,16 +54,6 @@ MDMicroEdPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxSt
 ]
 
 { #category : #actions }
-MDMicroEdPresenter >> changeAction [
-	"CHANGE button is pressed: change input syntax with next syntax state"
-	syntaxState := syntaxState next.
-	parser := syntaxState parser.
-	self exampleAction.
-	self screenLabelWith: syntaxState name.
-	self inform: 'Now, you''re working on ', syntaxState name
-]
-
-{ #category : #actions }
 MDMicroEdPresenter >> cleanAction [
 	"CLEAN button is pressed: erase both input and output text content"
 	textInput text: ''.
@@ -78,17 +68,9 @@ MDMicroEdPresenter >> configAction [
 	selectedDir ifNotNil: [ self folder: selectedDir].
 ]
 
-{ #category : #actions }
-MDMicroEdPresenter >> convertAction [
-	| convertedInput |
-	convertedInput := syntaxState write: textInput text.
-	self class openWithText: convertedInput withSyntaxState: syntaxState next.
-	self inform: 'A new Editor appears, set on ', syntaxState next name
-]
-
 { #category : #accessing }
 MDMicroEdPresenter >> currentFile [
-	^ currentFile ifNil: [ ^ currentFile := PRPearNewFile new ]
+	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
 ]
 
 { #category : #accessing }
@@ -133,7 +115,7 @@ MDMicroEdPresenter >> initialExtent [
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
 	| initialText initialSyntaxState |
-	initialSyntaxState := PRPearPillarState new.
+	initialSyntaxState := MDPillarSyntax new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
 	self initializePresentersWithText: initialText withSyntax: initialSyntaxState
 ]
@@ -264,7 +246,7 @@ MDMicroEdPresenter >> microdownParser [
 MDMicroEdPresenter >> newDocAction [
 	"NEW button is pressed: reset tool"
 	self cleanAction.
-	currentFile := PRPearNewFile new.
+	currentFile := MDEditorNewFile new.
 	self updateTitle
 ]
 
@@ -274,7 +256,7 @@ MDMicroEdPresenter >> openAction [
 	| openFileDialog |
 	openFileDialog := FDOpenFileDialog new whenSelected: [
 		:selectedFile |
-			self currentFile: (PRPearOpenedFile new file: selectedFile).
+			self currentFile: (MDEditorOpenedFile new file: selectedFile).
 			textInput text: selectedFile contents.
 			textOutput text: ''.
 			self updateTitle

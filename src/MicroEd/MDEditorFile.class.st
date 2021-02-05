@@ -2,40 +2,40 @@
 I am an abstract PREditorFile, to distinguish a **new** text file and an existing **opened** text file.
 "
 Class {
-	#name : #PRPearFile,
+	#name : #MDEditorFile,
 	#superclass : #Object,
 	#instVars : [
 		'file'
 	],
-	#category : #'MicroEd-Converter'
+	#category : #MicroEd
 }
 
 { #category : #accessing }
-PRPearFile >> basename [
+MDEditorFile >> basename [
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
-PRPearFile >> file [
+MDEditorFile >> file [
 	^ file
 ]
 
 { #category : #accessing }
-PRPearFile >> file: aFile [
+MDEditorFile >> file: aFile [
 	file := aFile
 ]
 
 { #category : #accessing }
-PRPearFile >> fullName [
+MDEditorFile >> fullName [
 	self subclassResponsibility 
 ]
 
 { #category : #testing }
-PRPearFile >> isNew [
+MDEditorFile >> isNew [
 	self subclassResponsibility 
 ]
 
 { #category : #action }
-PRPearFile >> save: aText withExtension: anExtension [
+MDEditorFile >> save: aText withExtension: anExtension [
 	^ self subclassResponsibility 
 ]
