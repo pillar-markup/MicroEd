@@ -7,19 +7,19 @@ Class {
 		'textInput',
 		'textOutput',
 		'currentFile',
-		'configPillarFolder',
 		'morphWriter',
-		'parser'
+		'parser',
+		'folder'
 	],
 	#category : #MicroEd
 }
 
 { #category : #specs }
 MDMicroEdPresenter class >> defaultSpec [
-	 ^ SpBoxLayout newVertical
+	 ^ SpBoxLayout newTopToBottom
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #screen withConstraints: [:c | c expand: false];
-		add: (SpBoxLayout newHorizontal
+		add: (SpBoxLayout newLeftToRight
 			add: #textInput;
 			add: #textOutput;
 		yourself);
@@ -29,11 +29,11 @@ MDMicroEdPresenter class >> defaultSpec [
 { #category : #'world menu' }
 MDMicroEdPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: #'Pear')
+	(aBuilder item: #'MicroEd')
 		parent: #Tools;
 		action: [ self open ];
 		order: 40;
-		help: 'Pillar Editor And Renderer';
+		help: 'A microdown Editor & Renderer';
 		icon: (self iconNamed: #glamorousBrowseIcon).
 	aBuilder withSeparatorAfter
 ]
@@ -46,6 +46,7 @@ MDMicroEdPresenter class >> open [
 
 { #category : #examples }
 MDMicroEdPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState [
+
 	| presenter |
 	presenter := self new.
 	presenter initializePresentersWithText: anInputText withSyntax: aSyntaxState.
@@ -74,17 +75,7 @@ MDMicroEdPresenter >> configAction [
 	"CONFIG button is pressed: open window"
 	| selectedDir |
 	selectedDir := FDOpenDirectoryDialog new defaultName: 'pillar'; title: 'Select pillar directory in your installation'; openModal.
-	selectedDir ifNotNil: [ self configPillarFolder: selectedDir].
-]
-
-{ #category : #accessing }
-MDMicroEdPresenter >> configPillarFolder [
-	^ configPillarFolder
-]
-
-{ #category : #accessing }
-MDMicroEdPresenter >> configPillarFolder: aDirectory [
-	configPillarFolder := aDirectory 
+	selectedDir ifNotNil: [ self folder: selectedDir].
 ]
 
 { #category : #actions }
@@ -118,10 +109,20 @@ MDMicroEdPresenter >> exportAction [
 	"check conditions to export"
 	self saveAction.
 	self currentFile isNew ifTrue: [ ^ self inform: 'Please save your file before export' ].
-	self configPillarFolder ifNil: [self configAction].
-	self configPillarFolder ifNil: [ ^ self inform: 'Please localise your pillar directory in configuration' ].
-	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxState parser withConfigDirectory: self configPillarFolder) openWithSpec
+	self folder ifNil: [self configAction].
+	self folder ifNil: [ ^ self inform: 'Please localise your pillar directory in configuration' ].
+	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxState parser withConfigDirectory: self folder) openWithSpec
 	
+]
+
+{ #category : #accessing }
+MDMicroEdPresenter >> folder [
+	^ folder
+]
+
+{ #category : #accessing }
+MDMicroEdPresenter >> folder: aDirectory [
+	folder := aDirectory 
 ]
 
 { #category : #initialization }
@@ -251,6 +252,12 @@ MDMicroEdPresenter >> menu [
 						description: 'Give your Pillar installation directory path to be able to export';
 						icon: (self iconNamed: #configIcon);
 						action: [ self configAction ] ] ];" yourself ]
+]
+
+{ #category : #actions }
+MDMicroEdPresenter >> microdownParser [ 
+
+	^ MicroDownParser new
 ]
 
 { #category : #actions }
