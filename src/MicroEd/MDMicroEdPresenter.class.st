@@ -2,14 +2,14 @@ Class {
 	#name : #MDMicroEdPresenter,
 	#superclass : #SpApplicationWithToolbar,
 	#instVars : [
-		'syntaxState',
 		'screen',
 		'textInput',
 		'textOutput',
 		'currentFile',
 		'morphWriter',
 		'parser',
-		'folder'
+		'folder',
+		'syntaxHelper'
 	],
 	#category : #MicroEd
 }
@@ -81,7 +81,7 @@ MDMicroEdPresenter >> currentFile: aPREditorFile [
 { #category : #actions }
 MDMicroEdPresenter >> exampleAction [
 	"GET EXAMPLE button is pressed: fill input text with an example"
-	textInput text: syntaxState exampleText.
+	textInput text: syntaxHelper exampleText.
 	textOutput text: ''.
 ]
 
@@ -93,7 +93,7 @@ MDMicroEdPresenter >> exportAction [
 	self currentFile isNew ifTrue: [ ^ self inform: 'Please save your file before export' ].
 	self folder ifNil: [self configAction].
 	self folder ifNil: [ ^ self inform: 'Please localise your pillar directory in configuration' ].
-	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxState parser withConfigDirectory: self folder) openWithSpec
+	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxHelper parser withConfigDirectory: self folder) openWithSpec
 	
 ]
 
@@ -123,8 +123,8 @@ MDMicroEdPresenter >> initializePresenters [
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
 	morphWriter := PRRichTextComposer new.
-	syntaxState := aSyntaxState.
-	parser := syntaxState parser.
+	syntaxHelper := aSyntaxState.
+	parser := syntaxHelper parser.
 
 	self menu applyTo: self.
 	
@@ -140,7 +140,7 @@ MDMicroEdPresenter >> initializePresentersWithText: anInputText withSyntax: aSyn
 	self focusOrder add: textOutput.
 
 	screen :=  self newLabel.
-	self screenLabelWith: syntaxState name.
+	self screenLabelWith: syntaxHelper name.
 	self focusOrder add: screen.
 ]
 
@@ -268,14 +268,14 @@ MDMicroEdPresenter >> openAction [
 MDMicroEdPresenter >> renderAction [
 	"RENDER button is pressed: render RichText result in output text"
 	| document |
-	document := syntaxState parse: textInput text.
+	document := syntaxHelper parse: textInput text.
 	textOutput text: (morphWriter start: document) 
 ]
 
 { #category : #actions }
 MDMicroEdPresenter >> saveAction [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
-	self currentFile: (self currentFile save: textInput withExtension: syntaxState extension).
+	self currentFile: (self currentFile save: textInput withExtension: syntaxHelper extension).
 	self updateTitle.
 	self currentFile isNew ifFalse: [
 		self inform: self currentFile fullName, ' is saved'.].
@@ -288,12 +288,12 @@ MDMicroEdPresenter >> screenLabelWith: aName [
 
 { #category : #accessing }
 MDMicroEdPresenter >> syntaxState [
-	^ syntaxState
+	^ syntaxHelper
 ]
 
 { #category : #accessing }
 MDMicroEdPresenter >> syntaxState: aSyntaxState [
-	syntaxState := aSyntaxState.
+	syntaxHelper := aSyntaxState.
 	parser := aSyntaxState parser.
 ]
 
@@ -304,7 +304,7 @@ MDMicroEdPresenter >> textInputText: aStringOrNil [
 
 { #category : #accessing }
 MDMicroEdPresenter >> title [
-	^ 'PEAR - ', self currentFile basename
+	^ 'MicroDown Editor - ', self currentFile basename
 ]
 
 { #category : #api }
