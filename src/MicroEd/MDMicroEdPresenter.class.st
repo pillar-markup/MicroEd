@@ -24,10 +24,11 @@ Class {
 
 { #category : #specs }
 MDMicroEdPresenter class >> defaultSpec [
+
 	 ^ SpBoxLayout newTopToBottom
-		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-		add: #screen withConstraints: [:c | c expand: false];
-		add: (SpBoxLayout newLeftToRight
+		add: #menu expand: false;
+		add: #screen  expand: false;
+		add: (SpPanedLayout newLeftToRight
 			add: #textInput;
 			add: #textOutput;
 		yourself);
@@ -123,8 +124,11 @@ MDMicroEdPresenter >> initialExtent [
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
 	| initialText  |
+	
 	self syntaxState: MDMicroDownSyntax new.
+	
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self syntaxState exampleText.
+	
 	self initializePresentersWithText: initialText
 ]
 
@@ -135,27 +139,39 @@ MDMicroEdPresenter >> initializePresentersWithText: anInputText [
 	self menu applyTo: self.
 	
 	textInput := self newText.
-	textInput 
-		autoAccept: true; 
-		text: anInputText.
+	textInput text: anInputText.
+	"textInput 
+		bindKeyCombination: Character cr asKeyCombination 
+		toAction: [ :target :morph :event | 
+			[ self renderAction ] schedule.
+			event wasHandled: false ]."
+	textInput eventHandler whenKeyDownDo: [ :anEvent | 
+		[ self application defer: [ self renderAction ] ] schedule.
+		anEvent wasHandled: false ].
 	
-	textOutput := self newText.
-	textOutput text: ''.
+	"Using a morph container as the output because a text presenter is intended to receive 
+	 strings, not instances of Text (the fact that it works now is just casual, and will 
+	 be removed in the future)"
+	textOutput := self newMorph
+		morph: (RubScrolledTextMorph new 
+			hResizing: #spaceFill; 
+			vResizing: #spaceFill;
+			in: [ :this | this textArea readOnly: true ];
+			yourself);
+		yourself.
 	
-	self focusOrder add: textInput.
-	self focusOrder add: textOutput.
 
 	screen :=  self newLabel.
 	self screenLabelWith: syntaxHelper name.
-	self focusOrder add: screen.
 ]
 
 { #category : #initialization }
 MDMicroEdPresenter >> initializeWindow: aWindowPresenter [
+	
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent;
-		windowIcon: (self iconNamed: #glamorousBrowseIcon)
+		windowIcon: (self application iconNamed: #glamorousBrowseIcon)
 ]
 
 { #category : #api }
@@ -260,8 +276,9 @@ MDMicroEdPresenter >> openAction [
 MDMicroEdPresenter >> renderAction [
 	"RENDER button is pressed: render RichText result in output text"
 	| document |
+	
 	document := syntaxHelper parse: textInput text.
-	textOutput text: (morphWriter start: document) 
+	textOutput morph setText: (morphWriter start: document) 
 ]
 
 { #category : #actions }
