@@ -102,7 +102,7 @@ MDMicroEdPresenter >> exportAction [
 	self currentFile isNew ifTrue: [ ^ self inform: 'Please save your file before export' ].
 	self folder ifNil: [self configAction].
 	self folder ifNil: [ ^ self inform: 'Please localise your pillar directory in configuration' ].
-	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxHelper parser withConfigDirectory: self folder) openWithSpec
+	(MDPRExportPresenterBroken withInputFile: self currentFile file withParser: syntaxHelper parser withConfigDirectory: self folder) openWithSpec
 	
 ]
 

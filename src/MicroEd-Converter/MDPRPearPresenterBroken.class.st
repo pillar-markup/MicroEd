@@ -27,7 +27,7 @@ _For now, export feature is unavailable, so it has been removed from menu - but 
 
 "
 Class {
-	#name : #PRPearPresenter,
+	#name : #MDPRPearPresenterBroken,
 	#superclass : #SpApplicationWithToolbar,
 	#instVars : [
 		'syntaxState',
@@ -43,7 +43,7 @@ Class {
 }
 
 { #category : #specs }
-PRPearPresenter class >> defaultSpec [
+MDPRPearPresenterBroken class >> defaultSpec [
 	 ^ SpBoxLayout newVertical
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #screen withConstraints: [:c | c expand: false];
@@ -55,7 +55,7 @@ PRPearPresenter class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
-PRPearPresenter class >> menuCommandOn: aBuilder [
+MDPRPearPresenterBroken class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Pear')
 		parent: #Tools;
@@ -67,13 +67,13 @@ PRPearPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #examples }
-PRPearPresenter class >> open [
+MDPRPearPresenterBroken class >> open [
 	<example>
 	^ self new openWithSpec
 ]
 
 { #category : #examples }
-PRPearPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState [
+MDPRPearPresenterBroken class >> openWithText: anInputText withSyntaxState: aSyntaxState [
 	| presenter |
 	presenter := self new.
 	presenter initializePresentersWithText: anInputText withSyntax: aSyntaxState.
@@ -81,7 +81,7 @@ PRPearPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState
 ]
 
 { #category : #actions }
-PRPearPresenter >> changeAction [
+MDPRPearPresenterBroken >> changeAction [
 	"CHANGE button is pressed: change input syntax with next syntax state"
 	syntaxState := syntaxState next.
 	parser := syntaxState parser.
@@ -91,14 +91,14 @@ PRPearPresenter >> changeAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> cleanAction [
+MDPRPearPresenterBroken >> cleanAction [
 	"CLEAN button is pressed: erase both input and output text content"
 	textInput text: ''.
 	textOutput text: ''
 ]
 
 { #category : #actions }
-PRPearPresenter >> configAction [
+MDPRPearPresenterBroken >> configAction [
 	"CONFIG button is pressed: open window"
 	| selectedDir |
 	selectedDir := FDOpenDirectoryDialog new defaultName: 'pillar'; title: 'Select pillar directory in your installation'; openModal.
@@ -106,17 +106,17 @@ PRPearPresenter >> configAction [
 ]
 
 { #category : #accessing }
-PRPearPresenter >> configPillarFolder [
+MDPRPearPresenterBroken >> configPillarFolder [
 	^ configPillarFolder
 ]
 
 { #category : #accessing }
-PRPearPresenter >> configPillarFolder: aDirectory [
+MDPRPearPresenterBroken >> configPillarFolder: aDirectory [
 	configPillarFolder := aDirectory 
 ]
 
 { #category : #actions }
-PRPearPresenter >> convertAction [
+MDPRPearPresenterBroken >> convertAction [
 	| convertedInput |
 	convertedInput := syntaxState write: textInput text.
 	self class openWithText: convertedInput withSyntaxState: syntaxState next.
@@ -124,41 +124,41 @@ PRPearPresenter >> convertAction [
 ]
 
 { #category : #accessing }
-PRPearPresenter >> currentFile [
+MDPRPearPresenterBroken >> currentFile [
 	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
 ]
 
 { #category : #accessing }
-PRPearPresenter >> currentFile: aPREditorFile [
+MDPRPearPresenterBroken >> currentFile: aPREditorFile [
 	currentFile := aPREditorFile
 ]
 
 { #category : #actions }
-PRPearPresenter >> exampleAction [
+MDPRPearPresenterBroken >> exampleAction [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 	textInput text: syntaxState exampleText.
 	textOutput text: ''.
 ]
 
 { #category : #actions }
-PRPearPresenter >> exportAction [
+MDPRPearPresenterBroken >> exportAction [
 	"EXPORT button is pressed: open export window"
 	"check conditions to export"
 	self saveAction.
 	self currentFile isNew ifTrue: [ ^ self inform: 'Please save your file before export' ].
 	self configPillarFolder ifNil: [self configAction].
 	self configPillarFolder ifNil: [ ^ self inform: 'Please localise your pillar directory in configuration' ].
-	(PRExportPresenter withInputFile: self currentFile file withParser: syntaxState parser withConfigDirectory: self configPillarFolder) openWithSpec
+	(MDPRExportPresenterBroken withInputFile: self currentFile file withParser: syntaxState parser withConfigDirectory: self configPillarFolder) openWithSpec
 	
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initialExtent [
+MDPRPearPresenterBroken >> initialExtent [
 	^ 800@600
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializePresenters [
+MDPRPearPresenterBroken >> initializePresenters [
 	| initialText initialSyntaxState |
 	initialSyntaxState := MDPillarState new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, initialSyntaxState exampleText.
@@ -166,7 +166,7 @@ PRPearPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
+MDPRPearPresenterBroken >> initializePresentersWithText: anInputText withSyntax: aSyntaxState [
 	morphWriter := PRRichTextComposer new.
 	syntaxState := aSyntaxState.
 	parser := syntaxState parser.
@@ -188,7 +188,7 @@ PRPearPresenter >> initializePresentersWithText: anInputText withSyntax: aSyntax
 ]
 
 { #category : #initialization }
-PRPearPresenter >> initializeWindow: aWindowPresenter [
+MDPRPearPresenterBroken >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent;
@@ -196,7 +196,7 @@ PRPearPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #api }
-PRPearPresenter >> menu [
+MDPRPearPresenterBroken >> menu [
 	^ menu ifNil: [ ^ menu := self newMenuBar
 		addGroup: [ :group | 
 			group 
@@ -280,7 +280,7 @@ PRPearPresenter >> menu [
 ]
 
 { #category : #actions }
-PRPearPresenter >> newDocAction [
+MDPRPearPresenterBroken >> newDocAction [
 	"NEW button is pressed: reset tool"
 	self cleanAction.
 	currentFile := MDEditorNewFile new.
@@ -288,7 +288,7 @@ PRPearPresenter >> newDocAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> openAction [
+MDPRPearPresenterBroken >> openAction [
 	"OPEN button is pressed: open window"
 	| openFileDialog |
 	openFileDialog := FDOpenFileDialog new whenSelected: [
@@ -302,7 +302,7 @@ PRPearPresenter >> openAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> renderAction [
+MDPRPearPresenterBroken >> renderAction [
 	"RENDER button is pressed: render RichText result in output text"
 	| document |
 	document := syntaxState parse: textInput text.
@@ -310,7 +310,7 @@ PRPearPresenter >> renderAction [
 ]
 
 { #category : #actions }
-PRPearPresenter >> saveAction [
+MDPRPearPresenterBroken >> saveAction [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 	self currentFile: (self currentFile save: textInput withExtension: syntaxState extension).
 	self updateTitle.
@@ -319,32 +319,32 @@ PRPearPresenter >> saveAction [
 ]
 
 { #category : #api }
-PRPearPresenter >> screenLabelWith: aName [
+MDPRPearPresenterBroken >> screenLabelWith: aName [
 	screen label: 'Your current syntax is: ', aName string
 ]
 
 { #category : #accessing }
-PRPearPresenter >> syntaxState [
+MDPRPearPresenterBroken >> syntaxState [
 	^ syntaxState
 ]
 
 { #category : #accessing }
-PRPearPresenter >> syntaxState: aSyntaxState [
+MDPRPearPresenterBroken >> syntaxState: aSyntaxState [
 	syntaxState := aSyntaxState.
 	parser := aSyntaxState parser.
 ]
 
 { #category : #accessing }
-PRPearPresenter >> textInputText: aStringOrNil [
+MDPRPearPresenterBroken >> textInputText: aStringOrNil [
 	textInput text: aStringOrNil asString
 ]
 
 { #category : #accessing }
-PRPearPresenter >> title [
+MDPRPearPresenterBroken >> title [
 	^ 'PEAR - ', self currentFile basename
 ]
 
 { #category : #api }
-PRPearPresenter >> updateTitle [
+MDPRPearPresenterBroken >> updateTitle [
 	self window title: self title.
 ]

@@ -24,6 +24,8 @@ MDConverterState >> initialize [
 
 { #category : #initialization }
 MDConverterState >> initializeSyntax [
+
+	self halt.
 ]
 
 { #category : #accessing }

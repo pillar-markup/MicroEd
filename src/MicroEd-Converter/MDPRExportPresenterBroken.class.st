@@ -2,7 +2,7 @@
 I am the export presenter using file-dialog.
 "
 Class {
-	#name : #PRExportPresenter,
+	#name : #MDPRExportPresenterBroken,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'inputFile',
@@ -21,7 +21,7 @@ Class {
 }
 
 { #category : #specs }
-PRExportPresenter class >> defaultSpec [
+MDPRExportPresenterBroken class >> defaultSpec [
 	^ SpBoxLayout newVertical 
 			add: (SpBoxLayout newHorizontal add: #formatLabel; add: #formatInput) withConstraints: [:c | c height: self toolbarHeight ];
 			add: #syntaxScreen withConstraints: [:c | c height: self toolbarHeight ];
@@ -30,23 +30,35 @@ PRExportPresenter class >> defaultSpec [
 		yourself.
 ]
 
+{ #category : #specs }
+MDPRExportPresenterBroken class >> open [ 
+	<script>
+	
+	^ self new openWithSpec
+]
+
 { #category : #creation }
-PRExportPresenter class >> withInputFile: aFileReference withParser: aParser withConfigDirectory: aDirectory [
-	^ self basicNew inputFile: aFileReference; parser: aParser; configDirectory: aDirectory; initialize; yourself
+MDPRExportPresenterBroken class >> withInputFile: aFileReference withParser: aParser withConfigDirectory: aDirectory [
+
+	^ self basicNew 
+		inputFile: aFileReference; 
+		parser: aParser; 
+		configDirectory: aDirectory; 
+		initialize; yourself
 ]
 
 { #category : #accessing }
-PRExportPresenter >> configDirectory [
+MDPRExportPresenterBroken >> configDirectory [
 	^ configDirectory 
 ]
 
 { #category : #accessing }
-PRExportPresenter >> configDirectory: aDirectory [
+MDPRExportPresenterBroken >> configDirectory: aDirectory [
 	configDirectory := aDirectory
 ]
 
 { #category : #initialization }
-PRExportPresenter >> connectPresenters [
+MDPRExportPresenterBroken >> connectPresenters [
 	
 	cancelButton action: [ self delete ].
 	
@@ -59,7 +71,7 @@ PRExportPresenter >> connectPresenters [
 ]
 
 { #category : #deleting }
-PRExportPresenter >> deleteBookArchetypeDataIn: aDirectory [
+MDPRExportPresenterBroken >> deleteBookArchetypeDataIn: aDirectory [
 	(aDirectory / 'Chapters') exists ifTrue: [ (aDirectory / 'Chapters') deleteAll ] .
 	(aDirectory / '_support') exists ifTrue: [ (aDirectory / '_support') deleteAll ] .
 	(aDirectory / 'index.pillar') exists ifTrue: [ (aDirectory / 'index.pillar') delete ] .
@@ -67,7 +79,7 @@ PRExportPresenter >> deleteBookArchetypeDataIn: aDirectory [
 ]
 
 { #category : #actions }
-PRExportPresenter >> exportAction [
+MDPRExportPresenterBroken >> exportAction [
 	| inputFileDirectory |
 	inputFileDirectory := self inputFile parent.
 	"here: it's hardcoded for book archetype. It's a first version. We need to change it if we generalize to other archetypes/templates."
@@ -80,25 +92,25 @@ PRExportPresenter >> exportAction [
 ]
 
 { #category : #list }
-PRExportPresenter >> formatList [
+MDPRExportPresenterBroken >> formatList [
 	^ PRWritingTarget subclasses collect: [ :class | class new ]
 ]
 
 { #category : #initialization }
-PRExportPresenter >> initialExtent [
+MDPRExportPresenterBroken >> initialExtent [
 	^ 600@200
 ]
 
 { #category : #initialization }
-PRExportPresenter >> initializePresenters [
+MDPRExportPresenterBroken >> initializePresenters [
 	
 	formatLabel := self newLabel label: 'Export format:'.
-	formatInput := SpLabelledDropList new
+	formatInput := SpDropListPresenter new
 		items: self formatList;
 		display: [ :item | item extension asString ].
 	
-	syntaxScreen := self newLabel label: 'Input syntax: ', self parser name.
-	directoryScreen := self newLabel label: 'Final export directory: ', self inputFile fullName, '\_result'.
+	syntaxScreen := self newLabel label: 'Input syntax: BLA' ", self parser name".
+	directoryScreen := self newLabel label: 'Final export directory: Blop' ", self inputFile fullName", '\_result'.
 	
 	cancelButton := self newButton label: 'Cancel'.
 	confirmButton := self newButton label: 'Export'.
@@ -110,50 +122,54 @@ PRExportPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-PRExportPresenter >> initializeWindow: aWindowPresenter [
+MDPRExportPresenterBroken >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Export';
 		initialExtent: self initialExtent
 ]
 
 { #category : #accessing }
-PRExportPresenter >> inputFile [
+MDPRExportPresenterBroken >> inputFile [
 	"required at creation"
 	^inputFile
 ]
 
 { #category : #accessing }
-PRExportPresenter >> inputFile: aFile [
+MDPRExportPresenterBroken >> inputFile: aFile [
 	inputFile := aFile
 ]
 
 { #category : #accessing }
-PRExportPresenter >> parser [
-	"required at creation"
-	^ parser
+MDPRExportPresenterBroken >> parser [
+	"Pay attention this is a hack to make sure that the converter is working. 
+	Obviously a pillar to microdown parser has to have a dependency to pillar!
+	and so far the microEd project is just for editing microdown. 
+	The package MicroEd-Converter should be moved to Pillar!!!!"
+	
+	^ parser ifNil: [ parser := PRPillarParser new. parser ]
 ]
 
 { #category : #accessing }
-PRExportPresenter >> parser: aParser [
+MDPRExportPresenterBroken >> parser: aParser [
 	parser := aParser
 ]
 
 { #category : #accessing }
-PRExportPresenter >> project [
+MDPRExportPresenterBroken >> project [
 	^ project ifNil: [ ^ PRProject on: self inputFile parent ]
 ]
 
 { #category : #accessing }
-PRExportPresenter >> project: aPRProject [
+MDPRExportPresenterBroken >> project: aPRProject [
 	project := aPRProject 
 ]
 
 { #category : #accessing }
-PRExportPresenter >> target [
+MDPRExportPresenterBroken >> target [
 	^ target
 ]
 
 { #category : #accessing }
-PRExportPresenter >> target: aWritingTarget [
+MDPRExportPresenterBroken >> target: aWritingTarget [
 	target := aWritingTarget 
 ]
