@@ -36,3 +36,22 @@ MDMicroEdPresenterTest >> testGotFolderWhenIsSpecify [
 	presenter folder: directory.
 	self assert: presenter folder basenameWithoutExtension equals: 'test'.
 ]
+
+{ #category : #tests }
+MDMicroEdPresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
+	| presenter |
+	presenter := MDMicroEdPresenter new.
+	presenter syntaxState: MDSyntax new.
+	self assert: presenter syntaxState class equals: MDSyntax
+]
+
+{ #category : #tests }
+MDMicroEdPresenterTest >> testGotSyntaxStateWhenIsSpecify [
+	| presenter directory filesystem |
+	filesystem := FileSystem memory.
+	presenter := MDMicroEdPresenter new.
+	filesystem createDirectory: 'test'.
+	directory := filesystem workingDirectory / 'test'.
+	presenter folder: directory.
+	self assert: presenter folder basenameWithoutExtension equals: 'test'.
+]
