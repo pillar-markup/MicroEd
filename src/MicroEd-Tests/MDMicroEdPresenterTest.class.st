@@ -11,7 +11,7 @@ MDMicroEdPresenterTest >> testCleanAction [
 	presenter := MDMicroEdPresenter new.
 	presenter cleanAction.
 	self assert: presenter textInputText text equals: ''.
-	self assert presenter textOutputText text equals: ''
+	self assert: presenter textOutputText text equals: ''
 ]
 
 { #category : #tests }
