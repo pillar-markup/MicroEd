@@ -1,8 +1,18 @@
 Class {
 	#name : #MDMicroEdPresenterTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'window'
+	],
 	#category : #'MicroEd-Tests'
 }
+
+{ #category : #running }
+MDMicroEdPresenterTest >> tearDown [ 
+
+	window ifNotNil: [ window close ].
+	super tearDown.
+]
 
 { #category : #tests }
 MDMicroEdPresenterTest >> testCleanAction [
@@ -71,6 +81,17 @@ MDMicroEdPresenterTest >> testGotSyntaxStateWhenIsSpecify [
 	directory := filesystem workingDirectory / 'test'.
 	presenter folder: directory.
 	self assert: presenter folder basenameWithoutExtension equals: 'test'.
+]
+
+{ #category : #'tests-interaction' }
+MDMicroEdPresenterTest >> testOpenIsWorkingSmokeTest [
+
+	| browser |
+	browser := MDMicroEdPresenter  new.
+	window := browser openWithSpec. 
+	self tearDown
+	
+
 ]
 
 { #category : #tests }
