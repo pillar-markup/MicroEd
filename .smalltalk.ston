@@ -1,0 +1,11 @@
+
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'MicroEd',
+      #onConflict : #useIncoming,
+      #directory : 'src',
+      #platforms : [ #pharo ]
+    }
+  ]
+}
