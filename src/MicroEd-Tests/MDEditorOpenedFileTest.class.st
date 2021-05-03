@@ -5,6 +5,26 @@ Class {
 }
 
 { #category : #tests }
+MDEditorOpenedFileTest >> testBasename [
+	| editor file |
+	editor := MDEditorOpenedFile new.
+	file := FileSystem workingDirectory / 'test.txt'.
+	file writeStreamDo: [ :stream | stream nextPutAll: 'this is a text' ].
+	editor file: file.
+	self assert: editor basename equals: file basename
+]
+
+{ #category : #tests }
+MDEditorOpenedFileTest >> testFullname [
+	| editor file |
+	editor := MDEditorOpenedFile new.
+	file := FileSystem workingDirectory / 'test.txt'.
+	file writeStreamDo: [ :stream | stream nextPutAll: 'this is a text' ].
+	editor file: file.
+	self assert: editor fullName equals: file fullName
+]
+
+{ #category : #tests }
 MDEditorOpenedFileTest >> testIsNew [
 	| editor |
 	editor := MDEditorOpenedFile new.
