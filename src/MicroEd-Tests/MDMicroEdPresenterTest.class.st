@@ -10,3 +10,11 @@ MDMicroEdPresenterTest >> testGotCurrentFileWhenIsNotSpecify [
 	presenter := MDMicroEdPresenter new.
 	self assert: presenter currentFile class equals: MDEditorNewFile
 ]
+
+{ #category : #tests }
+MDMicroEdPresenterTest >> testGotCurrentFileWhenIsSpecify [
+	| presenter |
+	presenter := MDMicroEdPresenter new.
+	presenter currentFile: MDEditorOpenedFile new.
+	self assert: presenter currentFile class equals: MDEditorOpenedFile
+]
