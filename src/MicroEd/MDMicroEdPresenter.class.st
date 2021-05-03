@@ -317,6 +317,11 @@ MDMicroEdPresenter >> textInputText: aStringOrNil [
 ]
 
 { #category : #accessing }
+MDMicroEdPresenter >> textOutputText [
+	^ textOutput
+]
+
+{ #category : #accessing }
 MDMicroEdPresenter >> title [
 	^ 'MicroDown Editor - ', self currentFile basename
 ]
