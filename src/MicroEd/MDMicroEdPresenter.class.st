@@ -83,8 +83,8 @@ MDMicroEdPresenter >> currentFile [
 ]
 
 { #category : #accessing }
-MDMicroEdPresenter >> currentFile: aPREditorFile [
-	currentFile := aPREditorFile
+MDMicroEdPresenter >> currentFile: aMDEditorFile [
+	currentFile := aMDEditorFile
 ]
 
 { #category : #actions }
