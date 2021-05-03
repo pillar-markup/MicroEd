@@ -48,6 +48,13 @@ MDMicroEdPresenterTest >> testGotFolderWhenIsSpecify [
 ]
 
 { #category : #tests }
+MDMicroEdPresenterTest >> testGotMicrodownParser [
+	| browser |
+	browser := MDMicroEdPresenter new.
+	self assert: browser microdownParser class equals: MicroDownParser
+]
+
+{ #category : #tests }
 MDMicroEdPresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
 	| presenter |
 	presenter := MDMicroEdPresenter new.
