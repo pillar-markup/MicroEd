@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #tests }
+MDEditorOpenedFileTest >> testIsNew [
+	| editor |
+	editor := MDEditorOpenedFile new.
+	self assert: editor isNew not
+]
+
+{ #category : #tests }
 MDEditorOpenedFileTest >> testSaveWithExtension [
 	| editor file text |
 	editor := MDEditorOpenedFile new.
