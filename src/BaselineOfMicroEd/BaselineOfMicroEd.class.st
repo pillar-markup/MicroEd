@@ -23,6 +23,8 @@ BaselineOfMicroEd >> baseline: spec [
 		spec 
 			package: 'MicroEd-Converter'
 			with: [ spec requires: #('MicroEd') ].
-
+		spec 	
+			package: 'MicroEd-Tests'
+			with: [ spec requires: #('MicroEd') ]
 	]
 ]
