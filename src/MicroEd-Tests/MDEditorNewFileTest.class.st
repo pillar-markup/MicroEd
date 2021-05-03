@@ -24,3 +24,17 @@ MDEditorNewFileTest >> testIsNew [
 	editor := MDEditorNewFile new.
 	self assert: editor isNew
 ]
+
+{ #category : #tests }
+MDEditorNewFileTest >> testSaveWithExtension [
+	| editor text openFile |
+	"add code to click on save"
+	self skip.
+	editor := MDEditorNewFile new.
+	text := SpTextPresenter new.
+	text text: 'this is a test'.
+	openFile := editor save: text withExtension: 'mic'.
+	self assert: openFile basename equals: 'my_document.mic'.
+	openFile file delete
+	
+]
