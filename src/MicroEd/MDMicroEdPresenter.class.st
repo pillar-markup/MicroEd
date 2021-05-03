@@ -307,6 +307,11 @@ MDMicroEdPresenter >> syntaxState: aSyntaxState [
 ]
 
 { #category : #accessing }
+MDMicroEdPresenter >> textInputText [
+	^ textInput
+]
+
+{ #category : #accessing }
 MDMicroEdPresenter >> textInputText: aStringOrNil [
 	textInput text: aStringOrNil asString
 ]

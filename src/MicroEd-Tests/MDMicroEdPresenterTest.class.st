@@ -55,3 +55,18 @@ MDMicroEdPresenterTest >> testGotSyntaxStateWhenIsSpecify [
 	presenter folder: directory.
 	self assert: presenter folder basenameWithoutExtension equals: 'test'.
 ]
+
+{ #category : #tests }
+MDMicroEdPresenterTest >> testTextInputTextIsNotSpecify [
+	| presenter |
+	presenter := MDMicroEdPresenter new.
+	self assert: presenter textInputText text equals: '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, presenter syntaxState exampleText
+]
+
+{ #category : #tests }
+MDMicroEdPresenterTest >> testTextInputTextIsSpecify [
+	| presenter |
+	presenter := MDMicroEdPresenter new.
+	presenter textInputText: 'test'.
+	self assert: presenter textInputText text equals: 'test'
+]
