@@ -21,8 +21,9 @@ MDEditorNewFile >> isNew [
 
 { #category : #action }
 MDEditorNewFile >> save: aText withExtension: anExtension [
+
 	| selectedFile |
-	selectedFile := FDSaveFileDialog new defaultName: ('my_document.', anExtension asString); openModal.
+	selectedFile := FDSaveFileDialog new defaultName: ('mydocument.', anExtension asString); openModal.
 	selectedFile ifNotNil: [ ^ MDEditorOpenedFile new file: selectedFile; save: aText withExtension: anExtension; yourself. ].
 	^ self
 	

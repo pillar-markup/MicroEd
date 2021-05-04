@@ -27,7 +27,6 @@ MDMicroEdPresenter class >> defaultSpec [
 
 	 ^ SpBoxLayout newTopToBottom
 		add: #menu expand: false;
-		add: #screen  expand: false;
 		add: (SpPanedLayout newLeftToRight
 			add: #textInput;
 			add: #textOutput;
@@ -53,20 +52,13 @@ MDMicroEdPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #examples }
-MDMicroEdPresenter class >> openWithText: anInputText withSyntaxState: aSyntaxState [
-
-	| presenter |
-	presenter := self new.
-	presenter initializePresentersWithText: anInputText withSyntax: aSyntaxState.
-	^ presenter openWithSpec
-]
-
 { #category : #actions }
 MDMicroEdPresenter >> cleanAction [
+
 	"CLEAN button is pressed: erase both input and output text content"
+
 	textInput text: ''.
-	textOutput text: ''
+	self emptyRenderedText
 ]
 
 { #category : #actions }
@@ -88,10 +80,16 @@ MDMicroEdPresenter >> currentFile: aMDEditorFile [
 ]
 
 { #category : #actions }
+MDMicroEdPresenter >> emptyRenderedText [
+
+	textOutput morph setText: '' asText
+]
+
+{ #category : #actions }
 MDMicroEdPresenter >> exampleAction [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 	textInput text: syntaxHelper exampleText.
-	textOutput text: ''.
+	self emptyRenderedText 
 ]
 
 { #category : #actions }
@@ -124,30 +122,28 @@ MDMicroEdPresenter >> initialExtent [
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
 	| initialText  |
-	
 	self syntaxState: MDMicroDownSyntax new.
-	
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self syntaxState exampleText.
-	
 	self initializePresentersWithText: initialText
 ]
 
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresentersWithText: anInputText [
+
 	morphWriter := PRRichTextComposer new.
 
 	self menu applyTo: self.
 	
 	textInput := self newText.
 	textInput text: anInputText.
-	"textInput 
+	textInput 
 		bindKeyCombination: Character cr asKeyCombination 
 		toAction: [ :target :morph :event | 
 			[ self renderAction ] schedule.
-			event wasHandled: false ]."
-	textInput eventHandler whenKeyDownDo: [ :anEvent | 
+			event wasHandled: false ].
+	"textInput eventHandler whenKeyDownDo: [ :anEvent | 
 		[ self application defer: [ self renderAction ] ] schedule.
-		anEvent wasHandled: false ].
+		anEvent wasHandled: false ]."
 	
 	"Using a morph container as the output because a text presenter is intended to receive 
 	 strings, not instances of Text (the fact that it works now is just casual, and will 
@@ -159,10 +155,7 @@ MDMicroEdPresenter >> initializePresentersWithText: anInputText [
 			in: [ :this | this textArea readOnly: true ];
 			yourself);
 		yourself.
-	
 
-	screen :=  self newLabel.
-	self screenLabelWith: syntaxHelper name.
 ]
 
 { #category : #initialization }
@@ -176,15 +169,16 @@ MDMicroEdPresenter >> initializeWindow: aWindowPresenter [
 
 { #category : #api }
 MDMicroEdPresenter >> menu [
-	^ menu ifNil: [ ^ menu := self newMenuBar
-		addGroup: [ :group | 
-			group 
-				addItem: [ :item | 
-					item
-						name: 'New';
-						description: 'New document';
-						icon: (self iconNamed: #pageIcon);
-						action: [ self newDocAction ] ].
+	^ menu ifNil: [ 
+		menu := self newMenuBar
+			addGroup: [ :group | 
+				group 
+					addItem: [ :item | 
+						item
+							name: 'New';
+							description: 'New document';
+							icon: (self iconNamed: #pageIcon);
+							action: [ self newDocumentAction ] ].
 			group
 				addItem: [ :item | 
 					item
@@ -226,32 +220,17 @@ MDMicroEdPresenter >> menu [
 						icon: (self iconNamed: #smallFindIcon);
 						action: [ self exampleAction ] ].
 		
-		];
-	"addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					item
-						name: 'Export';
-						description: 'Build your document in export formt you want';
-						icon: (self iconNamed: #glamorousOpenFromUrlIcon);
-						action: [ self exportAction ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Set config';
-						description: 'Give your Pillar installation directory path to be able to export';
-						icon: (self iconNamed: #configIcon);
-						action: [ self configAction ] ] ];" yourself ]
+		];  yourself ]
 ]
 
-{ #category : #actions }
+{ #category : #utils }
 MDMicroEdPresenter >> microdownParser [ 
 
 	^ MicroDownParser new
 ]
 
 { #category : #actions }
-MDMicroEdPresenter >> newDocAction [
+MDMicroEdPresenter >> newDocumentAction [
 	"NEW button is pressed: reset tool"
 	self cleanAction.
 	currentFile := MDEditorNewFile new.
@@ -266,7 +245,7 @@ MDMicroEdPresenter >> openAction [
 		:selectedFile |
 			self currentFile: (MDEditorOpenedFile new file: selectedFile).
 			textInput text: selectedFile contents.
-			textOutput text: ''.
+			self emptyRenderedText.
 			self updateTitle
 		].
 	openFileDialog openWithSpec 
@@ -275,8 +254,8 @@ MDMicroEdPresenter >> openAction [
 { #category : #actions }
 MDMicroEdPresenter >> renderAction [
 	"RENDER button is pressed: render RichText result in output text"
-	| document |
 	
+	| document |
 	document := syntaxHelper parse: textInput text.
 	textOutput morph setText: (morphWriter start: document) 
 ]
@@ -284,10 +263,13 @@ MDMicroEdPresenter >> renderAction [
 { #category : #actions }
 MDMicroEdPresenter >> saveAction [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
-	self currentFile: (self currentFile save: textInput withExtension: syntaxHelper extension).
+
+	self currentFile: (self currentFile
+			 save: textInput
+			 withExtension: syntaxHelper extension).
 	self updateTitle.
-	self currentFile isNew ifFalse: [
-		self inform: self currentFile fullName, ' is saved'.].
+	self currentFile isNew ifFalse: [ 
+		self inform: self currentFile fullName , ' is saved' ]
 ]
 
 { #category : #api }

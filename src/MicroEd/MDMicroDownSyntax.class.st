@@ -55,7 +55,8 @@ A codeblock:
 
 { #category : #accessing }
 MDMicroDownSyntax >> extension [
-	^ 'micd'
+
+	^ 'mic'
 ]
 
 { #category : #accessing }

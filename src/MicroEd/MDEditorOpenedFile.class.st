@@ -21,10 +21,13 @@ MDEditorOpenedFile >> isNew [
 
 { #category : #action }
 MDEditorOpenedFile >> save: aText withExtension: anExtension [
-	self file writeStreamDo: [ 
-		:str | str nextPutAll: aText text asString; truncate: aText text asString size 
-	].
-	(self file extension = anExtension asString) ifFalse: [ self file renameTo: self file withoutExtension basename,'.', anExtension asString].
-	^ self
 
+	self file writeStreamDo: [ :str | 
+		str
+			nextPutAll: aText text asString;
+			truncate: aText text asString size ].
+	self file extension = anExtension asString ifFalse: [ 
+		self file renameTo:
+			self file withoutExtension basename , '.' , anExtension asString ].
+	^ self
 ]
