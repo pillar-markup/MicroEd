@@ -22,6 +22,13 @@ MDSyntaxTest >> testGotNameWhenIsNotSpecify [
 ]
 
 { #category : #tests }
+MDSyntaxTest >> testGotNext [
+	| syntax |
+	syntax := MDSyntax new.
+	self assert: syntax next class equals: MDPillarState
+]
+
+{ #category : #tests }
 MDSyntaxTest >> testGotParserWhenIsNotSpecify [
 	| syntax |
 	syntax := MDSyntax new.
