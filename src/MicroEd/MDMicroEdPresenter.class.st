@@ -152,6 +152,7 @@ MDMicroEdPresenter >> initializePresentersWithText: anInputText [
 		morph: (RubScrolledTextMorph new 
 			hResizing: #spaceFill; 
 			vResizing: #spaceFill;
+			wrapFlag: true;
 			in: [ :this | this textArea readOnly: true ];
 			yourself);
 		yourself.
