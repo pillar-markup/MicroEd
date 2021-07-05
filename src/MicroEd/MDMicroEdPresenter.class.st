@@ -119,12 +119,66 @@ MDMicroEdPresenter >> initialExtent [
 	^ 800@600
 ]
 
+{ #category : #api }
+MDMicroEdPresenter >> initializeMenuBar [
+
+	menu := self newMenuBar.
+
+	menu
+		addGroup: [ :group | 
+			group addItem: [ :item | 
+					item
+						name: 'New';
+						description: 'New document';
+						icon: (self iconNamed: #pageIcon);
+						action: [ self newDocumentAction ] ].
+			group addItem: [ :item | 
+				item
+					name: 'Open';
+					description: 'Open file';
+					shortcut: $o meta;
+					icon: (self iconNamed: #openIcon);
+					action: [ self openAction ] ].
+			group addItem: [ :item | 
+				item
+					name: 'Save';
+					description: 'Save file';
+					shortcut: $s meta;
+					icon: (self iconNamed: #smallSaveIcon);
+					action: [ self saveAction ] ].
+			group addItem: [ :item | 
+				item
+					name: 'Clean';
+					description: 'Erase input text';
+					icon: (self iconNamed: #smallCancel);
+					action: [ self cleanAction ] ] ];
+		addGroup: [ :group | 
+			group addItem: [ :item | 
+				item
+					name: 'Render';
+					icon: (self iconNamed: #smallDoItIcon);
+					description: 'Render your input text';
+					action: [ self renderAction ] ].
+
+			group addItem: [ :item | 
+				item
+					name: 'Get example';
+					description: 'Give a text input example in current syntax';
+					icon: (self iconNamed: #smallFindIcon);
+					action: [ self exampleAction ] ] ]
+]
+
 { #category : #initialization }
 MDMicroEdPresenter >> initializePresenters [
-	| initialText  |
+
+	| initialText |
 	self syntaxState: MDMicroDownSyntax new.
 	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self syntaxState exampleText.
-	self initializePresentersWithText: initialText
+
+	self initializePresentersWithText: initialText.
+	
+	self initializeMenuBar.
+
 ]
 
 { #category : #initialization }
@@ -132,8 +186,6 @@ MDMicroEdPresenter >> initializePresentersWithText: anInputText [
 
 	morphWriter := PRRichTextComposer new.
 
-	self menu applyTo: self.
-	
 	textInput := self newText.
 	textInput text: anInputText.
 	textInput 
@@ -166,62 +218,6 @@ MDMicroEdPresenter >> initializeWindow: aWindowPresenter [
 		title: self title;
 		initialExtent: self initialExtent;
 		windowIcon: (self application iconNamed: #glamorousBrowseIcon)
-]
-
-{ #category : #api }
-MDMicroEdPresenter >> menu [
-	^ menu ifNil: [ 
-		menu := self newMenuBar
-			addGroup: [ :group | 
-				group 
-					addItem: [ :item | 
-						item
-							name: 'New';
-							description: 'New document';
-							icon: (self iconNamed: #pageIcon);
-							action: [ self newDocumentAction ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Open';
-						description: 'Open file';
-						shortcut: $o meta;
-						icon: (self iconNamed: #openIcon);
-						action: [ self openAction ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Save';
-						description: 'Save file';
-						shortcut: $s meta;
-						icon: (self iconNamed: #smallSaveIcon);
-						action: [ self saveAction ] ].
-			group 
-				addItem: [ :item | 
-					item
-						name: 'Clean';
-						description: 'Erase input text';
-						icon: (self iconNamed: #smallCancel);
-						action: [ self cleanAction ] ] ];
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					item
-						name: 'Render';
-						icon: (self iconNamed: #smallDoItIcon);
-						description: 'Render your input text';
-						action: [ self renderAction	]
-				].
-		
-			group
-				addItem: [ :item | 
-					item
-						name: 'Get example';
-						description: 'Give a text input example in current syntax';
-						icon: (self iconNamed: #smallFindIcon);
-						action: [ self exampleAction ] ].
-		
-		];  yourself ]
 ]
 
 { #category : #utils }
