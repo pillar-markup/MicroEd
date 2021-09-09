@@ -29,7 +29,6 @@ MDEditorNewFileTest >> testIsNew [
 MDEditorNewFileTest >> testSaveWithExtension [
 	| editor text openFile |
 	"add code to click on save"
-	self skip.
 	editor := MDEditorNewFile new.
 	text := SpTextPresenter new.
 	text text: 'this is a test'.

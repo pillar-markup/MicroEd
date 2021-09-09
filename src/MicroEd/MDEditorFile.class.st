@@ -1,5 +1,7 @@
 "
-I am an abstract PREditorFile, to distinguish a **new** text file and an existing **opened** text file.
+I am the status of an editor respect to it's document.
+
+My subclasses distinguish between a **new** text file and an existing **opened** text file.
 "
 Class {
 	#name : #MDEditorFile,
@@ -12,30 +14,36 @@ Class {
 
 { #category : #accessing }
 MDEditorFile >> basename [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
 MDEditorFile >> file [
+
 	^ file
 ]
 
 { #category : #accessing }
 MDEditorFile >> file: aFile [
+
 	file := aFile
 ]
 
 { #category : #accessing }
 MDEditorFile >> fullName [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
 { #category : #testing }
 MDEditorFile >> isNew [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
 { #category : #action }
 MDEditorFile >> save: aText withExtension: anExtension [
-	^ self subclassResponsibility 
+
+	^ self subclassResponsibility
 ]

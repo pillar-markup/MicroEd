@@ -1,11 +1,12 @@
 Class {
 	#name : #MDMicroDownSyntax,
-	#superclass : #MDSyntax,
+	#superclass : #Object,
 	#category : #MicroEd
 }
 
 { #category : #accessing }
 MDMicroDownSyntax >> exampleText [
+
 	^ '# Header
 
 A figure:
@@ -61,20 +62,18 @@ MDMicroDownSyntax >> extension [
 
 { #category : #accessing }
 MDMicroDownSyntax >> name [
+
 	^ 'MicroDown'
 ]
 
 { #category : #parsing }
 MDMicroDownSyntax >> parse: aText [
-	^ (super parse: aText asString) asPillar
+
+	^ (self parser new parse: aText asString) asPillar
 ]
 
 { #category : #accessing }
 MDMicroDownSyntax >> parser [
-	^ MicroDownParser 
-]
 
-{ #category : #accessing }
-MDMicroDownSyntax >> writer [
-	^ PRMicrodownWriter
+	^ MicroDownParser
 ]
