@@ -140,7 +140,7 @@ MDEditorPresenter >> initializePresenters [
 { #category : #initialization }
 MDEditorPresenter >> initializePresentersWithText: anInputText [
 
-	composer := MicRichTextComposer new.
+	composer := PRRichTextComposer new.
 
 	textInput := self newText.
 	textInput text: anInputText.
