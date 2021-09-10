@@ -1,3 +1,6 @@
+"
+I represent the MicroDown syntax for the MicroEd editor.
+"
 Class {
 	#name : #MDMicroDownSyntax,
 	#superclass : #Object,
@@ -67,9 +70,9 @@ MDMicroDownSyntax >> name [
 ]
 
 { #category : #parsing }
-MDMicroDownSyntax >> parse: aText [
+MDMicroDownSyntax >> parse: aString [
 
-	^ (self parser new parse: aText asString) asPillar
+	^ self parser new parse: aString
 ]
 
 { #category : #accessing }

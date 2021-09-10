@@ -140,7 +140,7 @@ MDEditorPresenter >> initializePresenters [
 { #category : #initialization }
 MDEditorPresenter >> initializePresentersWithText: anInputText [
 
-	composer := PRRichTextComposer new.
+	composer := MicRichTextComposer new.
 
 	textInput := self newText.
 	textInput text: anInputText.
@@ -195,7 +195,7 @@ MDEditorPresenter >> renderDocument [
 
 	| document |
 	document := syntaxState parse: textInput text.
-	text := composer start: document.
+	text := composer visit: document.
 
 	textOutput text: text.
 
