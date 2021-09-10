@@ -6,8 +6,8 @@ Class {
 
 { #category : #baselines }
 BaselineOfMicroEd >> baseline: spec [
-
 	<baseline>
+
 	spec for: #'common' do: [
 		"Suppose that this is only for P9
 			spec baseline: ''Microdown'' with: [
@@ -20,9 +20,6 @@ BaselineOfMicroEd >> baseline: spec [
 		spec 
 			package: 'MicroEd'
 			with: [ spec requires: #('FileDialog' ) ].
-		spec 
-			package: 'MicroEd-Converter'
-			with: [ spec requires: #('MicroEd') ].
 		spec 	
 			package: 'MicroEd-Tests'
 			with: [ spec requires: #('MicroEd') ]

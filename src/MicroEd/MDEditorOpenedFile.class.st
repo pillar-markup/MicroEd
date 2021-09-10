@@ -1,3 +1,6 @@
+"
+I am an editor file that has a filesystem counterpart. 
+"
 Class {
 	#name : #MDEditorOpenedFile,
 	#superclass : #MDEditorFile,
@@ -6,16 +9,19 @@ Class {
 
 { #category : #accessing }
 MDEditorOpenedFile >> basename [
+
 	^ self file basename
 ]
 
 { #category : #accessing }
 MDEditorOpenedFile >> fullName [
+
 	^ self file fullName
 ]
 
 { #category : #testing }
 MDEditorOpenedFile >> isNew [
+
 	^ false
 ]
 

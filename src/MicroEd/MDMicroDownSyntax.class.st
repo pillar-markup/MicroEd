@@ -1,11 +1,15 @@
+"
+I represent the MicroDown syntax for the MicroEd editor.
+"
 Class {
 	#name : #MDMicroDownSyntax,
-	#superclass : #MDSyntax,
+	#superclass : #Object,
 	#category : #MicroEd
 }
 
 { #category : #accessing }
 MDMicroDownSyntax >> exampleText [
+
 	^ '# Header
 
 A figure:
@@ -61,20 +65,18 @@ MDMicroDownSyntax >> extension [
 
 { #category : #accessing }
 MDMicroDownSyntax >> name [
+
 	^ 'MicroDown'
 ]
 
 { #category : #parsing }
-MDMicroDownSyntax >> parse: aText [
-	^ (super parse: aText asString) asPillar
+MDMicroDownSyntax >> parse: aString [
+
+	^ self parser new parse: aString
 ]
 
 { #category : #accessing }
 MDMicroDownSyntax >> parser [
-	^ MicroDownParser 
-]
 
-{ #category : #accessing }
-MDMicroDownSyntax >> writer [
-	^ PRMicrodownWriter
+	^ MicroDownParser
 ]
