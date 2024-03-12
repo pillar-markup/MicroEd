@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfMicroEd }
+Package { #name : 'BaselineOfMicroEd' }
