@@ -1,17 +1,18 @@
 Class {
-	#name : #MDEditorFileTest,
-	#superclass : #TestCase,
-	#category : #'MicroEd-Tests'
+	#name : 'MDEditorFileTest',
+	#superclass : 'TestCase',
+	#category : 'MicroEd-Tests',
+	#package : 'MicroEd-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorFileTest >> testGotFileWhenIsNotSpecify [
 	| editor |
 	editor := MDEditorFile new.
 	self assert: editor file isNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorFileTest >> testGotFileWhenIsSpecify [
 	| editor file |
 	editor := MDEditorFile new.

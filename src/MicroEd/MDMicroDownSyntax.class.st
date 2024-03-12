@@ -2,12 +2,13 @@
 I represent the MicroDown syntax for the MicroEd editor.
 "
 Class {
-	#name : #MDMicroDownSyntax,
-	#superclass : #Object,
-	#category : #MicroEd
+	#name : 'MDMicroDownSyntax',
+	#superclass : 'Object',
+	#category : 'MicroEd',
+	#package : 'MicroEd'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDMicroDownSyntax >> exampleText [
 
 	^ '# Header
@@ -57,26 +58,26 @@ A codeblock:
 '
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDMicroDownSyntax >> extension [
 
 	^ 'mic'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDMicroDownSyntax >> name [
 
 	^ 'MicroDown'
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MDMicroDownSyntax >> parse: aString [
 
 	^ self parser new parse: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDMicroDownSyntax >> parser [
 
-	^ MicroDownParser
+	^ MicrodownParser
 ]

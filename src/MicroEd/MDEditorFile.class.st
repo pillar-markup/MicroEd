@@ -4,45 +4,46 @@ I am the status of an editor respect to it's document.
 My subclasses distinguish between a **new** text file and an existing **opened** text file.
 "
 Class {
-	#name : #MDEditorFile,
-	#superclass : #Object,
+	#name : 'MDEditorFile',
+	#superclass : 'Object',
 	#instVars : [
 		'file'
 	],
-	#category : #MicroEd
+	#category : 'MicroEd',
+	#package : 'MicroEd'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorFile >> basename [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorFile >> file [
 
 	^ file
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorFile >> file: aFile [
 
 	file := aFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorFile >> fullName [
 
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MDEditorFile >> isNew [
 
 	self subclassResponsibility
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MDEditorFile >> save: aText withExtension: anExtension [
 
 	^ self subclassResponsibility
