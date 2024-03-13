@@ -1,10 +1,11 @@
 Class {
-	#name : #MDEditorOpenedFileTest,
-	#superclass : #MDEditorFileTest,
-	#category : #'MicroEd-Tests'
+	#name : 'MDEditorOpenedFileTest',
+	#superclass : 'MDEditorFileTest',
+	#category : 'MicroEd-Tests',
+	#package : 'MicroEd-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorOpenedFileTest >> testBasename [
 	| editor file |
 	editor := MDEditorOpenedFile new.
@@ -14,7 +15,7 @@ MDEditorOpenedFileTest >> testBasename [
 	self assert: editor basename equals: file basename
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorOpenedFileTest >> testFullname [
 	| editor file |
 	editor := MDEditorOpenedFile new.
@@ -24,14 +25,14 @@ MDEditorOpenedFileTest >> testFullname [
 	self assert: editor fullName equals: file fullName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorOpenedFileTest >> testIsNew [
 	| editor |
 	editor := MDEditorOpenedFile new.
 	self assert: editor isNew not
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MDEditorOpenedFileTest >> testSaveWithExtension [
 	| editor file text |
 	editor := MDEditorOpenedFile new.

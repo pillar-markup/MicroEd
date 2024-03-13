@@ -1,1 +1,1 @@
-Package { #name : #MicroEd }
+Package { #name : 'MicroEd' }

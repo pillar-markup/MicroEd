@@ -7,8 +7,8 @@ Todo:
 - when typing at space we can render?
 "
 Class {
-	#name : #MDEditorPresenter,
-	#superclass : #SpApplicationWithToolbar,
+	#name : 'MDEditorPresenter',
+	#superclass : 'SpApplicationWithToolbar',
 	#instVars : [
 		'textInput',
 		'textOutput',
@@ -16,22 +16,11 @@ Class {
 		'composer',
 		'syntaxState'
 	],
-	#category : #MicroEd
+	#category : 'MicroEd',
+	#package : 'MicroEd'
 }
 
-{ #category : #specs }
-MDEditorPresenter class >> defaultSpec [
-
-	 ^ SpBoxLayout newTopToBottom
-		add: #menu expand: false;
-		add: (SpPanedLayout newLeftToRight
-			add: #textInput;
-			add: #textOutput;
-		yourself);
-	yourself
-]
-
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MDEditorPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'MicroEd')
@@ -43,13 +32,13 @@ MDEditorPresenter class >> menuCommandOn: aBuilder [
 	aBuilder withSeparatorAfter
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MDEditorPresenter class >> open [
 	<example>
-	^ self new openWithSpec
+	^ self new open
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> cleanInput [
 	"CLEAN button is pressed: erase both input and output text content"
 
@@ -57,25 +46,37 @@ MDEditorPresenter >> cleanInput [
 	self cleanOutput
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> cleanOutput [
 
 	textOutput text: ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> currentFileState [
 
 	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> currentFileState: aMDEditorFile [
 
 	currentFile := aMDEditorFile
 ]
 
-{ #category : #api }
+{ #category : 'specs' }
+MDEditorPresenter >> defaultLayout [
+
+	 ^ SpBoxLayout newTopToBottom
+		add: #menu expand: false;
+		add: (SpPanedLayout newLeftToRight
+			add: #textInput;
+			add: #textOutput;
+		yourself);
+	yourself
+]
+
+{ #category : 'api' }
 MDEditorPresenter >> initializeMenuBar [
 
 	menu := self newMenuBar.
@@ -124,7 +125,7 @@ MDEditorPresenter >> initializeMenuBar [
 					action: [ self setExampleAsInput ] ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MDEditorPresenter >> initializePresenters [
 
 	| initialText |
@@ -137,7 +138,7 @@ MDEditorPresenter >> initializePresenters [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MDEditorPresenter >> initializePresentersWithText: anInputText [
 
 	composer := MicRichTextComposer new.
@@ -159,7 +160,7 @@ MDEditorPresenter >> initializePresentersWithText: anInputText [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MDEditorPresenter >> initializeWindow: aWindowPresenter [
 	
 	aWindowPresenter
@@ -168,28 +169,28 @@ MDEditorPresenter >> initializeWindow: aWindowPresenter [
 		windowIcon: (self application iconNamed: #glamorousBrowseIcon)
 ]
 
-{ #category : #utils }
+{ #category : 'utilities' }
 MDEditorPresenter >> microdownParser [ 
 
-	^ MicroDownParser new
+	^ MicrodownParser new
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> openFile [
 	"OPEN button is pressed: open window"
 
-	| openFileDialog |
-	openFileDialog := FDOpenFileDialog new
-		whenSelected: [ :selectedFile |
-			self currentFileState: (MDEditorOpenedFile new file: selectedFile).
-			textInput text: selectedFile contents.
-			self cleanOutput.
-			self updateTitle
-		].
-	openFileDialog openWithSpec
+	| selectedFile |
+	selectedFile := StOpenFilePresenter new
+		                extensions: #( 'md' );
+		                openModal.
+
+	self currentFileState: (MDEditorOpenedFile new file: selectedFile).
+	textInput text: selectedFile contents.
+	self cleanOutput.
+	self updateTitle
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> renderDocument [
 	"RENDER button is pressed: render input to output text"
 
@@ -201,7 +202,7 @@ MDEditorPresenter >> renderDocument [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> saveFile [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 
@@ -212,7 +213,7 @@ MDEditorPresenter >> saveFile [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> setExampleAsInput [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 
@@ -220,7 +221,7 @@ MDEditorPresenter >> setExampleAsInput [
 	self cleanOutput
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MDEditorPresenter >> startNewFile [
 	"NEW button is pressed: reset tool"
 
@@ -229,43 +230,43 @@ MDEditorPresenter >> startNewFile [
 	self updateTitle
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> syntaxState [
 
 	^ syntaxState
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> syntaxState: aSyntaxState [
 
 	syntaxState := aSyntaxState
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> textInputText [
 
 	^ textInput text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> textInputText: aString [
 
 	textInput text: aString asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorPresenter >> textOutputText [
 
 	^ textOutput text
 ]
 
-{ #category : #accessing }
+{ #category : 'api' }
 MDEditorPresenter >> title [
 
 	^ 'MicroDown Editor - ' , self currentFileState basename
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MDEditorPresenter >> updateTitle [
 
 	self window title: self title

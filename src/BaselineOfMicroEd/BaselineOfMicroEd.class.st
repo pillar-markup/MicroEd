@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfMicroEd,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicroEd
+	#name : 'BaselineOfMicroEd',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicroEd',
+	#package : 'BaselineOfMicroEd'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicroEd >> baseline: spec [
 	<baseline>
 
@@ -13,10 +14,6 @@ BaselineOfMicroEd >> baseline: spec [
 			spec baseline: ''Microdown'' with: [
 			spec repository: ''github://pillar-markup/Microdown/src'' ]"
 		
-		spec
-			baseline: 'FileDialog'
-			with: [ spec repository: 'github://Ducasse/file-dialog/repository' ].
-
 		spec 
 			package: 'MicroEd'
 			with: [ spec requires: #('FileDialog' ) ].

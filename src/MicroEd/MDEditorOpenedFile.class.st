@@ -2,30 +2,31 @@
 I am an editor file that has a filesystem counterpart. 
 "
 Class {
-	#name : #MDEditorOpenedFile,
-	#superclass : #MDEditorFile,
-	#category : #MicroEd
+	#name : 'MDEditorOpenedFile',
+	#superclass : 'MDEditorFile',
+	#category : 'MicroEd',
+	#package : 'MicroEd'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorOpenedFile >> basename [
 
 	^ self file basename
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MDEditorOpenedFile >> fullName [
 
 	^ self file fullName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MDEditorOpenedFile >> isNew [
 
 	^ false
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MDEditorOpenedFile >> save: aText withExtension: anExtension [
 
 	self file writeStreamDo: [ :str | 
