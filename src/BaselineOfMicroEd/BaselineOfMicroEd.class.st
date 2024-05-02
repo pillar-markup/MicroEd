@@ -15,8 +15,7 @@ BaselineOfMicroEd >> baseline: spec [
 			spec repository: ''github://pillar-markup/Microdown/src'' ]"
 		
 		spec 
-			package: 'MicroEd'
-			with: [ spec requires: #('FileDialog' ) ].
+			package: 'MicroEd'.
 		spec 	
 			package: 'MicroEd-Tests'
 			with: [ spec requires: #('MicroEd') ]
