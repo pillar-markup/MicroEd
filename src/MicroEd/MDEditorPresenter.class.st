@@ -102,13 +102,7 @@ MDEditorPresenter >> initializeMenuBar [
 					description: 'Save file';
 					shortcut: $s meta;
 					icon: (self iconNamed: #smallSaveIcon);
-					action: [ self saveFile ] ].
-			group addItem: [ :item | 
-				item
-					name: 'Clean';
-					description: 'Erase input text';
-					icon: (self iconNamed: #smallCancel);
-					action: [ self cleanInput ] ] ];
+					action: [ self saveFile ] ] ];
 		addGroup: [ :group | 
 			group addItem: [ :item | 
 				item
