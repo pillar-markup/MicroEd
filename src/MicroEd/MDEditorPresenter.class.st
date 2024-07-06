@@ -177,11 +177,15 @@ MDEditorPresenter >> openFile [
 	selectedFile := StOpenFilePresenter new
 		                extensions: #( 'md' );
 		                openModal.
+	selectedFile 
+		ifNotNil: [ 
+			self currentFileState: (MDEditorOpenedFile new file: selectedFile).
+			textInput text: selectedFile contents.
+			self cleanOutput.
+			self updateTitle ]
+		ifNil: [ self currentFileState: MDEditorNoFile new ].
 
-	self currentFileState: (MDEditorOpenedFile new file: selectedFile).
-	textInput text: selectedFile contents.
-	self cleanOutput.
-	self updateTitle
+
 ]
 
 { #category : 'actions' }

@@ -25,19 +25,3 @@ MDEditorNewFile >> isNew [
 
 	^ true
 ]
-
-{ #category : 'action' }
-MDEditorNewFile >> save: aText withExtension: anExtension [
-
-	file := StSaveFilePresenter new
-		title: 'Save Microdown document';
-		nameText: 'mydocument.' , anExtension asString;
-		extensions: { anExtension }; 
-		openModal.
-	file ifNotNil: [ 
-		^ MDEditorOpenedFile new
-			  file: file;
-			  save: aText withExtension: anExtension;
-			  yourself ].
-	^ self
-]
