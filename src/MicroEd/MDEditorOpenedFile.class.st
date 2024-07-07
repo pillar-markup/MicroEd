@@ -8,6 +8,20 @@ Class {
 	#package : 'MicroEd'
 }
 
+{ #category : 'instance creation' }
+MDEditorOpenedFile class >> newFromNote: aNTNoteObject [ 
+	"Read and set note contents using aNTNoteObject title name as file name"
+	
+	| fileReference |
+	fileReference := (aNTNoteObject title , self fileExtension) asFileReference.
+	fileReference exists
+		ifFalse: [ ^ self error: fileReference fullName , 'does not exists' ].
+	aNTNoteObject contents: fileReference contents.
+	^ self new
+		file: 	fileReference;
+		yourself
+]
+
 { #category : 'accessing' }
 MDEditorOpenedFile >> basename [
 
