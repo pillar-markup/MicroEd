@@ -8,6 +8,19 @@ Class {
 	#package : 'MicroEd'
 }
 
+{ #category : 'instance creation' }
+MDEditorNewFile class >> newFromNote: aNTNoteObject [ 
+	"Answer a new <FileReference> using aNTNoteObject"
+	
+	| fileReference |
+	fileReference := (aNTNoteObject title , self fileExtension) asFileReference.
+	fileReference writeStreamDo: [ : writeStream |
+		writeStream 	<< aNTNoteObject contents ].
+	^ self new
+		file: 	fileReference;
+		yourself
+]
+
 { #category : 'accessing' }
 MDEditorNewFile >> basename [
 

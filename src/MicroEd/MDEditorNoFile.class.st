@@ -21,5 +21,6 @@ MDEditorNoFile >> fullName [
 
 { #category : 'testing' }
 MDEditorNoFile >> isNew [
-	^ self shouldBeImplemented
+
+	^ true
 ]

@@ -14,6 +14,13 @@ Class {
 }
 
 { #category : 'accessing' }
+MDEditorFile class >> fileExtension [
+	"Answer a <String> with the default file extension for MicroDown files"
+	
+	^ '.mic'
+]
+
+{ #category : 'accessing' }
 MDEditorFile >> basename [
 
 	self subclassResponsibility
@@ -46,14 +53,16 @@ MDEditorFile >> isNew [
 { #category : 'action' }
 MDEditorFile >> save: aText withExtension: anExtension [
 
-	file := StSaveFilePresenter new
+	| selections |
+	selections := StSaveFilePresenter new
 		title: 'Save Microdown document';
 		nameText: 'mydocument.' , anExtension asString;
 		extensions: { anExtension }; 
 		openModal.
-	^ file ifNotNil: [ 
+
+	^ selections ifNotNil: [ 
 		MDEditorOpenedFile new
-			file: file;
+			file: selections anyOne asFileReference;
 			save: aText withExtension: anExtension;
 			yourself ]
 		ifNil: [ MDEditorNoFile new ]

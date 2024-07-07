@@ -55,7 +55,7 @@ MDEditorPresenter >> cleanOutput [
 { #category : 'accessing' }
 MDEditorPresenter >> currentFileState [
 
-	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
+	^ currentFile ifNil: [ currentFile := MDEditorNewFile new ]
 ]
 
 { #category : 'accessing' }
