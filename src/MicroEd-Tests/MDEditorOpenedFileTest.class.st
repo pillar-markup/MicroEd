@@ -35,7 +35,8 @@ MDEditorOpenedFileTest >> testIsNew [
 { #category : 'tests' }
 MDEditorOpenedFileTest >> testSaveWithExtension [
 	| editor file text |
-	editor := MDEditorOpenedFile new.
+
+	editor := MDFile new.
 	text := SpTextPresenter new.
 	text text: 'for test'.
 	file := FileSystem workingDirectory / 'test.txt'.

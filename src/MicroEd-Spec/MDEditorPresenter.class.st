@@ -16,8 +16,8 @@ Class {
 		'composer',
 		'syntaxState'
 	],
-	#category : 'MicroEd',
-	#package : 'MicroEd'
+	#category : 'MicroEd-Spec',
+	#package : 'MicroEd-Spec'
 }
 
 { #category : 'world menu' }

@@ -52,9 +52,8 @@ MDEditorFile >> save: aText withExtension: anExtension [
 		extensions: { anExtension }; 
 		openModal.
 	^ file ifNotNil: [ 
-		MDEditorOpenedFile new
-			file: file;
+		(MDFile newFromFileReference: file)
 			save: aText withExtension: anExtension;
 			yourself ]
-		ifNil: [ MDEditorNoFile new ]
+		ifNil: [ MDFile new ]
 ]

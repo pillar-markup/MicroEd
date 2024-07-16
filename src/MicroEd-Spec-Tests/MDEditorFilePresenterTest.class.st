@@ -1,22 +1,22 @@
 Class {
-	#name : 'MDEditorPresenterTest',
+	#name : 'MDEditorFilePresenterTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'window'
 	],
-	#category : 'MicroEd-Tests',
-	#package : 'MicroEd-Tests'
+	#category : 'MicroEd-Spec-Tests',
+	#package : 'MicroEd-Spec-Tests'
 }
 
 { #category : 'running' }
-MDEditorPresenterTest >> tearDown [ 
+MDEditorFilePresenterTest >> tearDown [ 
 
 	window ifNotNil: [ window close ].
 	super tearDown.
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testCleanAction [
+MDEditorFilePresenterTest >> testCleanAction [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	presenter cleanInput.
@@ -25,14 +25,14 @@ MDEditorPresenterTest >> testCleanAction [
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testGotCurrentFileWhenIsNotSpecify [
+MDEditorFilePresenterTest >> testGotCurrentFileWhenIsNotSpecify [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	self assert: presenter currentFileState class equals: MDEditorNewFile
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testGotCurrentFileWhenIsSpecify [
+MDEditorFilePresenterTest >> testGotCurrentFileWhenIsSpecify [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	presenter currentFileState: MDEditorOpenedFile new.
@@ -40,14 +40,14 @@ MDEditorPresenterTest >> testGotCurrentFileWhenIsSpecify [
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testGotMicrodownParser [
+MDEditorFilePresenterTest >> testGotMicrodownParser [
 	| browser |
 	browser := MDEditorPresenter new.
 	self assert: browser microdownParser class equals: MicrodownParser
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
+MDEditorFilePresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	presenter syntaxState: MDMicroDownSyntax new.
@@ -55,7 +55,7 @@ MDEditorPresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
 ]
 
 { #category : 'tests-interaction' }
-MDEditorPresenterTest >> testOpenIsWorkingSmokeTest [
+MDEditorFilePresenterTest >> testOpenIsWorkingSmokeTest [
 
 	| browser |
 	browser := MDEditorPresenter  new.
@@ -66,14 +66,14 @@ MDEditorPresenterTest >> testOpenIsWorkingSmokeTest [
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testTextInputTextIsNotSpecify [
+MDEditorFilePresenterTest >> testTextInputTextIsNotSpecify [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	self assert: presenter textInputText equals: '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, presenter syntaxState exampleText
 ]
 
 { #category : 'tests' }
-MDEditorPresenterTest >> testTextInputTextIsSpecify [
+MDEditorFilePresenterTest >> testTextInputTextIsSpecify [
 	| presenter |
 	presenter := MDEditorPresenter new.
 	presenter textInputText: 'test'.
