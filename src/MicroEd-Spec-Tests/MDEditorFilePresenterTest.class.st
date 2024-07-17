@@ -2,23 +2,49 @@ Class {
 	#name : 'MDEditorFilePresenterTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'window'
+		'window',
+		'memoryFS',
+		'presenter',
+		'mdFile',
+		'fileReference'
 	],
 	#category : 'MicroEd-Spec-Tests',
 	#package : 'MicroEd-Spec-Tests'
 }
 
 { #category : 'running' }
+MDEditorFilePresenterTest >> mockTextObject: aString [ 
+
+	^ SpTextPresenter new text: aString 
+]
+
+{ #category : 'running' }
+MDEditorFilePresenterTest >> setUp [
+
+	| text |
+	super setUp.
+	memoryFS := FileSystem memory.
+	presenter := MDEditorPresenter new.
+	window := presenter open.
+	text := 'This is just a test'.
+	fileReference := memoryFS / 'aFileReference.txt'.
+	fileReference writeStreamDo: [
+		                 :stream | stream nextPutAll: text ].
+
+	mdFile := MDFile newFromFileReference: fileReference.
+]
+
+{ #category : 'running' }
 MDEditorFilePresenterTest >> tearDown [ 
 
 	window ifNotNil: [ window close ].
+	fileReference ensureDelete.
 	super tearDown.
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testCleanAction [
-	| presenter |
-	presenter := MDEditorPresenter new.
+
 	presenter cleanInput.
 	self assert: presenter textInputText equals: ''.
 	self assert: presenter textOutputText equals: ''
@@ -26,30 +52,26 @@ MDEditorFilePresenterTest >> testCleanAction [
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testGotCurrentFileWhenIsNotSpecify [
-	| presenter |
-	presenter := MDEditorPresenter new.
-	self assert: presenter currentFileState class equals: MDEditorNewFile
+
+	self assert: presenter mdFile class equals: MDFile
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testGotCurrentFileWhenIsSpecify [
-	| presenter |
-	presenter := MDEditorPresenter new.
-	presenter currentFileState: MDEditorOpenedFile new.
-	self assert: presenter currentFileState class equals: MDEditorOpenedFile
+
+	presenter mdFile: mdFile.
+	self assert: presenter mdFile class equals: MDFile
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testGotMicrodownParser [
-	| browser |
-	browser := MDEditorPresenter new.
-	self assert: browser microdownParser class equals: MicrodownParser
+	
+	self assert: presenter microdownParser class equals: MicrodownParser
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
-	| presenter |
-	presenter := MDEditorPresenter new.
+
 	presenter syntaxState: MDMicroDownSyntax new.
 	self assert: presenter syntaxState class equals: MDMicroDownSyntax
 ]
@@ -57,25 +79,33 @@ MDEditorFilePresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
 { #category : 'tests-interaction' }
 MDEditorFilePresenterTest >> testOpenIsWorkingSmokeTest [
 
-	| browser |
-	browser := MDEditorPresenter  new.
-	window := browser open. 
-	self tearDown
-	
+	self assert: window isOpen
 
+]
+
+{ #category : 'running' }
+MDEditorFilePresenterTest >> testSaveWithExtension [
+
+	| text textPresenter |
+	text := 'This is just a test'.
+	textPresenter := self mockTextObject: text.
+	presenter mdFile: mdFile.
+	presenter saveFile.
+
+	self assert: mdFile extension equals: 'mic'.
+	self assert: mdFile contents equals: text.
+	
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testTextInputTextIsNotSpecify [
-	| presenter |
-	presenter := MDEditorPresenter new.
+	
 	self assert: presenter textInputText equals: '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, presenter syntaxState exampleText
 ]
 
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testTextInputTextIsSpecify [
-	| presenter |
-	presenter := MDEditorPresenter new.
+	
 	presenter textInputText: 'test'.
 	self assert: presenter textInputText equals: 'test'
 ]

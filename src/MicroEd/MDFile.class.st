@@ -20,22 +20,16 @@ MDFile class >> newFromFileReference: aFileReference [
 ]
 
 { #category : 'accessing' }
-MDFile >> addDateCreationOfFileReference [
+MDFile >> basename [
+	"Answer a String representing the receiver's file name"
 
 	| dateCreationOfFileReference |
+	fileReference ifNil: [ ^ 'Untitled.txt' ].
 	dateCreationOfFileReference := DateAndTime now asDate yyyymmdd.
 	(fileReference basename includesSubstring:
 		 dateCreationOfFileReference) ifFalse: [
 		^ dateCreationOfFileReference , fileReference basename ].
 	^ fileReference basename 
-]
-
-{ #category : 'accessing' }
-MDFile >> basename [
-	"Answer a String representing the receiver's file name"
-	^ fileReference 
-		ifNil: [ String empty ]
-		ifNotNil: [ self addDateCreationOfFileReference ]
 
 ]
 
@@ -79,7 +73,17 @@ MDFile >> hasFile [
 MDFile >> initializeWithFileReference: aFileReference [
 
 	aFileReference ensureCreateFile.
-	aFileReference base
-		ifEmpty: [ MDFileHasEmptyNameException exception ]
-		ifNotEmpty: [ fileReference := aFileReference ]
+	fileReference := aFileReference
+]
+
+{ #category : 'accessing' }
+MDFile >> save: aString withExtension: anExtension [
+
+	fileReference asFileReference writeStreamDo: [ :str | 
+		str
+			nextPutAll: aString ].
+	fileReference extension = anExtension asString ifFalse: [ 
+		fileReference renameTo:
+			fileReference withoutExtension basename , '.' , anExtension asString ].
+
 ]

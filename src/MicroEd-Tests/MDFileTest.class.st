@@ -6,8 +6,7 @@ Class {
 		'fileExample',
 		'fileWithoutFileReference',
 		'toDelete',
-		'fileReferenceWithName',
-		'mdFile'
+		'fileReferenceWithName'
 	],
 	#category : 'MicroEd-Tests',
 	#package : 'MicroEd-Tests'
@@ -20,7 +19,6 @@ MDFileTest >> setUp [
 	memoryFS := FileSystem memory.
 	toDelete := OrderedCollection new.
 	fileWithoutFileReference := MDFile new.
-	mdFile := MDFile new.
 	fileExample := memoryFS / 'example.txt'.
 	fileReferenceWithName := (memoryFS / 'anotherFile.txt')
 		                         ensureCreateFile.
@@ -34,7 +32,7 @@ MDFileTest >> tearDown [
 
 	toDelete
 		select: [ :path | memoryFS exists: path ]
-		thenDo: [ :path | memoryFS delete: path ].
+		thenDo: [ :path | path ensureDelete ].
 	super tearDown
 ]
 
@@ -59,33 +57,33 @@ MDFileTest >> testMDFileCreationWithExistingFile [
 MDFileTest >> testMDFileCreationWithoutExistingFile [
 
 	self assert: fileWithoutFileReference hasFile not.
-	self assertEmpty: fileWithoutFileReference basename
 ]
 
 { #category : 'running' }
 MDFileTest >> testMDFileExistingFileWithName [
 
-	| file |
-	toDelete add: fileReferenceWithName.
+	
+	| file fileReferenceWithoutName |
+	
+	fileReferenceWithoutName := (memoryFS / 'name.txt') ensureCreateFile.
+	toDelete add: fileReferenceWithoutName. 
 	file := MDFile new.
-	self
-		shouldnt: [ file initializeWithFileReference: fileReferenceWithName ]
-		raise: MDFileHasEmptyNameException
+	file initializeWithFileReference: fileReferenceWithoutName.
+	self assert: (file basename endsWith: 'name.txt'). 
 
-	"Remove temp file"
+	
 ]
 
 { #category : 'running' }
 MDFileTest >> testMDFileExistingFileWithoutName [
 
 	| file fileReferenceWithoutName |
-
+ 	
 	fileReferenceWithoutName := (memoryFS / '.txt') ensureCreateFile.
 	toDelete add: fileReferenceWithoutName. 
 	file := MDFile new.
-	self
-		should: [ file initializeWithFileReference: fileReferenceWithoutName ] 
-		raise: MDFileHasEmptyNameException 
+	file initializeWithFileReference: fileReferenceWithoutName.
+	self denyEmpty: file basename. 
 	
 ]
 
@@ -94,6 +92,6 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	
 	| file date |
 	file := MDFile newFromFileReference: fileReferenceWithName. 
-	date := (DateAndTime now asDate) yyyymmdd.
+	date := DateAndTime now asDate yyyymmdd.
 	self assert: (file basename includesSubstring: date)
 ]
