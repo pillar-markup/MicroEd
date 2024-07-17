@@ -20,12 +20,22 @@ MDFile class >> newFromFileReference: aFileReference [
 ]
 
 { #category : 'accessing' }
+MDFile >> addDateCreationOfFileReference [
+
+	| dateCreationOfFileReference |
+	dateCreationOfFileReference := DateAndTime now asDate yyyymmdd.
+	(fileReference basename includesSubstring:
+		 dateCreationOfFileReference) ifFalse: [
+		^ dateCreationOfFileReference , fileReference basename ].
+	^ fileReference basename 
+]
+
+{ #category : 'accessing' }
 MDFile >> basename [
 	"Answer a String representing the receiver's file name"
-	
 	^ fileReference 
 		ifNil: [ String empty ]
-		ifNotNil: [ fileReference basename ]
+		ifNotNil: [ self addDateCreationOfFileReference ]
 
 ]
 
