@@ -38,9 +38,10 @@ MDFileTest >> tearDown [
 
 { #category : 'running' }
 MDFileTest >> testMDFileCreationOverwriteExistingFile [
-
 	" dans quel cas on voudrait remplacer un fichier.
 	peut etre si le fichier en question existe deja. il faut donc penser à réécrire le nom du fichier. "
+
+	self skip.
 ]
 
 { #category : 'running' }
