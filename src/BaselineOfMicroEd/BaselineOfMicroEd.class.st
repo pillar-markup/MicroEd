@@ -13,11 +13,10 @@ BaselineOfMicroEd >> baseline: spec [
 		"Suppose that this is only for P9
 			spec baseline: ''Microdown'' with: [
 			spec repository: ''github://pillar-markup/Microdown/src'' ]"
-		
 		spec 
-			package: 'MicroEd'.
-		spec 	
-			package: 'MicroEd-Tests'
-			with: [ spec requires: #('MicroEd') ]
+			package: 'MicroEd';
+			package: 'MicroEd-Spec'  with: [ spec requires: #('MicroEd') ];
+			package: 'MicroEd-Tests' with: [ spec requires: #('MicroEd') ];
+			package: 'MicroEd-Spec-Tests' with: [ spec requires: #('MicroEd') ]
 	]
 ]

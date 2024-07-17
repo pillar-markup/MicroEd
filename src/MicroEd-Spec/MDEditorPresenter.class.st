@@ -12,12 +12,12 @@ Class {
 	#instVars : [
 		'textInput',
 		'textOutput',
-		'currentFile',
 		'composer',
-		'syntaxState'
+		'syntaxState',
+		'mdFile'
 	],
-	#category : 'MicroEd',
-	#package : 'MicroEd'
+	#category : 'MicroEd-Spec',
+	#package : 'MicroEd-Spec'
 }
 
 { #category : 'world menu' }
@@ -50,18 +50,6 @@ MDEditorPresenter >> cleanInput [
 MDEditorPresenter >> cleanOutput [
 
 	textOutput text: ''
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> currentFileState [
-
-	^ currentFile ifNil: [ ^ currentFile := MDEditorNewFile new ]
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> currentFileState: aMDEditorFile [
-
-	currentFile := aMDEditorFile
 ]
 
 { #category : 'specs' }
@@ -163,6 +151,19 @@ MDEditorPresenter >> initializeWindow: aWindowPresenter [
 		windowIcon: (self application iconNamed: #glamorousBrowseIcon)
 ]
 
+{ #category : 'accessing' }
+MDEditorPresenter >> mdFile [
+
+	^ mdFile ifNil: [ mdFile := MDFile new ]
+]
+
+{ #category : 'accessing' }
+MDEditorPresenter >> mdFile: aMDFile [
+
+	mdFile := aMDFile.
+	textInput text: mdFile contents    
+]
+
 { #category : 'utilities' }
 MDEditorPresenter >> microdownParser [ 
 
@@ -179,11 +180,11 @@ MDEditorPresenter >> openFile [
 		                openModal.
 	selectedFile 
 		ifNotNil: [ 
-			self currentFileState: (MDEditorOpenedFile new file: selectedFile).
+			self mdFile: (MDFile new file: selectedFile).
 			textInput text: selectedFile contents.
 			self cleanOutput.
 			self updateTitle ]
-		ifNil: [ self currentFileState: MDEditorNoFile new ].
+		ifNil: [ self mdFile: MDFile new ].
 
 
 ]
@@ -204,8 +205,8 @@ MDEditorPresenter >> renderDocument [
 MDEditorPresenter >> saveFile [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 
-	self currentFileState: (self currentFileState
-			 save: textInput
+	self mdFile: (self mdFile
+			 save: textInput text asString 
 			 withExtension: syntaxState extension).
 	self updateTitle.
 
@@ -224,7 +225,7 @@ MDEditorPresenter >> startNewFile [
 	"NEW button is pressed: reset tool"
 
 	self cleanInput.
-	currentFile := MDEditorNewFile new.
+	mdFile := MDFile new.
 	self updateTitle
 ]
 
@@ -261,7 +262,7 @@ MDEditorPresenter >> textOutputText [
 { #category : 'api' }
 MDEditorPresenter >> title [
 
-	^ 'MicroDown Editor - ' , self currentFileState basename
+	^ 'MicroDown Editor - ' , self mdFile basename
 ]
 
 { #category : 'api' }
