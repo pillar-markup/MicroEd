@@ -61,7 +61,7 @@ A codeblock:
 { #category : 'accessing' }
 MDMicroDownSyntax >> extension [
 
-	^ 'mic'
+	^ 'md'
 ]
 
 { #category : 'accessing' }
