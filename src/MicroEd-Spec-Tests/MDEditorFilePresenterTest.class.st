@@ -80,7 +80,7 @@ MDEditorFilePresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
 MDEditorFilePresenterTest >> testMDFileOverwriteFileReferenceWhenAnotherSameFile [
 
 	"We want to test how to overwrite the content of a file when there is another file with the same name. "
-	self skip. 
+	self skip.  
 ]
 
 { #category : 'tests-interaction' }
