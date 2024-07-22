@@ -84,6 +84,6 @@ MDFile >> save: aString withExtension: anExtension [
 			nextPutAll: aString ].
 	fileReference extension = anExtension asString ifFalse: [ 
 		fileReference renameTo:
-			self basename , '.' , anExtension asString ].
+			self basename , '.' , anExtension asString ]. 
 
 ]
