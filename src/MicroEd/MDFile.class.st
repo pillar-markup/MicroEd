@@ -79,16 +79,13 @@ MDFile >> initializeWithFileReference: aFileReference [
 	"Create of a new file reference which has the ISO format with the default extension: 'md' "
 	newFileReference := fileReference extension isEmptyOrNil
 		                    ifTrue: [
-		                    fileReference fileSystem root
-		                    / (self basename , 'md') ]
+		                    (self basename , '.md') ]
 		                    ifFalse: [
-		                    fileReference fileSystem root / self basename ].
-	
-	"Then, delete the old file reference to replace with the new file "
+		                    self basename ].
 	aFileReference delete.
 
-	newFileReference ensureCreateFile.
-	fileReference := newFileReference
+	fileReference := newFileReference asFileReference. 
+	fileReference ensureCreateFile. 
 ]
 
 { #category : 'accessing' }
