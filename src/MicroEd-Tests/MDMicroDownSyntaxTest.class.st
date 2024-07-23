@@ -12,7 +12,7 @@ Class {
 MDMicroDownSyntaxTest >> testGotExtensionWhenIsNotSpecify [
 
 	syntax := MDMicroDownSyntax new.
-	self assert: syntax extension equals: 'mic'
+	self assert: syntax extension equals: 'md'
 ]
 
 { #category : 'tests' }

@@ -24,7 +24,7 @@ MDFile >> basename [
 	"Answer a String representing the receiver's file name"
 
 	| dateCreationOfFileReference |
-	fileReference ifNil: [ ^ 'Untitled.txt' ].
+	fileReference ifNil: [ ^ 'Untitled.md' ].
 	dateCreationOfFileReference := DateAndTime now asDate yyyymmdd.
 	(fileReference basename includesSubstring:
 		 dateCreationOfFileReference) ifFalse: [
@@ -71,19 +71,36 @@ MDFile >> hasFile [
 
 { #category : 'accessing' }
 MDFile >> initializeWithFileReference: aFileReference [
+	"Add a file reference in the MDFile"
 
+	| newFileReference |
 	aFileReference ensureCreateFile.
-	fileReference := aFileReference
+	fileReference := aFileReference.
+	"Create of a new file reference which has the ISO format with the default extension: 'md' "
+	newFileReference := fileReference extension isEmptyOrNil
+		                    ifTrue: [
+		                    fileReference fileSystem root
+		                    / (self basename , 'md') ]
+		                    ifFalse: [
+		                    fileReference fileSystem root / self basename ].
+	
+	"Then, delete the old file reference to replace with the new file "
+	aFileReference delete.
+
+	newFileReference ensureCreateFile.
+	fileReference := newFileReference
 ]
 
 { #category : 'accessing' }
 MDFile >> save: aString withExtension: anExtension [
-
+" before put the file reference, ensure that the creation of the basename is set (without the renaming)
+fileReference extension = anExtension asString ifFalse: [ 
+		fileReference renameTo:
+			self basename , '.' , anExtension asString ]. "
 	fileReference asFileReference writeStreamDo: [ :str | 
 		str
 			nextPutAll: aString ].
-	fileReference extension = anExtension asString ifFalse: [ 
-		fileReference renameTo:
-			self basename , '.' , anExtension asString ]. 
+	
+		
 
 ]

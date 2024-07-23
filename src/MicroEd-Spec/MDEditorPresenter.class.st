@@ -161,7 +161,7 @@ MDEditorPresenter >> mdFile [
 MDEditorPresenter >> mdFile: aMDFile [
 
 	mdFile := aMDFile.
-	textInput text: mdFile contents    
+	"textInput text: mdFile contents"    
 ]
 
 { #category : 'utilities' }

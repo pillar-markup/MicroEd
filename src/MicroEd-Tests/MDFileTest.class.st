@@ -19,8 +19,8 @@ MDFileTest >> setUp [
 	memoryFS := FileSystem memory.
 	toDelete := OrderedCollection new.
 	fileWithoutFileReference := MDFile new.
-	fileExample := memoryFS / 'example.txt'.
-	fileReferenceWithName := (memoryFS / 'anotherFile.txt')
+	fileExample := memoryFS / 'example.md'.
+	fileReferenceWithName := (memoryFS / 'anotherFile.md')
 		                         ensureCreateFile.
 	toDelete add: fileExample. 
 	fileExample writeStreamDo: [ :stream |
@@ -58,11 +58,11 @@ MDFileTest >> testMDFileExistingFileWithName [
 	
 	| file fileReferenceWithoutName |
 	
-	fileReferenceWithoutName := (memoryFS / 'name.txt') ensureCreateFile.
+	fileReferenceWithoutName := (memoryFS / 'name.md') ensureCreateFile.
 	toDelete add: fileReferenceWithoutName. 
 	file := MDFile new.
 	file initializeWithFileReference: fileReferenceWithoutName.
-	self assert: (file basename endsWith: 'name.txt'). 
+	self assert: (file basename endsWith: 'name.md'). 
 
 	
 ]
@@ -72,7 +72,7 @@ MDFileTest >> testMDFileExistingFileWithoutName [
 
 	| file fileReferenceWithoutName |
  	
-	fileReferenceWithoutName := (memoryFS / '.txt') ensureCreateFile.
+	fileReferenceWithoutName := (memoryFS / '.md') ensureCreateFile.
 	toDelete add: fileReferenceWithoutName. 
 	file := MDFile new.
 	file initializeWithFileReference: fileReferenceWithoutName.
@@ -86,5 +86,6 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	| file date |
 	file := MDFile newFromFileReference: fileReferenceWithName. 
 	date := DateAndTime now asDate yyyymmdd.
-	self assert: (file basename includesSubstring: date)
+	self assert: (file basename includesSubstring: date).
+	self deny: (fileReferenceWithName exists )
 ]
