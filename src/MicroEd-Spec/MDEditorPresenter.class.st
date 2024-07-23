@@ -52,7 +52,7 @@ MDEditorPresenter >> cleanOutput [
 	textOutput text: ''
 ]
 
-{ #category : 'specs' }
+{ #category : 'layout' }
 MDEditorPresenter >> defaultLayout [
 
 	 ^ SpBoxLayout newTopToBottom
