@@ -160,8 +160,7 @@ MDEditorPresenter >> mdFile [
 { #category : 'accessing' }
 MDEditorPresenter >> mdFile: aMDFile [
 
-	mdFile := aMDFile.
-	"textInput text: mdFile contents"    
+	mdFile := aMDFile.   
 ]
 
 { #category : 'utilities' }
@@ -208,7 +207,7 @@ MDEditorPresenter >> saveFile [
 	self mdFile: (self mdFile
 			 save: textInput text asString 
 			 withExtension: syntaxState extension).
-	self updateTitle.
+self window ifNotNil: [self updateTitle].
 
 ]
 
