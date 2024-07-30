@@ -225,7 +225,7 @@ MDEditorPresenter >> startNewFile [
 
 	self cleanInput.
 	mdFile := MDFile new.
-	self updateTitle
+	self window ifNotNil: [ self updateTitle ] 
 ]
 
 { #category : 'accessing' }
