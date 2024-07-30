@@ -64,6 +64,12 @@ MDFile >> extension: anExtension [
 ]
 
 { #category : 'accessing' }
+MDFile >> fileReference [ 
+
+	^ fileReference 
+]
+
+{ #category : 'accessing' }
 MDFile >> hasFile [ 
 
 	^ fileReference isNotNil 
