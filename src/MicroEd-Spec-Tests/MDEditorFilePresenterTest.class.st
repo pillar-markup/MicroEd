@@ -27,7 +27,7 @@ MDEditorFilePresenterTest >> setUp [
 	presenter := MDEditorPresenter new.
 	window := presenter open.
 	text := 'This is just a test'.
-	fileReference := memoryFS / 'aFileReference.txt'.
+	fileReference := memoryFS / 'aFileReference.md'.
 	fileReference writeStreamDo: [
 		                 :stream | stream nextPutAll: text ].
 
@@ -96,6 +96,7 @@ MDEditorFilePresenterTest >> testSaveWithExtension [
 	| text textPresenter |
 	text := 'This is just a test'.
 	textPresenter := self mockTextObject: text.
+	presenter textInputText: text. 
 	presenter mdFile: mdFile.
 	presenter saveFile.
 

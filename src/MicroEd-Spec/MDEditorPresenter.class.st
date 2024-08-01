@@ -52,7 +52,7 @@ MDEditorPresenter >> cleanOutput [
 	textOutput text: ''
 ]
 
-{ #category : 'specs' }
+{ #category : 'layout' }
 MDEditorPresenter >> defaultLayout [
 
 	 ^ SpBoxLayout newTopToBottom
@@ -160,8 +160,7 @@ MDEditorPresenter >> mdFile [
 { #category : 'accessing' }
 MDEditorPresenter >> mdFile: aMDFile [
 
-	mdFile := aMDFile.
-	textInput text: mdFile contents    
+	mdFile := aMDFile.   
 ]
 
 { #category : 'utilities' }
@@ -208,7 +207,7 @@ MDEditorPresenter >> saveFile [
 	self mdFile: (self mdFile
 			 save: textInput text asString 
 			 withExtension: syntaxState extension).
-	self updateTitle.
+self window ifNotNil: [self updateTitle].
 
 ]
 
@@ -226,7 +225,7 @@ MDEditorPresenter >> startNewFile [
 
 	self cleanInput.
 	mdFile := MDFile new.
-	self updateTitle
+	self window ifNotNil: [ self updateTitle ] 
 ]
 
 { #category : 'accessing' }
