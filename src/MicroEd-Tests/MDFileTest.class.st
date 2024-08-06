@@ -36,7 +36,6 @@ MDFileTest >> tearDown [
 	toDelete
 		select: [ :path | memoryFS exists: path ]
 		thenDo: [ :path | path ensureDelete ].
-		mdfile fileReference delete. 
 	super tearDown
 ]
 
@@ -112,6 +111,8 @@ MDFileTest >> testMDFileHasFileReferenceHasMetaData [
 	
 	root := MicrodownParser parse: mdfile contents.
 	self assert: root hasMetaDataElement.
+	
+	mdfile fileReference delete. 
 	
 	
 ]
