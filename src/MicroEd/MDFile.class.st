@@ -5,7 +5,8 @@ Class {
 	#name : 'MDFile',
 	#superclass : 'Object',
 	#instVars : [
-		'fileReference'
+		'fileReference',
+		'nameOfFileReferenceBeforeSaved'
 	],
 	#category : 'MicroEd',
 	#package : 'MicroEd'
@@ -19,18 +20,45 @@ MDFile class >> newFromFileReference: aFileReference [
 		yourself
 ]
 
+{ #category : 'add' }
+MDFile >> addMetaDataElements [
+
+	| root |
+	root := MicrodownParser parse: fileReference contents.
+
+	root hasMetaDataElement
+		ifFalse: [
+			root := MicrodownParser parse: '{
+		"author" : "addos" 
+		}
+		'.
+			root metaDataElement
+				atKey: 'author' put: (fileReference entry reference path at: 3);
+				atKey: 'title' put: nameOfFileReferenceBeforeSaved;
+				atKey: 'lastModificationDate' put: fileReference modificationTime asDate yyyymmdd ]
+		ifTrue: [
+			root metaDataElement
+				atKey: 'lastModificationDate'
+				put: fileReference modificationTime asDate yyyymmdd].
+
+	self visit: root. 
+]
+
 { #category : 'accessing' }
 MDFile >> basename [
 	"Answer a String representing the receiver's file name"
 
 	| dateCreationOfFileReference |
-	fileReference ifNil: [ ^ 'Untitled.md' ].
+	fileReference ifNil: [
+		nameOfFileReferenceBeforeSaved := 'Untitled'.
+		^ 'Untitled' ].
+	
+	nameOfFileReferenceBeforeSaved := fileReference basename.
 	dateCreationOfFileReference := DateAndTime now asDate yyyymmdd.
 	(fileReference basename includesSubstring:
 		 dateCreationOfFileReference) ifFalse: [
-		^ dateCreationOfFileReference , fileReference basename ].
-	^ fileReference basename 
-
+		^ dateCreationOfFileReference , '_' , fileReference basename ].
+	^ fileReference basename
 ]
 
 { #category : 'accessing' }
@@ -95,15 +123,22 @@ MDFile >> initializeWithFileReference: aFileReference [
 ]
 
 { #category : 'accessing' }
-MDFile >> save: aString withExtension: anExtension [
-" before put the file reference, ensure that the creation of the basename is set (without the renaming)
-fileReference extension = anExtension asString ifFalse: [ 
-		fileReference renameTo:
-			self basename , '.' , anExtension asString ]. "
+MDFile >> save: aString [
+
 	fileReference asFileReference writeStreamDo: [ :str | 
 		str
 			nextPutAll: aString ].
 	
 		
 
+]
+
+{ #category : 'add' }
+MDFile >> visit: aRoot [
+
+	| visitor |
+	visitor := MicTextualMicrodownExporter new.
+	visitor visit: aRoot.
+	fileReference writeStreamDo: [ :stream |
+		stream nextPutAll: visitor contents ]
 ]
