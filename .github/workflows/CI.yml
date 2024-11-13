@@ -1,0 +1,29 @@
+name: CI
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Load SmalltalkCI environment
+        uses: hpi-swa/setup-smalltalkCI@v1
+        id: smalltalkci
+        with:
+          smalltalk-version: Pharo64-stable
+      - name: Prepare image and test
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-version }}
+        shell: bash
+        timeout-minutes: 15
