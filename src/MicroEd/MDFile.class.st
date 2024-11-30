@@ -41,7 +41,7 @@ MDFile >> addMetaDataElements [
 				atKey: 'lastModificationDate'
 				put: fileReference modificationTime asDate yyyymmdd].
 
-	self visit: root. 
+	self writeFileContentsOf: root. 
 ]
 
 { #category : 'accessing' }
@@ -116,10 +116,8 @@ MDFile >> initializeWithFileReference: aFileReference [
 	fileReference := aFileReference.
 	"Create of a new file reference which has the ISO format with the default extension: 'md' "
 	newFileReference := fileReference extension isEmptyOrNil
-		                    ifTrue: [
-		                    (self basename , '.md') ]
-		                    ifFalse: [
-		                    self basename ].
+		                    ifTrue: [ (self basename , '.md') ]
+		                    ifFalse: [ self basename ].
 	aFileReference delete.
 
 	fileReference := newFileReference asFileReference. 
@@ -138,7 +136,7 @@ MDFile >> save: aString [
 ]
 
 { #category : 'add' }
-MDFile >> visit: aRoot [
+MDFile >> writeFileContentsOf: aRoot [
 
 	| visitor |
 	visitor := MicTextualMicrodownExporter new.
