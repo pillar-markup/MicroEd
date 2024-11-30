@@ -10,13 +10,14 @@ BaselineOfMicroEd >> baseline: spec [
 	<baseline>
 
 	spec for: #'common' do: [
-		"Suppose that this is only for P9
-			spec baseline: ''Microdown'' with: [
-			spec repository: ''github://pillar-markup/Microdown/src'' ]"
+		"We need the Extensions group from Microdown to use MicTextualMicrodownExporter"
+		spec baseline: 'Microdown' with: [
+			spec repository: 'github://pillar-markup/Microdown/src' ].
 		spec 
-			package: 'MicroEd';
+			package: 'MicroEd' with: [ spec 
+				loads: 'Extensions'; 
+				requires: #('Microdown') ];
 			package: 'MicroEd-Spec'  with: [ spec requires: #('MicroEd') ];
 			package: 'MicroEd-Tests' with: [ spec requires: #('MicroEd') ];
-			package: 'MicroEd-Spec-Tests' with: [ spec requires: #('MicroEd') ]
-	]
+			package: 'MicroEd-Spec-Tests' with: [ spec requires: #('MicroEd') ] ]
 ]
