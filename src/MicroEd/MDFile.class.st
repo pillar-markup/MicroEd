@@ -51,13 +51,12 @@ MDFile >> basename [
 	| dateCreationOfFileReference |
 	fileReference ifNil: [
 		nameOfFileReferenceBeforeSaved := 'Untitled'.
-		^ 'Untitled' ].
+		^ nameOfFileReferenceBeforeSaved ].
 	
 	nameOfFileReferenceBeforeSaved := fileReference basename.
-	dateCreationOfFileReference := DateAndTime now asDate yyyymmdd.
-	(fileReference basename includesSubstring:
-		 dateCreationOfFileReference) ifFalse: [
-		^ dateCreationOfFileReference , '_' , fileReference basename ].
+	dateCreationOfFileReference := Date today yyyymmdd.
+	(fileReference basename includesSubstring: dateCreationOfFileReference) 
+		ifFalse: [ ^ dateCreationOfFileReference , '_' , fileReference basename ].
 	^ fileReference basename
 ]
 
