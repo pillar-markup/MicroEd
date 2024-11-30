@@ -92,6 +92,7 @@ MDFile >> extension: anExtension [
 
 { #category : 'accessing' }
 MDFile >> file [
+
 	^ fileReference
 ]
 
@@ -128,8 +129,7 @@ MDFile >> initializeWithFileReference: aFileReference [
 MDFile >> save: aString [
 
 	fileReference asFileReference writeStreamDo: [ :str | 
-		str
-			nextPutAll: aString ].
+		str nextPutAll: aString ].
 	
 		
 

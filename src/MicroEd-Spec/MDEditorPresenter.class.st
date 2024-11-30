@@ -204,9 +204,8 @@ MDEditorPresenter >> renderDocument [
 MDEditorPresenter >> saveFile [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 
-	self mdFile: (self mdFile
-			 save: textInput text asString ).
-self window ifNotNil: [self updateTitle].
+	self mdFile: (self mdFile save: textInput text asString).
+	self window ifNotNil: [ self updateTitle ].
 
 ]
 
