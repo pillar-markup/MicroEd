@@ -92,6 +92,11 @@ MDFile >> extension: anExtension [
 ]
 
 { #category : 'accessing' }
+MDFile >> file [
+	^ fileReference
+]
+
+{ #category : 'accessing' }
 MDFile >> fileReference [ 
 
 	^ fileReference 

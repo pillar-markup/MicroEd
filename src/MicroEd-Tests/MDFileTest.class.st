@@ -140,3 +140,11 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	self assert: (file basename includesSubstring: date).
 	self deny: (fileReferenceWithName exists )
 ]
+
+{ #category : 'running' }
+MDFileTest >> testMDFileUnderstandFile [
+
+	mdfile initializeWithFileReference: fileExample.
+	self assert: mdfile file class equals: FileReference.
+	
+]
