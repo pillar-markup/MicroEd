@@ -11,10 +11,10 @@ Class {
 	#superclass : 'SpApplicationWithToolbar',
 	#instVars : [
 		'textInput',
-		'textOutput',
 		'composer',
 		'syntaxState',
-		'mdFile'
+		'mdFile',
+		'renderedText'
 	],
 	#category : 'MicroEd-Spec',
 	#package : 'MicroEd-Spec'
@@ -49,7 +49,7 @@ MDEditorPresenter >> cleanInput [
 { #category : 'actions' }
 MDEditorPresenter >> cleanOutput [
 
-	textOutput text: ''
+	renderedText text: ''
 ]
 
 { #category : 'layout' }
@@ -58,8 +58,8 @@ MDEditorPresenter >> defaultLayout [
 	 ^ SpBoxLayout newTopToBottom
 		add: #menu expand: false;
 		add: (SpPanedLayout newLeftToRight
-			add: #textInput;
-			add: #textOutput;
+			add: textInput;
+			add: renderedText;
 		yourself);
 	yourself
 ]
@@ -185,7 +185,7 @@ MDEditorPresenter >> initializePresentersWithText: anInputText [
 		[ self application defer: [ self renderAction ] ] schedule.
 		anEvent wasHandled: false ]."
 
-	textOutput := self newText
+	renderedText := self newText
 		beNotEditable;
 		yourself
 
@@ -228,7 +228,6 @@ MDEditorPresenter >> openFile [
 		                openModal.
 	selectedFile 
 		ifNotNil: [ 
-		
 			self mdFile: (MDFile newFromFileReference: selectedFile asFileReference).
 			textInput text: selectedFile contents.
 			self cleanOutput.
@@ -246,7 +245,7 @@ MDEditorPresenter >> renderDocument [
 	document := syntaxState parse: textInput text.
 	text := composer visit: document.
 
-	textOutput text: text.
+	renderedText text: text.
 
 ]
 
@@ -263,7 +262,7 @@ MDEditorPresenter >> saveFile [
 MDEditorPresenter >> setExampleAsInput [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 
-	textInput text: syntaxState exampleText.
+	textInput text: self exampleText.
 	self cleanOutput
 ]
 
@@ -274,18 +273,6 @@ MDEditorPresenter >> startNewFile [
 	self cleanInput.
 	mdFile := MDFile new.
 	self window ifNotNil: [ self updateTitle ] 
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> syntaxState [
-
-	^ syntaxState
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> syntaxState: aSyntaxState [
-
-	syntaxState := aSyntaxState
 ]
 
 { #category : 'accessing' }
@@ -303,7 +290,7 @@ MDEditorPresenter >> textInputText: aString [
 { #category : 'accessing' }
 MDEditorPresenter >> textOutputText [
 
-	^ textOutput text
+	^ renderedText text
 ]
 
 { #category : 'api' }

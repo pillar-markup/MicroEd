@@ -69,13 +69,6 @@ MDEditorFilePresenterTest >> testGotMicrodownParser [
 	self assert: presenter microdownParser class equals: MicrodownParser
 ]
 
-{ #category : 'running' }
-MDEditorFilePresenterTest >> testMDFileOverwriteFileReferenceWhenAnotherSameFile [
-
-	"We want to test how to overwrite the content of a file when there is another file with the same name. "
-	self skip.  
-]
-
 { #category : 'tests-interaction' }
 MDEditorFilePresenterTest >> testOpenIsWorkingSmokeTest [
 

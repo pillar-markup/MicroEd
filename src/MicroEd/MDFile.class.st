@@ -69,7 +69,8 @@ MDFile >> contents [
 { #category : 'accessing' }
 MDFile >> contents: aContent [
 
-	fileReference contents: aContent
+	fileReference writeStreamDo: [ :stream |
+		stream nextPutAll: aContent ]
 ]
 
 { #category : 'testing' }
@@ -91,15 +92,9 @@ MDFile >> extension: anExtension [
 ]
 
 { #category : 'accessing' }
-MDFile >> file [
-
-	^ fileReference
-]
-
-{ #category : 'accessing' }
 MDFile >> fileReference [ 
 
-	^ fileReference 
+	^ fileReference ifNil: [ fileReference := 'unnamed.md' asFileReference ]
 ]
 
 { #category : 'accessing' }
@@ -134,7 +129,7 @@ MDFile >> initializeWithFileReference: aFileReference [
 { #category : 'accessing' }
 MDFile >> save: aString [
 
-	fileReference asFileReference writeStreamDo: [ :str | 
+	fileReference writeStreamDo: [ :str | 
 		str nextPutAll: aString ].
 	
 		

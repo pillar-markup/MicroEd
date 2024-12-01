@@ -134,9 +134,9 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	
 	| file date |
 	file := MDFile newFromFileReference: fileReferenceWithName. 
-	date := DateAndTime now asDate yyyymmdd.
+	date := Date today yyyymmdd.
 	self assert: (file basename includesSubstring: date).
-	self deny: (fileReferenceWithName exists )
+	self deny: fileReferenceWithName exists
 ]
 
 { #category : 'tests' }
