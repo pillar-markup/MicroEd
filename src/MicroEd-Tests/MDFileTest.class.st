@@ -21,12 +21,10 @@ MDFileTest >> setUp [
 	toDelete := OrderedCollection new.
 	mdfile := MDFile new.
 	fileExample := memoryFS / 'example.md'.
-	fileReferenceWithName := (memoryFS / 'anotherFile.md')
-		                         ensureCreateFile.
+	fileReferenceWithName := (memoryFS / 'anotherFile.md') ensureCreateFile.
 	toDelete add: fileExample.
 	fileExample writeStreamDo: [ :stream |
 		stream nextPutAll: 'example file' ].
-
 	parser := MicrodownParser new.
 ]
 
@@ -39,7 +37,7 @@ MDFileTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileCreationWithExistingFile [
 
 	mdfile initializeWithFileReference: fileExample.
@@ -47,7 +45,7 @@ MDFileTest >> testMDFileCreationWithExistingFile [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileCreationWithoutExistingFile [
 
 	| fileWithoutFileReference |
@@ -55,7 +53,7 @@ MDFileTest >> testMDFileCreationWithoutExistingFile [
 	self assert: fileWithoutFileReference hasFile not.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileExistingFileWithName [
 
 	
@@ -69,7 +67,7 @@ MDFileTest >> testMDFileExistingFileWithName [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileExistingFileWithoutName [
 
 	| file fileReferenceWithoutName |
@@ -82,7 +80,7 @@ MDFileTest >> testMDFileExistingFileWithoutName [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceAddMetaData [
 
 	| root file |
@@ -98,7 +96,7 @@ MDFileTest >> testMDFileHasFileReferenceAddMetaData [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceHasMetaData [
 
 	| root file |
@@ -117,7 +115,7 @@ MDFileTest >> testMDFileHasFileReferenceHasMetaData [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceHasNotMetaData [
 
 	| root file |
@@ -131,7 +129,7 @@ MDFileTest >> testMDFileHasFileReferenceHasNotMetaData [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	
 	| file date |
@@ -141,10 +139,10 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	self deny: (fileReferenceWithName exists )
 ]
 
-{ #category : 'running' }
+{ #category : 'tests' }
 MDFileTest >> testMDFileUnderstandFile [
 
 	mdfile initializeWithFileReference: fileExample.
-	self assert: mdfile file class equals: FileReference.
+	self assert: mdfile fileReference class equals: FileReference.
 	
 ]

@@ -25,13 +25,13 @@ MDFile >> addMetaDataElements [
 
 	| root |
 	root := MicrodownParser parse: fileReference contents.
-
+	
 	root hasMetaDataElement
 		ifFalse: [
 			root := MicrodownParser parse: '{
 		"author" : "addos" 
-		}
-		'.
+}
+'.
 			root metaDataElement
 				atKey: 'author' put: (fileReference entry reference path at: 3);
 				atKey: 'title' put: nameOfFileReferenceBeforeSaved;
@@ -100,6 +100,12 @@ MDFile >> file [
 MDFile >> fileReference [ 
 
 	^ fileReference 
+]
+
+{ #category : 'accessing' }
+MDFile >> fileReference: aFileReference [
+
+	fileReference := aFileReference
 ]
 
 { #category : 'accessing' }

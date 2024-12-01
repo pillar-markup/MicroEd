@@ -64,6 +64,56 @@ MDEditorPresenter >> defaultLayout [
 	yourself
 ]
 
+{ #category : 'utilities' }
+MDEditorPresenter >> exampleText [
+
+	^ '# Header
+
+A figure:
+![Pharologo %width=80&caption=Our great figure.](https://files.pharo.org/media/logo/logo.png)
+
+A link: [http://pharo.org](http://pharo.org)
+
+Unordered Lists:
+- item 1
+  - item 1.1
+  - item 1.2
+- item 2
+- item 3
+  - item 3.1
+
+Ordered Lists:
+1. sub item 1
+3. sub item 2
+
+and nested 
+
+- item 1
+  1. sub item 1
+  3. sub item 2
+- item 2
+
+
+
+Horizontal line:
+***
+
+Common formats: **Bold**, _italic_, `monospace`
+
+Pharo hyperlinks in code: 
+- class `Point`, 
+- method `Point class`, `Point>>#setX:setY:`, and 
+- package `#’Microdown-Tests’ (for packages).
+
+A codeblock:
+
+```language=Pharo&caption=Beautiful&label=Fig1
+   this is a codeblock
+```
+
+'
+]
+
 { #category : 'api' }
 MDEditorPresenter >> initializeMenuBar [
 
@@ -111,8 +161,7 @@ MDEditorPresenter >> initializeMenuBar [
 MDEditorPresenter >> initializePresenters [
 
 	| initialText |
-	self syntaxState: MDMicroDownSyntax new.
-	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self syntaxState exampleText.
+	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self exampleText.
 
 	self initializePresentersWithText: initialText.
 	
@@ -148,7 +197,7 @@ MDEditorPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: 800 @ 600;
-		windowIcon: (self application iconNamed: #glamorousBrowseIcon)
+		windowIcon: (self application iconNamed: #browseIcon)
 ]
 
 { #category : 'accessing' }
@@ -160,7 +209,7 @@ MDEditorPresenter >> mdFile [
 { #category : 'accessing' }
 MDEditorPresenter >> mdFile: aMDFile [
 
-	mdFile := aMDFile.   
+	mdFile := aMDFile
 ]
 
 { #category : 'utilities' }
@@ -179,7 +228,8 @@ MDEditorPresenter >> openFile [
 		                openModal.
 	selectedFile 
 		ifNotNil: [ 
-			self mdFile: (MDFile new file: selectedFile).
+		
+			self mdFile: (MDFile newFromFileReference: selectedFile asFileReference).
 			textInput text: selectedFile contents.
 			self cleanOutput.
 			self updateTitle ]

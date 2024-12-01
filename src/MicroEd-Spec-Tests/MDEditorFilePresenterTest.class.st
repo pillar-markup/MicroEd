@@ -69,13 +69,6 @@ MDEditorFilePresenterTest >> testGotMicrodownParser [
 	self assert: presenter microdownParser class equals: MicrodownParser
 ]
 
-{ #category : 'tests' }
-MDEditorFilePresenterTest >> testGotSyntaxStateWhenIsNotSpecify [
-
-	presenter syntaxState: MDMicroDownSyntax new.
-	self assert: presenter syntaxState class equals: MDMicroDownSyntax
-]
-
 { #category : 'running' }
 MDEditorFilePresenterTest >> testMDFileOverwriteFileReferenceWhenAnotherSameFile [
 
@@ -108,7 +101,7 @@ MDEditorFilePresenterTest >> testSaveWithExtension [
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testTextInputTextIsNotSpecify [
 	
-	self assert: presenter textInputText equals: '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, presenter syntaxState exampleText
+	self assert: presenter textInputText equals: '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, presenter exampleText
 ]
 
 { #category : 'tests' }
