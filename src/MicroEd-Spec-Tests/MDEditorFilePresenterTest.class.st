@@ -63,12 +63,6 @@ MDEditorFilePresenterTest >> testGotCurrentFileWhenIsSpecify [
 	self assert: presenter mdFile class equals: MDFile
 ]
 
-{ #category : 'tests' }
-MDEditorFilePresenterTest >> testGotMicrodownParser [
-	
-	self assert: presenter microdownParser class equals: MicrodownParser
-]
-
 { #category : 'tests-interaction' }
 MDEditorFilePresenterTest >> testOpenIsWorkingSmokeTest [
 

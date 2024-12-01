@@ -212,12 +212,6 @@ MDEditorPresenter >> mdFile: aMDFile [
 	mdFile := aMDFile
 ]
 
-{ #category : 'utilities' }
-MDEditorPresenter >> microdownParser [ 
-
-	^ MicrodownParser new
-]
-
 { #category : 'actions' }
 MDEditorPresenter >> openFile [
 	"OPEN button is pressed: open window"
@@ -242,9 +236,8 @@ MDEditorPresenter >> renderDocument [
 	"RENDER button is pressed: render input to output text"
 
 	| document |
-	document := syntaxState parse: textInput text.
+	document := Microdown parse: textInput text.
 	text := composer visit: document.
-
 	renderedText text: text.
 
 ]
@@ -253,7 +246,7 @@ MDEditorPresenter >> renderDocument [
 MDEditorPresenter >> saveFile [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 
-	self mdFile: (self mdFile save: textInput text asString).
+	self mdFile save: textInput text asString.
 	self window ifNotNil: [ self updateTitle ].
 
 ]
