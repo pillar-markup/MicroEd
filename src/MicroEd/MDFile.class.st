@@ -1,12 +1,13 @@
 "
-The class MDFile represents a status to know if there is a file or no. 
+I'm a file utilities class that controls how files are named.
 "
 Class {
 	#name : 'MDFile',
 	#superclass : 'Object',
 	#instVars : [
 		'fileReference',
-		'nameOfFileReferenceBeforeSaved'
+		'nameOfFileReferenceBeforeSaved',
+		'fileNamer'
 	],
 	#category : 'MicroEd',
 	#package : 'MicroEd'
