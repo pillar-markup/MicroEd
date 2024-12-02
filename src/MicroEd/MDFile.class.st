@@ -131,7 +131,7 @@ MDFile >> initializeWithFileReference: aFileReference [
 MDFile >> save: aString [
 
 	fileReference writeStreamDo: [ :str | 
-		str nextPutAll: aString ].
+		str nextPutAll: aString ]
 	
 		
 
