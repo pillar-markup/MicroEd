@@ -45,9 +45,9 @@ MDEditorFilePresenterTest >> tearDown [
 { #category : 'tests' }
 MDEditorFilePresenterTest >> testCleanAction [
 
-	presenter cleanInput.
+	presenter emptyInputText.
 	self assert: presenter textInputText equals: ''.
-	self assert: presenter textOutputText equals: ''
+	self assert: presenter renderedText equals: ''
 ]
 
 { #category : 'tests' }

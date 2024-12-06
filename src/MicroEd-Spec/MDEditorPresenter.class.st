@@ -12,7 +12,6 @@ Class {
 	#instVars : [
 		'textInput',
 		'composer',
-		'syntaxState',
 		'mdFile',
 		'renderedText'
 	],
@@ -38,20 +37,6 @@ MDEditorPresenter class >> open [
 	^ self new open
 ]
 
-{ #category : 'actions' }
-MDEditorPresenter >> cleanInput [
-	"CLEAN button is pressed: erase both input and output text content"
-
-	textInput text: ''.
-	self cleanOutput
-]
-
-{ #category : 'actions' }
-MDEditorPresenter >> cleanOutput [
-
-	renderedText text: ''
-]
-
 { #category : 'layout' }
 MDEditorPresenter >> defaultLayout [
 
@@ -62,6 +47,20 @@ MDEditorPresenter >> defaultLayout [
 			add: renderedText;
 		yourself);
 	yourself
+]
+
+{ #category : 'actions' }
+MDEditorPresenter >> emptyInputText [
+	"CLEAN button is pressed: erase both input and output text content"
+
+	textInput text: ''.
+	self emptyRenderedText
+]
+
+{ #category : 'actions' }
+MDEditorPresenter >> emptyRenderedText [
+
+	renderedText text: ''
 ]
 
 { #category : 'utilities' }
@@ -224,7 +223,7 @@ MDEditorPresenter >> openFile [
 		ifNotNil: [ 
 			self mdFile: (MDFile newFromFileReference: selectedFile asFileReference).
 			textInput text: selectedFile contents.
-			self cleanOutput.
+			self emptyRenderedText.
 			self updateTitle ]
 		ifNil: [ self mdFile: MDFile new ].
 
@@ -242,6 +241,12 @@ MDEditorPresenter >> renderDocument [
 
 ]
 
+{ #category : 'accessing' }
+MDEditorPresenter >> renderedText [
+
+	^ renderedText text
+]
+
 { #category : 'actions' }
 MDEditorPresenter >> saveFile [
 	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
@@ -256,14 +261,14 @@ MDEditorPresenter >> setExampleAsInput [
 	"GET EXAMPLE button is pressed: fill input text with an example"
 
 	textInput text: self exampleText.
-	self cleanOutput
+	self emptyRenderedText
 ]
 
 { #category : 'actions' }
 MDEditorPresenter >> startNewFile [
 	"NEW button is pressed: reset tool"
 
-	self cleanInput.
+	self emptyInputText.
 	mdFile := MDFile new.
 	self window ifNotNil: [ self updateTitle ] 
 ]
@@ -278,12 +283,6 @@ MDEditorPresenter >> textInputText [
 MDEditorPresenter >> textInputText: aString [
 
 	textInput text: aString asString
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> textOutputText [
-
-	^ renderedText text
 ]
 
 { #category : 'api' }
