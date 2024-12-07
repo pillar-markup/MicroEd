@@ -13,7 +13,8 @@ Class {
 		'textInput',
 		'composer',
 		'mdFile',
-		'renderedText'
+		'renderedText',
+		'isTextDirty'
 	],
 	#category : 'MicroEd-Spec',
 	#package : 'MicroEd-Spec'
@@ -21,13 +22,14 @@ Class {
 
 { #category : 'world menu' }
 MDEditorPresenter class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	(aBuilder item: #'MicroEd')
+	(aBuilder item: #MicroEd)
 		parent: #Tools;
 		action: [ self open ];
 		order: 40;
 		help: 'A microdown Editor & Renderer';
-		icon: (self iconNamed: #glamorousBrowseIcon).
+		icon: (self iconNamed: #browseIconName).
 	aBuilder withSeparatorAfter
 ]
 
@@ -53,7 +55,7 @@ MDEditorPresenter >> defaultLayout [
 MDEditorPresenter >> emptyInputText [
 	"CLEAN button is pressed: erase both input and output text content"
 
-	textInput text: ''.
+	self textInputText: ''.
 	self emptyRenderedText
 ]
 
@@ -119,40 +121,40 @@ MDEditorPresenter >> initializeMenuBar [
 	menu := self newMenuBar.
 
 	menu
-		addGroup: [ :group | 
-			group addItem: [ :item | 
+		addGroup: [ :group |
+			group addItem: [ :item |
 					item
 						name: 'New';
 						description: 'Start in a new file';
-						icon: (self iconNamed: #pageIcon);
+						icon: (self iconNamed: #pageIconName);
 						action: [ self startNewFile ] ].
-			group addItem: [ :item | 
+			group addItem: [ :item |
 				item
 					name: 'Open';
 					description: 'Open file';
 					shortcut: $o meta;
-					icon: (self iconNamed: #openIcon);
+					icon: (self iconNamed: #openIconName);
 					action: [ self openFile ] ].
-			group addItem: [ :item | 
+			group addItem: [ :item |
 				item
 					name: 'Save';
 					description: 'Save file';
 					shortcut: $s meta;
-					icon: (self iconNamed: #smallSaveIcon);
+					icon: (self iconNamed: #smallSaveIconName);
 					action: [ self saveFile ] ] ];
-		addGroup: [ :group | 
-			group addItem: [ :item | 
+		addGroup: [ :group |
+			group addItem: [ :item |
 				item
 					name: 'Render';
-					icon: (self iconNamed: #smallDoItIcon);
+					icon: (self iconNamed: #smallDoItIconName);
 					description: 'Render your input text';
 					action: [ self renderDocument ] ].
 
-			group addItem: [ :item | 
+			group addItem: [ :item |
 				item
 					name: 'Get example';
 					description: 'Give a text input example in current syntax';
-					icon: (self iconNamed: #smallFindIcon);
+					icon: (self iconNamed: #smallFindIconName);
 					action: [ self setExampleAsInput ] ] ]
 ]
 
@@ -160,43 +162,47 @@ MDEditorPresenter >> initializeMenuBar [
 MDEditorPresenter >> initializePresenters [
 
 	| initialText |
-	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text', String cr, String cr, self exampleText.
-
+	"in initialize it is called after so defeat textInputText: logic"
+	composer := MicRichTextComposer new.
+	initialText := '% Type your marked-up text here. Render it and see right the output generated as rich text'
+	               , String cr , String cr , self exampleText.
 	self initializePresentersWithText: initialText.
-	
-	self initializeMenuBar.
-
+	self initializeMenuBar
 ]
 
 { #category : 'initialization' }
 MDEditorPresenter >> initializePresentersWithText: anInputText [
 
-	composer := MicRichTextComposer new.
-
 	textInput := self newText.
-	textInput text: anInputText.
+	self textInputText: anInputText.
 	textInput
 		bindKeyCombination: Character cr asKeyCombination
-		toAction: [ :target :morph :event | 
+		toAction: [ :target :morph :event |
 			[ self renderDocument ] schedule.
 			event wasHandled: false ].
-	"textInput eventHandler whenKeyDownDo: [ :anEvent | 
-		[ self application defer: [ self renderAction ] ] schedule.
-		anEvent wasHandled: false ]."
+
+	textInput eventHandler whenKeyDownDo: [ :anEvent | 
+		isTextDirty := true.
+		anEvent wasHandled: false ].
 
 	renderedText := self newText
-		beNotEditable;
-		yourself
-
+		                beNotEditable;
+		                yourself
 ]
 
 { #category : 'initialization' }
 MDEditorPresenter >> initializeWindow: aWindowPresenter [
-	
+
 	aWindowPresenter
 		title: self title;
 		initialExtent: 800 @ 600;
-		windowIcon: (self application iconNamed: #browseIcon)
+		windowIcon: (self application iconNamed: #browseIconName)
+]
+
+{ #category : 'testing' }
+MDEditorPresenter >> mayLoseEdits [
+
+	^ self textInputText isNotEmpty and: [ isTextDirty ]
 ]
 
 { #category : 'accessing' }
@@ -216,18 +222,21 @@ MDEditorPresenter >> openFile [
 	"OPEN button is pressed: open window"
 
 	| selectedFile |
+	self mayLoseEdits 
+		ifTrue: [ (self application confirm: 'You have unsaved edits. Do you want to proceed?')
+						ifFalse: [ ^ self ] ].
+					
 	selectedFile := StOpenFilePresenter new
 		                extensions: #( 'md' );
 		                openModal.
-	selectedFile 
-		ifNotNil: [ 
-			self mdFile: (MDFile newFromFileReference: selectedFile asFileReference).
-			textInput text: selectedFile contents.
-			self emptyRenderedText.
+	selectedFile
+		ifNotNil: [
+			self mdFile:
+				(MDFile newFromFileReference: selectedFile asFileReference).
+			self textInputText: selectedFile contents.
+			self renderDocument.
 			self updateTitle ]
-		ifNil: [ self mdFile: MDFile new ].
-
-
+		ifNil: [ self mdFile: MDFile new ]
 ]
 
 { #category : 'actions' }
@@ -235,10 +244,9 @@ MDEditorPresenter >> renderDocument [
 	"RENDER button is pressed: render input to output text"
 
 	| document |
-	document := Microdown parse: textInput text.
+	document := Microdown parse: self textInputText.
 	text := composer visit: document.
-	renderedText text: text.
-
+	renderedText text: text
 ]
 
 { #category : 'accessing' }
@@ -249,28 +257,34 @@ MDEditorPresenter >> renderedText [
 
 { #category : 'actions' }
 MDEditorPresenter >> saveFile [
-	"SAVE button is pressed: save file, then print message if actually saved (if no cancel)"
 
-	self mdFile save: textInput text asString.
-	self window ifNotNil: [ self updateTitle ].
-
+	self mdFile save: self textInputText asString.
+	isTextDirty := false.
+	self window ifNotNil: [ self updateTitle ]
 ]
 
 { #category : 'actions' }
 MDEditorPresenter >> setExampleAsInput [
-	"GET EXAMPLE button is pressed: fill input text with an example"
 
-	textInput text: self exampleText.
-	self emptyRenderedText
+	self mayLoseEdits ifTrue: [
+		(self application confirm:
+			 'You have unsaved edits. Do you want to proceed and get the example in place of your text?')
+			ifFalse: [ ^ self ] ].
+	self textInputText: self exampleText.
+	self renderDocument
 ]
 
 { #category : 'actions' }
 MDEditorPresenter >> startNewFile [
 	"NEW button is pressed: reset tool"
 
+	self mayLoseEdits ifTrue: [ (self application confirm:
+			 'You have unsaved edits. Do you want to proceed?')
+			ifFalse: [ ^ self ]  ].
+
 	self emptyInputText.
 	mdFile := MDFile new.
-	self window ifNotNil: [ self updateTitle ] 
+	self window ifNotNil: [ self updateTitle ]
 ]
 
 { #category : 'accessing' }
@@ -282,7 +296,8 @@ MDEditorPresenter >> textInputText [
 { #category : 'accessing' }
 MDEditorPresenter >> textInputText: aString [
 
-	textInput text: aString asString
+	textInput text: aString asString.
+	isTextDirty := false
 ]
 
 { #category : 'api' }

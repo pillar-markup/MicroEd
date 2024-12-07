@@ -162,7 +162,7 @@ MDFileTest >> testMDFileUnderstandFile [
 	
 ]
 
-{ #category : 'tests - contents' }
+{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithAEmptyTitle [
 
 	| md |
@@ -170,7 +170,7 @@ MDFileTest >> testMDFileWithAEmptyTitle [
 	self assert: md title equals: 'unnamed'
 ]
 
-{ #category : 'tests - contents' }
+{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithAEmptyTitleAndIsoFileNamerGeneratesCorrectFileName [
 
 	| md |
@@ -183,7 +183,7 @@ MDFileTest >> testMDFileWithAEmptyTitleAndIsoFileNamerGeneratesCorrectFileName [
 		equals: '2024-11-02_unnamed.md'
 ]
 
-{ #category : 'tests - contents' }
+{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithATitle [
 
 	| md | 
@@ -192,7 +192,7 @@ MDFileTest >> testMDFileWithATitle [
 	self assert: md title equals: 'GreatTitle'
 ]
 
-{ #category : 'tests - contents' }
+{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithATitleWithFunnyCharacter [
 
 	| md |
@@ -201,7 +201,7 @@ MDFileTest >> testMDFileWithATitleWithFunnyCharacter [
 	self assert: md title equals: 'GreatTitleBreakTheFile'
 ]
 
-{ #category : 'tests - contents' }
+{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithATitleWithFunnyCharacterAndIsoFileNamerGeneratesCorrectFileName [
 
 	| md |
