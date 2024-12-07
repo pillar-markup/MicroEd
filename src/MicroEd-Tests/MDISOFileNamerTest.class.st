@@ -1,12 +1,12 @@
 Class {
-	#name : 'MDISOFileNameTest',
+	#name : 'MDISOFileNamerTest',
 	#superclass : 'TestCase',
 	#category : 'MicroEd-Tests',
 	#package : 'MicroEd-Tests'
 }
 
 { #category : 'tests' }
-MDISOFileNameTest >> testDefaultNameSetDifferently [
+MDISOFileNamerTest >> testDefaultNameSetDifferently [
 
 	| namer |
 	namer := ISOFileNamer new defaultEmptyName: 'Unknown.md'.
@@ -15,7 +15,7 @@ MDISOFileNameTest >> testDefaultNameSetDifferently [
 ]
 
 { #category : 'tests' }
-MDISOFileNameTest >> testNameWithNameAlreadyTagged [
+MDISOFileNamerTest >> testNameWithNameAlreadyTagged [
 
 	| namer priorName name |
 	namer := ISOFileNamer new.
@@ -25,7 +25,7 @@ MDISOFileNameTest >> testNameWithNameAlreadyTagged [
 ]
 
 { #category : 'tests' }
-MDISOFileNameTest >> testNewName [
+MDISOFileNamerTest >> testNewName [
 
 	| namer |
 	namer := ISOFileNamer new.
@@ -37,7 +37,7 @@ MDISOFileNameTest >> testNewName [
 ]
 
 { #category : 'tests' }
-MDISOFileNameTest >> testNewNameWithNoExtension [
+MDISOFileNamerTest >> testNewNameWithNoExtension [
 
 	| namer |
 	namer := ISOFileNamer new.

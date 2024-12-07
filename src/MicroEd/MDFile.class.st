@@ -1,5 +1,10 @@
 "
-I'm a file utilities class that controls how files are named.
+I'm a kind of file description.
+- I have title which is only alphanumeric.
+- I use a file namer that creates a file name from the title.
+- I have metadata about the file
+	- creation date
+	- modification date 
 "
 Class {
 	#name : 'MDFile',
@@ -7,7 +12,9 @@ Class {
 	#instVars : [
 		'fileReference',
 		'nameOfFileReferenceBeforeSaved',
-		'fileNamer'
+		'fileNamer',
+		'title',
+		'fileName'
 	],
 	#category : 'MicroEd',
 	#package : 'MicroEd'
@@ -26,23 +33,21 @@ MDFile >> addMetaDataElements [
 
 	| root |
 	root := MicrodownParser parse: fileReference contents.
-	
+
 	root hasMetaDataElement
 		ifFalse: [
-			root := MicrodownParser parse: '{
-		"author" : "addos" 
-}
-'.
+			root := MicrodownParser parse: '{ "author" : "addos" }'.
 			root metaDataElement
 				atKey: 'author' put: (fileReference entry reference path at: 3);
 				atKey: 'title' put: nameOfFileReferenceBeforeSaved;
-				atKey: 'lastModificationDate' put: fileReference modificationTime asDate yyyymmdd ]
+				atKey: 'lastModificationDate'
+				put: fileReference modificationTime asDate yyyymmdd ]
 		ifTrue: [
 			root metaDataElement
 				atKey: 'lastModificationDate'
-				put: fileReference modificationTime asDate yyyymmdd].
+				put: fileReference modificationTime asDate yyyymmdd ].
 
-	self writeFileContentsOf: root. 
+	self writeFileContentsOf: root
 ]
 
 { #category : 'accessing' }
@@ -74,6 +79,12 @@ MDFile >> contents: aContent [
 		stream nextPutAll: aContent ]
 ]
 
+{ #category : 'accessing' }
+MDFile >> curateString: aString [
+
+	^ aString select: [ :each | each isAlphaNumeric ]
+]
+
 { #category : 'testing' }
 MDFile >> exists [
 
@@ -87,9 +98,14 @@ MDFile >> extension [
 ]
 
 { #category : 'accessing' }
-MDFile >> extension: anExtension [
+MDFile >> fileName [
 
-	fileReference extension: anExtension
+	^ fileName ifNil: [ fileName := fileNamer newNameBasedOn: self title ]
+]
+
+{ #category : 'accessing' }
+MDFile >> fileNamer: anISOFileNamer [ 
+	fileNamer := anISOFileNamer
 ]
 
 { #category : 'accessing' }
@@ -104,13 +120,20 @@ MDFile >> fileReference: aFileReference [
 	fileReference := aFileReference
 ]
 
-{ #category : 'accessing' }
+{ #category : 'testing' }
 MDFile >> hasFile [ 
 
 	^ fileReference isNotNil 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'initialization' }
+MDFile >> initialize [
+
+	super initialize.
+	fileNamer := ISOFileNamer new. 
+]
+
+{ #category : 'initialization' }
 MDFile >> initializeWithFileReference: aFileReference [
 	"Add a file reference in the MDFile"
 
@@ -127,7 +150,7 @@ MDFile >> initializeWithFileReference: aFileReference [
 	fileReference ensureCreateFile. 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'saving' }
 MDFile >> save: aString [
 
 	fileReference writeStreamDo: [ :str | 
@@ -135,6 +158,18 @@ MDFile >> save: aString [
 	
 		
 
+]
+
+{ #category : 'accessing' }
+MDFile >> title [
+
+	^ title ifNil: [ title := fileNamer defaultEmptyName ]
+]
+
+{ #category : 'accessing' }
+MDFile >> title: aString [
+
+	title := self curateString: aString
 ]
 
 { #category : 'add' }

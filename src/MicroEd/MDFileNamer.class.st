@@ -35,13 +35,14 @@ MDFileNamer >> defaultEmptyName: aString [
 MDFileNamer >> initialize [
 
 	super initialize.
-	defaultEmptyName := 'unnamed.md'.
+	defaultEmptyName := 'unnamed'.
 	separatorString := '_'
 ]
 
 { #category : 'instance creation' }
 MDFileNamer >> newName [
-	^ self defaultEmptyName
+
+	^ self newNameBasedOn: self defaultEmptyName
 ]
 
 { #category : 'naming' }

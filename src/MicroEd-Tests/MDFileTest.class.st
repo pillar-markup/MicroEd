@@ -20,12 +20,17 @@ MDFileTest >> setUp [
 	memoryFS := FileSystem memory.
 	toDelete := OrderedCollection new.
 	mdfile := MDFile new.
+	
 	fileExample := memoryFS / 'example.md'.
-	fileReferenceWithName := (memoryFS / 'anotherFile.md') ensureCreateFile.
+
 	toDelete add: fileExample.
+	
 	fileExample writeStreamDo: [ :stream |
 		stream nextPutAll: 'example file' ].
-	parser := MicrodownParser new.
+	
+	fileReferenceWithName := (memoryFS / 'anotherFile.md')	ensureCreateFile.
+	
+	parser := MicrodownParser new
 ]
 
 { #category : 'running' }
@@ -35,6 +40,16 @@ MDFileTest >> tearDown [
 		select: [ :path | memoryFS exists: path ]
 		thenDo: [ :path | path ensureDelete ].
 	super tearDown
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testContentsIsSaved [
+
+	self assert: fileExample contents equals: 'example file'.
+
+	self
+		assert: (memoryFS / 'example.md') contents
+		equals: 'example file'
 ]
 
 { #category : 'tests' }
@@ -145,4 +160,54 @@ MDFileTest >> testMDFileUnderstandFile [
 	mdfile initializeWithFileReference: fileExample.
 	self assert: mdfile fileReference class equals: FileReference.
 	
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testMDFileWithAEmptyTitle [
+
+	| md |
+	md := MDFile new.
+	self assert: md title equals: 'unnamed'
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testMDFileWithAEmptyTitleAndIsoFileNamerGeneratesCorrectFileName [
+
+	| md |
+	md := MDFile new.
+	md fileNamer: (ISOFileNamer new
+			 date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d');
+			 yourself).
+	self
+		assert: md fileName
+		equals: '2024-11-02_unnamed.md'
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testMDFileWithATitle [
+
+	| md | 
+	md := MDFile new. 
+	md title: 'GreatTitle'.
+	self assert: md title equals: 'GreatTitle'
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testMDFileWithATitleWithFunnyCharacter [
+
+	| md |
+	md := MDFile new.
+	md title: '~`Great!Title@Break/TheFile/'.
+	self assert: md title equals: 'GreatTitleBreakTheFile'
+]
+
+{ #category : 'tests - contents' }
+MDFileTest >> testMDFileWithATitleWithFunnyCharacterAndIsoFileNamerGeneratesCorrectFileName [
+
+	| md |
+	md := MDFile new.
+	md fileNamer: (ISOFileNamer new date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d') ; yourself).
+ 
+	md title: '~`Great!Title@Break/TheFile/'.
+	self assert: md fileName equals: '2024-11-02_GreatTitleBreakTheFile.md'
 ]

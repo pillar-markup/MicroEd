@@ -1,18 +1,18 @@
 Class {
-	#name : 'MDFileNameTest',
+	#name : 'MDFileNamerTest',
 	#superclass : 'TestCase',
 	#category : 'MicroEd-Tests',
 	#package : 'MicroEd-Tests'
 }
 
 { #category : 'tests' }
-MDFileNameTest >> testDefaultName [
+MDFileNamerTest >> testDefaultName [
 
 	self assert: MDFileNamer new defaultEmptyName equals: 'unnamed.md'
 ]
 
 { #category : 'tests' }
-MDFileNameTest >> testDefaultNameSetDifferently [
+MDFileNamerTest >> testDefaultNameSetDifferently [
 
 	| namer |
 	namer := MDFileNamer new defaultEmptyName: 'Unknown.md'.
@@ -21,7 +21,7 @@ MDFileNameTest >> testDefaultNameSetDifferently [
 ]
 
 { #category : 'tests' }
-MDFileNameTest >> testDefaultNameSetDifferentlyDoesNotInfluenceNewNameBasedOn [
+MDFileNamerTest >> testDefaultNameSetDifferentlyDoesNotInfluenceNewNameBasedOn [
 
 	| namer |
 	namer := MDFileNamer new defaultEmptyName: 'Unknown.md'.
@@ -30,7 +30,7 @@ MDFileNameTest >> testDefaultNameSetDifferentlyDoesNotInfluenceNewNameBasedOn [
 ]
 
 { #category : 'tests' }
-MDFileNameTest >> testNameWithNameAlreadyTagged [
+MDFileNamerTest >> testNameWithNameAlreadyTagged [
 
 	| namer priorName name |
 	namer := MDFileNamer new.
@@ -41,7 +41,7 @@ MDFileNameTest >> testNameWithNameAlreadyTagged [
 ]
 
 { #category : 'tests' }
-MDFileNameTest >> testNewNameWithNoExtension [
+MDFileNamerTest >> testNewNameWithNoExtension [
 
 	| name |
 	name := MDFileNamer new newNameBasedOn: 'Unknown'.
