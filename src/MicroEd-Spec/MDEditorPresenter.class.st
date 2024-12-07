@@ -257,7 +257,8 @@ MDEditorPresenter >> renderedText [
 
 { #category : 'actions' }
 MDEditorPresenter >> saveFile [
-
+	self mdFile hasTitle
+		ifFalse: [ ].
 	self mdFile save: self textInputText asString.
 	isTextDirty := false.
 	self window ifNotNil: [ self updateTitle ]

@@ -163,27 +163,6 @@ MDFileTest >> testMDFileUnderstandFile [
 ]
 
 { #category : 'tests - title' }
-MDFileTest >> testMDFileWithAEmptyTitle [
-
-	| md |
-	md := MDFile new.
-	self assert: md title equals: 'unnamed'
-]
-
-{ #category : 'tests - title' }
-MDFileTest >> testMDFileWithAEmptyTitleAndIsoFileNamerGeneratesCorrectFileName [
-
-	| md |
-	md := MDFile new.
-	md fileNamer: (ISOFileNamer new
-			 date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d');
-			 yourself).
-	self
-		assert: md fileName
-		equals: '2024-11-02_unnamed.md'
-]
-
-{ #category : 'tests - title' }
 MDFileTest >> testMDFileWithATitle [
 
 	| md | 
@@ -210,4 +189,44 @@ MDFileTest >> testMDFileWithATitleWithFunnyCharacterAndIsoFileNamerGeneratesCorr
  
 	md title: '~`Great!Title@Break/TheFile/'.
 	self assert: md fileName equals: '2024-11-02_GreatTitleBreakTheFile.md'
+]
+
+{ #category : 'tests - title' }
+MDFileTest >> testMDFileWithAnEmptyTitle [
+
+	| md |
+	md := MDFile new.
+	md title: ''.
+	self assert: md title equals: 'unnamed'
+]
+
+{ #category : 'tests - title' }
+MDFileTest >> testMDFileWithAnEmptyTitleAndIsoFileNamerGeneratesCorrectFileName [
+
+	| md |
+	md := MDFile new.
+	md title: ''.
+	md fileNamer: (ISOFileNamer new
+			 date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d');
+			 yourself).
+	self assert: md fileName equals: '2024-11-02_unnamed.md'
+]
+
+{ #category : 'tests - title' }
+MDFileTest >> testMDFileWithAnUnsetTitle [
+
+	| md |
+	md := MDFile new.
+	self assert: md title equals: 'unnamed'
+]
+
+{ #category : 'tests - title' }
+MDFileTest >> testMDFileWithAnUnsetTitleAndIsoFileNamerGeneratesCorrectFileName [
+
+	| md |
+	md := MDFile new.
+	md fileNamer: (ISOFileNamer new
+			 date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d');
+			 yourself).
+	self assert: md fileName equals: '2024-11-02_unnamed.md'
 ]

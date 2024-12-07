@@ -82,7 +82,10 @@ MDFile >> contents: aContent [
 { #category : 'accessing' }
 MDFile >> curateString: aString [
 
-	^ aString select: [ :each | each isAlphaNumeric ]
+	| curated |
+	curated := aString select: [ :each | each isAlphaNumeric ].
+	curated ifEmpty: [ curated := fileNamer defaultEmptyName ].
+	^ curated
 ]
 
 { #category : 'testing' }
@@ -109,9 +112,9 @@ MDFile >> fileNamer: anISOFileNamer [
 ]
 
 { #category : 'accessing' }
-MDFile >> fileReference [ 
+MDFile >> fileReference [
 
-	^ fileReference ifNil: [ fileReference := 'unnamed.md' asFileReference ]
+	^ fileReference ifNil: [ fileReference := self fileName asFileReference ]
 ]
 
 { #category : 'accessing' }
@@ -121,9 +124,9 @@ MDFile >> fileReference: aFileReference [
 ]
 
 { #category : 'testing' }
-MDFile >> hasFile [ 
+MDFile >> hasTitle [
 
-	^ fileReference isNotNil 
+	^ title isNotNil
 ]
 
 { #category : 'initialization' }
@@ -153,11 +156,7 @@ MDFile >> initializeWithFileReference: aFileReference [
 { #category : 'saving' }
 MDFile >> save: aString [
 
-	fileReference writeStreamDo: [ :str | 
-		str nextPutAll: aString ]
-	
-		
-
+	self fileReference writeStreamDo: [ :str | str nextPutAll: aString ]
 ]
 
 { #category : 'accessing' }
