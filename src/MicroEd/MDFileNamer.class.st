@@ -1,3 +1,9 @@
+"
+I represent a file name with the following structure:
+
+- a list of parts separated by a separator where a part can only contain alpha numerical characters.
+- finished with an extension
+"
 Class {
 	#name : 'MDFileNamer',
 	#superclass : 'Object',
@@ -19,12 +25,27 @@ MDFileNamer >> addExtensionIfNeeded: aString [
 ]
 
 { #category : 'initialization' }
-MDFileNamer >> curateString: aString [
+MDFileNamer >> curateParts: aCollection [
+	"aString a name without extension e.g. .md
+	Return a string with preserved separated parts but where each part in only alphanumerical."
 
-	| curated |
-	curated := aString select: [ :each | each isAlphaNumeric ].
+	| curatedParts curated |
+	curatedParts := aCollection collect: [ :part |
+		                part select: [ :each | each isAlphaNumeric ] ].
+	curated := ''.
+	curatedParts
+		do: [ :part | curated := curated , part ]
+		separatedBy: [ curated := curated , self separatorString ].
 	curated ifEmpty: [ curated := self defaultEmptyName ].
 	^ curated
+]
+
+{ #category : 'initialization' }
+MDFileNamer >> curateString: aString [
+	"aString a name without extension e.g. .md
+	Return a string with preserved separated parts but where each part in only alphanumerical."
+
+	^ self curateParts: (aString splitOn: separatorString) 
 ]
 
 { #category : 'accessing' }
@@ -59,7 +80,7 @@ MDFileNamer >> newName [
 MDFileNamer >> newNameBasedOn: aString [
 	"Answer a String representing the receiver's file name with extension"
 
-	^ self addExtensionIfNeeded: (self curateString: aString)
+	^ self addExtensionIfNeeded: (self curateString: (aString withoutSuffix: '.md'))
 ]
 
 { #category : 'accessing' }

@@ -19,7 +19,7 @@ MDISOFileNamerTest >> testNameWithNameAlreadyTagged [
 
 	| namer priorName name |
 	namer := ISOFileNamer new.
-	priorName := 'Bla', namer separatorString, 'Unknown.md'.
+	priorName := '2024-02-03' , namer separatorString , 'Unknown.md'.
 	name := namer newNameBasedOn: priorName.
 	self assert: name equals: priorName
 ]
@@ -48,28 +48,42 @@ MDISOFileNamerTest >> testNewNameWithNoExtension [
 		equals: '2024-11-02_Unknown.md'
 ]
 
+{ #category : 'tests' }
+MDISOFileNamerTest >> testNewNameWithNoExtensionButPartsShouldStartWithDate [
+
+	| namer |
+	namer := ISOFileNamer new.
+	namer date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d').
+
+	self
+		assert: (namer newNameBasedOn: '2024-11-02_part12_part34_part56 78')
+		equals: '2024-11-02_part12_part34_part5678.md'
+]
+
 { #category : 'tests - revert' }
 MDISOFileNamerTest >> testTitleFromFileName [
 
 	self
-		assert:
-		(ISOFileNamer new extractBaseNameFrom: '2024-11-02_ThisIsATitle.md')
-		equals: 'ThisIsATitle'
+		assert: (ISOFileNamer new titleFromParts:
+				 ('2024-11-02_ThisIsATitle_Zork Zork' splitOn: '_') allButFirst)
+		equals: 'ThisIsATitle_ZorkZork'
 ]
 
 { #category : 'tests - revert' }
 MDISOFileNamerTest >> testTitleFromFileNameBadDate [
 
-	self
-		should: [ (ISOFileNamer new extractBaseNameFrom: 'YYgjghjgjhg_Unknown.md') ]
-		raise: DateError 
+	self 
+		assert: (ISOFileNamer new extractBaseNameFrom: 'YYgjghjgjhg_Unknown.md')
+		equals: 'Unknown'
+	
+		
 ]
 
 { #category : 'tests - revert' }
 MDISOFileNamerTest >> testTitleFromFileNameBadEndEmpty [
 
 	self
-		assert: (ISOFileNamer new extractBaseNameFrom: '2024-11-02_.md')
+		assert: (ISOFileNamer new extractBaseNameFrom: ('2024-11-02_' withoutSuffix: '.md'))
 		equals: 'unnamed'
 ]
 
