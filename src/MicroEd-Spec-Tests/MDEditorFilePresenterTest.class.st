@@ -25,21 +25,19 @@ MDEditorFilePresenterTest >> setUp [
 	super setUp.
 	memoryFS := FileSystem memory.
 	presenter := MDEditorPresenter new.
-	window := presenter open.
+	
 	text := 'This is just a test'.
 	fileReference := memoryFS / 'aFileReference.md'.
-	fileReference writeStreamDo: [
-		                 :stream | stream nextPutAll: text ].
+	fileReference writeStreamDo: [ :stream | stream nextPutAll: text ].
 
-	mdFile := MDFile newFromFileReference: fileReference.
+	mdFile := MDFile newFromFileReference: fileReference
 ]
 
 { #category : 'running' }
-MDEditorFilePresenterTest >> tearDown [ 
+MDEditorFilePresenterTest >> tearDown [
 
-	window ifNotNil: [ window close ].
 	fileReference ensureDelete.
-	super tearDown.
+	super tearDown
 ]
 
 { #category : 'tests' }
@@ -63,26 +61,19 @@ MDEditorFilePresenterTest >> testGotCurrentFileWhenIsSpecify [
 	self assert: presenter mdFile class equals: MDFile
 ]
 
-{ #category : 'tests-interaction' }
-MDEditorFilePresenterTest >> testOpenIsWorkingSmokeTest [
-
-	self assert: window isOpen
-
-]
-
 { #category : 'running' }
 MDEditorFilePresenterTest >> testSaveWithExtension [
 
 	| text textPresenter |
 	text := 'This is just a test'.
 	textPresenter := self mockTextObject: text.
-	presenter textInputText: text. 
+	presenter textInputText: text.
 	presenter mdFile: mdFile.
+	mdFile title: 'Dummy title'.
 	presenter saveFile.
 
 	self assert: mdFile extension equals: 'md'.
-	self assert: mdFile contents equals: text.
-	
+	self assert: mdFile contents equals: text
 ]
 
 { #category : 'tests' }
