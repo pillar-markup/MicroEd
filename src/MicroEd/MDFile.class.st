@@ -136,23 +136,6 @@ MDFile >> initialize [
 	fileNamer := ISOFileNamer new. 
 ]
 
-{ #category : 'initialization' }
-MDFile >> initializeWithFileReference: aFileReference [
-	"Add a file reference in the MDFile"
-
-	| newFileReference |
-	aFileReference ensureCreateFile.
-	fileReference := aFileReference.
-	"Create of a new file reference which has the ISO format with the default extension: 'md' "
-	newFileReference := fileReference extension isEmptyOrNil
-		                    ifTrue: [ (fileReference basename , '.md') ]
-		                    ifFalse: [ fileReference basename ].
-	aFileReference delete.
-
-	fileReference := newFileReference asFileReference. 
-	fileReference ensureCreateFile. 
-]
-
 { #category : 'saving' }
 MDFile >> save: aString [
 

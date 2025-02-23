@@ -176,12 +176,12 @@ MDEditorPresenter >> initializePresentersWithText: anInputText [
 	textInput := self newText.
 	self textInputText: anInputText.
 	textInput
-		bindKeyCombination: Character cr asKeyCombination
+		bindKeyCombination: (KMKeyCombinationChoice withShortcuts: { Character space asKeyCombination . Character cr asKeyCombination })
 		toAction: [ :target :morph :event |
 			[ self renderDocument ] schedule.
 			event wasHandled: false ].
 
-	textInput eventHandler whenKeyDownDo: [ :anEvent | 
+	textInput eventHandler whenKeyDownDo: [ :anEvent |
 		isTextDirty := true.
 		anEvent wasHandled: false ].
 
@@ -310,7 +310,7 @@ MDEditorPresenter >> textInputText: aString [
 { #category : 'api' }
 MDEditorPresenter >> title [
 
-	^ 'MicroDown Editor - ' , self mdFile basename
+	^ 'MicroDown Editor - ' , self mdFile fileName
 ]
 
 { #category : 'api' }
