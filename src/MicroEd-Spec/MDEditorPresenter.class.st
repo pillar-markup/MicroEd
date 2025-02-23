@@ -35,8 +35,11 @@ MDEditorPresenter class >> menuCommandOn: aBuilder [
 
 { #category : 'examples' }
 MDEditorPresenter class >> open [
+
 	<example>
-	^ self new open
+	| pres |
+	pres := self new. 
+	^ pres openWithLayout: pres defaultLayoutNoMenu 
 ]
 
 { #category : 'layout' }
@@ -49,6 +52,17 @@ MDEditorPresenter >> defaultLayout [
 			add: renderedText;
 		yourself);
 	yourself
+]
+
+{ #category : 'layout' }
+MDEditorPresenter >> defaultLayoutNoMenu [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpPanedLayout newLeftToRight
+				   add: textInput;
+				   add: renderedText;
+				   yourself);
+		  yourself
 ]
 
 { #category : 'actions' }

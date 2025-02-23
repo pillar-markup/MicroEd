@@ -32,7 +32,7 @@ MDFile class >> newFromFileReference: aFileReference [
 MDFile >> addMetaDataElements [
 
 	| root newDoc |
-
+	self fileReference ensureCreateFile.
 	root := MicrodownParser parse: self fileReference contents.
 
 	root hasMetaDataElement
@@ -105,7 +105,8 @@ MDFile >> fileNamer: anISOFileNamer [
 { #category : 'accessing' }
 MDFile >> fileReference [
 
-	^ fileReference ifNil: [ fileReference := self fileName asFileReference ]
+	^ fileReference ifNil: [
+		  fileReference := FileSystem workingDirectory / self fileName ]
 ]
 
 { #category : 'accessing' }
