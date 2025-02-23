@@ -7,17 +7,18 @@ Class {
 
 { #category : 'baselines' }
 BaselineOfMicroEd >> baseline: spec [
-	<baseline>
 
-	spec for: #'common' do: [
-		"We need the Extensions group from Microdown to use MicTextualMicrodownExporter"
-		spec baseline: 'Microdown' with: [
-			spec repository: 'github://pillar-markup/Microdown/src' ].
-		spec 
-			package: 'MicroEd' with: [ spec 
-				loads: 'Extensions'; 
-				requires: #('Microdown') ];
-			package: 'MicroEd-Spec'  with: [ spec requires: #('MicroEd') ];
-			package: 'MicroEd-Tests' with: [ spec requires: #('MicroEd') ];
-			package: 'MicroEd-Spec-Tests' with: [ spec requires: #('MicroEd') ] ]
+	<baseline>
+	spec
+		for: #common
+		do: [ "We need the Extensions group from Microdown to use MicTextualMicrodownExporter"
+			spec
+				baseline: 'Microdown'
+				with: [ spec repository: 'github://pillar-markup/Microdown:v2.7.2/src' ].
+			spec
+				package: 'MicroEd' with: [ spec requires: #( 'Microdown' ) ];
+				package: 'MicroEd-Spec' with: [ spec requires: #( 'MicroEd' ) ];
+				package: 'MicroEd-Tests' with: [ spec requires: #( 'MicroEd' ) ];
+				package: 'MicroEd-Spec-Tests'
+				with: [ spec requires: #( 'MicroEd' ) ] ]
 ]
