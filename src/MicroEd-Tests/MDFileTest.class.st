@@ -19,13 +19,16 @@ MDFileTest >> setUp [
 	| fileNamer |
 	super setUp.
 	memoryFS := FileSystem memory.
-	
+
 	mdFollowingConventionFile := MDFile new.
 	fileNamer := mdFollowingConventionFile fileNamer.
-	fileNamer date:
-		(Date readFrom: '2024-11-02' readStream pattern: 'y-m-d').
+	fileNamer date: (Date readFrom: '2024-11-02' readStream pattern: 'y-m-d').
 
-	fileReferenceFollowingConventions := memoryFS / (mdFollowingConventionFile fileNamer newNameBasedOn: 'example').
+	fileReferenceFollowingConventions := memoryFS
+	                                     /
+	                                     (mdFollowingConventionFile
+		                                      fileNamer newNameBasedOn:
+		                                      'example').
 
 	fileReferenceFollowingConventions writeStreamDo: [ :stream |
 		stream nextPutAll: 'example file' ].
@@ -38,11 +41,13 @@ MDFileTest >> setUp [
 
 { #category : 'tests - contents' }
 MDFileTest >> testContentsIsSaved [
-
-	self assert: fileReferenceFollowingConventions contents equals: 'example file'.
+	
+	self
+		assert: fileReferenceFollowingConventions contents
+		equals: 'example file'.
 
 	self
-		assert: (memoryFS / 'example.md') contents
+		assert: (memoryFS / '2024-11-02_example.md') contents
 		equals: 'example file'
 ]
 
@@ -68,7 +73,7 @@ MDFileTest >> testMDFileCreationWithoutExistingFile [
 
 	| fileWithoutFileReference |
 	fileWithoutFileReference := MDFile new.
-	self assert: fileWithoutFileReference hasFile not.
+	self deny: fileWithoutFileReference hasFile
 ]
 
 { #category : 'tests' }
@@ -76,57 +81,25 @@ MDFileTest >> testMDFileExistingFileWithName [
 
 	| fileReferenceWithoutName |
 	fileReferenceWithoutName := (memoryFS / 'name.md') ensureCreateFile.
-	mdFollowingConventionFile initializeWithFileReference:
-		fileReferenceWithoutName.
-	self assert: (mdFollowingConventionFile basename endsWith: 'name.md')
-]
-
-{ #category : 'tests' }
-MDFileTest >> testMDFileExistingFileWithoutName [
-
-	| file fileReferenceWithoutName |
- 	
-	fileReferenceWithoutName := (memoryFS / '.md') ensureCreateFile.
-	toDelete add: fileReferenceWithoutName. 
-	file := MDFile new.
-	file initializeWithFileReference: fileReferenceWithoutName.
-	self denyEmpty: file basename. 
-	
+	mdFollowingConventionFile initializeWithFileReference: fileReferenceWithoutName.
+	self assert: (mdFollowingConventionFile fileReference basename endsWith: 'name.md')
 ]
 
 { #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceAddMetaData [
 
 	| root file |
-	
 	file := memoryFS / 'test2'.
-	file ensureCreateFile. 
-	mdFollowingConventionFile initializeWithFileReference: file. 
-	mdFollowingConventionFile addMetaDataElements. 
-	
+	file ensureCreateFile.
+	mdFollowingConventionFile initializeWithFileReference: file.
+	mdFollowingConventionFile addMetaDataElements.
+
 	root := MicrodownParser parse: mdFollowingConventionFile contents.
 	self assert: root hasMetaDataElement.
-	
-	
-]
-
-{ #category : 'tests' }
-MDFileTest >> testMDFileHasFileReferenceHasMetaData [
-
-	| root file |
-	
-	file := memoryFS / 'test2'.
-	file ensureCreateFile. 
-	mdFollowingConventionFile initializeWithFileReference: file. 
-	root := MicrodownParser parse: mdFollowingConventionFile fileReference contents.
-	mdFollowingConventionFile addMetaDataElements. 
-	
-	root := MicrodownParser parse: mdFollowingConventionFile contents.
-	self assert: root hasMetaDataElement.
-	
-	mdFollowingConventionFile fileReference delete. 
-	
-	
+	self 
+		assert: (root metaDataElement atKey: 'title') 
+		equals: 'unnamed'.
+		
 ]
 
 { #category : 'tests' }
@@ -146,11 +119,11 @@ MDFileTest >> testMDFileHasFileReferenceHasNotMetaData [
 { #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	
-	| file date |
-	file := MDFile newFromFileReference: fileReferenceWithName. 
-	date := Date today yyyymmdd.
-	self assert: (file basename includesSubstring: date).
-	self deny: fileReferenceWithName exists
+	| file |
+	file := MDFile new.
+	file fileNamer date: (Date newDay: 21 month: 9  year: 1969). 
+	self assert: file fileReference basename equals: '1969-09-21_unnamed.md'.
+	
 ]
 
 { #category : 'tests - title' }

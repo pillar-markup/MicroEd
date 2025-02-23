@@ -31,39 +31,34 @@ MDFile class >> newFromFileReference: aFileReference [
 { #category : 'add' }
 MDFile >> addMetaDataElements [
 
-	| root |
-	root := MicrodownParser parse: fileReference contents.
+	| root newDoc |
+
+	root := MicrodownParser parse: self fileReference contents.
 
 	root hasMetaDataElement
 		ifFalse: [
-			root := MicrodownParser parse: '{ "author" : "addos" }'.
+"pay attention MD is line based. so the } should be on another line."
+			newDoc := MicrodownParser parse: '{ 
+"author" : "addos" 
+}'.
+			root addChild: newDoc children first. 
+			"yes the metadata element in the first one.
+			The API of Microdown could be better."
 			root metaDataElement
-				atKey: 'author' put: (fileReference entry reference path at: 3);
-				atKey: 'title' put: nameOfFileReferenceBeforeSaved;
+				atKey: 'author' 
+				put: 'toto for now';
+				
+				atKey: 'title' 
+				put: self title;
+				
 				atKey: 'lastModificationDate'
-				put: fileReference modificationTime asDate yyyymmdd ]
+				put: self fileReference modificationTime asDate yyyymmdd ]
 		ifTrue: [
 			root metaDataElement
 				atKey: 'lastModificationDate'
-				put: fileReference modificationTime asDate yyyymmdd ].
+				put: self fileReference modificationTime asDate yyyymmdd ].
 
 	self writeFileContentsOf: root
-]
-
-{ #category : 'accessing' }
-MDFile >> basename [
-	"Answer a String representing the receiver's file name"
-
-	| dateCreationOfFileReference |
-	fileReference ifNil: [
-		nameOfFileReferenceBeforeSaved := 'Untitled'.
-		^ nameOfFileReferenceBeforeSaved ].
-	
-	nameOfFileReferenceBeforeSaved := fileReference basename.
-	dateCreationOfFileReference := Date today yyyymmdd.
-	(fileReference basename includesSubstring: dateCreationOfFileReference) 
-		ifFalse: [ ^ dateCreationOfFileReference , '_' , fileReference basename ].
-	^ fileReference basename
 ]
 
 { #category : 'accessing' }
@@ -82,13 +77,13 @@ MDFile >> contents: aContent [
 { #category : 'testing' }
 MDFile >> exists [
 
-	^ fileReference exists
+	^ self fileReference exists
 ]
 
 { #category : 'accessing' }
 MDFile >> extension [
 
-	^ fileReference extension
+	^ self fileReference extension
 ]
 
 { #category : 'accessing' }
@@ -122,6 +117,12 @@ MDFile >> fileReference: aFileReference [
 ]
 
 { #category : 'testing' }
+MDFile >> hasFile [
+	
+	^ fileReference isNotNil
+]
+
+{ #category : 'testing' }
 MDFile >> hasTitle [
 
 	^ title isNotNil
@@ -143,8 +144,8 @@ MDFile >> initializeWithFileReference: aFileReference [
 	fileReference := aFileReference.
 	"Create of a new file reference which has the ISO format with the default extension: 'md' "
 	newFileReference := fileReference extension isEmptyOrNil
-		                    ifTrue: [ (self basename , '.md') ]
-		                    ifFalse: [ self basename ].
+		                    ifTrue: [ (fileReference basename , '.md') ]
+		                    ifFalse: [ fileReference basename ].
 	aFileReference delete.
 
 	fileReference := newFileReference asFileReference. 
