@@ -63,9 +63,9 @@ MDFileTest >> testCreationFromAFileReferenceFollowingTheFileConventions [
 { #category : 'tests' }
 MDFileTest >> testMDFileCreationWithExistingFile [
 
-	mdFollowingConventionFile initializeWithFileReference: fileReferenceFollowingConventions.
-	self assert: mdFollowingConventionFile hasFile.
-	
+	mdFollowingConventionFile fileReference:
+		fileReferenceFollowingConventions.
+	self assert: mdFollowingConventionFile hasFile
 ]
 
 { #category : 'tests' }
@@ -81,8 +81,11 @@ MDFileTest >> testMDFileExistingFileWithName [
 
 	| fileReferenceWithoutName |
 	fileReferenceWithoutName := (memoryFS / 'name.md') ensureCreateFile.
-	mdFollowingConventionFile initializeWithFileReference: fileReferenceWithoutName.
-	self assert: (mdFollowingConventionFile fileReference basename endsWith: 'name.md')
+	mdFollowingConventionFile fileReference:
+		fileReferenceWithoutName.
+	self assert:
+		(mdFollowingConventionFile fileReference basename endsWith:
+			 'name.md')
 ]
 
 { #category : 'tests' }
@@ -91,29 +94,23 @@ MDFileTest >> testMDFileHasFileReferenceAddMetaData [
 	| root file |
 	file := memoryFS / 'test2'.
 	file ensureCreateFile.
-	mdFollowingConventionFile initializeWithFileReference: file.
+	mdFollowingConventionFile fileReference: file.
 	mdFollowingConventionFile addMetaDataElements.
 
 	root := MicrodownParser parse: mdFollowingConventionFile contents.
 	self assert: root hasMetaDataElement.
-	self 
-		assert: (root metaDataElement atKey: 'title') 
-		equals: 'unnamed'.
-		
+	self assert: (root metaDataElement atKey: 'title') equals: 'unnamed'
 ]
 
 { #category : 'tests' }
 MDFileTest >> testMDFileHasFileReferenceHasNotMetaData [
 
 	| root file |
-	
 	file := memoryFS / 'test3'.
-	file ensureCreateFile. 
-	mdFollowingConventionFile initializeWithFileReference: file. 
+	file ensureCreateFile.
+	mdFollowingConventionFile fileReference: file.
 	root := MicrodownParser parse: mdFollowingConventionFile contents.
-	self deny: root hasMetaDataElement.
-	
-	
+	self deny: root hasMetaDataElement
 ]
 
 { #category : 'tests' }

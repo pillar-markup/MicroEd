@@ -21,11 +21,11 @@ Class {
 }
 
 { #category : 'instance creation' }
-MDFile class >> newFromFileReference: aFileReference [ 
-	
+MDFile class >> newFromFileReference: aFileReference [
+
 	^ self new
-		initializeWithFileReference: aFileReference;
-		yourself
+		  fileReference: aFileReference;
+		  yourself
 ]
 
 { #category : 'add' }
@@ -64,14 +64,13 @@ MDFile >> addMetaDataElements [
 { #category : 'accessing' }
 MDFile >> contents [
 
-	^ fileReference contents  
+	^ self fileReference contents
 ]
 
 { #category : 'accessing' }
 MDFile >> contents: aContent [
 
-	fileReference writeStreamDo: [ :stream |
-		stream nextPutAll: aContent ]
+	self fileReference writeStreamDo: [ :stream | stream nextPutAll: aContent ]
 ]
 
 { #category : 'testing' }
@@ -118,6 +117,8 @@ MDFile >> fileReference: aFileReference [
 
 { #category : 'testing' }
 MDFile >> hasFile [
+
+	"pay attention should not use the lazy accessor."
 	
 	^ fileReference isNotNil
 ]
