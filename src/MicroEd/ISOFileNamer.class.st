@@ -36,7 +36,7 @@ ISOFileNamer >> extractBaseNameFrom: aString [
 
 { #category : 'naming' }
 ISOFileNamer >> newNameBasedOn: aString [
-	"Answer a String representing the receiver's file name"
+	"Answer a String representing the receiver's file name with extension."
 
 	| aStringWithExtension |
 	aStringWithExtension := self addExtensionIfNeeded: aString.

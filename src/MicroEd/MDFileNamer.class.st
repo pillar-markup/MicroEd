@@ -50,13 +50,14 @@ MDFileNamer >> initialize [
 
 { #category : 'instance creation' }
 MDFileNamer >> newName [
-
+	"returns a new default file with extension."
+	
 	^ self newNameBasedOn: self defaultEmptyName
 ]
 
 { #category : 'naming' }
 MDFileNamer >> newNameBasedOn: aString [
-	"Answer a String representing the receiver's file name"
+	"Answer a String representing the receiver's file name with extension"
 
 	^ self addExtensionIfNeeded: (self curateString: aString)
 ]

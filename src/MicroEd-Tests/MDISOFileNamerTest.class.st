@@ -10,7 +10,7 @@ MDISOFileNamerTest >> testDefaultNameSetDifferently [
 
 	| namer |
 	namer := ISOFileNamer new defaultEmptyName: 'Unknown.md'.
-	
+	namer date: (Date newDay: 7 month: 12 year: 2024).
 	self assert: namer newName equals: '2024-12-07_Unknown.md'
 ]
 
@@ -51,9 +51,10 @@ MDISOFileNamerTest >> testNewNameWithNoExtension [
 { #category : 'tests - revert' }
 MDISOFileNamerTest >> testTitleFromFileName [
 
-	self 
-		assert: (ISOFileNamer new extractBaseNameFrom: '2024-11-02_Unknown.md')
-		equals: 'Unknown'
+	self
+		assert:
+		(ISOFileNamer new extractBaseNameFrom: '2024-11-02_ThisIsATitle.md')
+		equals: 'ThisIsATitle'
 ]
 
 { #category : 'tests - revert' }
@@ -68,9 +69,8 @@ MDISOFileNamerTest >> testTitleFromFileNameBadDate [
 MDISOFileNamerTest >> testTitleFromFileNameBadEndEmpty [
 
 	self
-		assert:
-		(ISOFileNamer new extractBaseNameFrom: '2024-11-02_.md')
-		equals: 'Unknown'
+		assert: (ISOFileNamer new extractBaseNameFrom: '2024-11-02_.md')
+		equals: 'unnamed'
 ]
 
 { #category : 'tests - revert' }
@@ -79,5 +79,5 @@ MDISOFileNamerTest >> testTitleFromFileNameBadEndNotAlphanumerical [
 	self
 		assert:
 		(ISOFileNamer new extractBaseNameFrom: '2024-11-02_!!/\.md')
-		equals: 'Unknown'
+		equals: 'unnamed'
 ]
