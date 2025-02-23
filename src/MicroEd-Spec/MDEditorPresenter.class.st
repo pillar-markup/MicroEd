@@ -134,7 +134,7 @@ MDEditorPresenter >> initializeMenuBar [
 					description: 'Open file';
 					shortcut: $o meta;
 					icon: (self iconNamed: #openIconName);
-					action: [ self openFile ] ].
+					action: [ self loadFile ] ].
 			group addItem: [ :item |
 				item
 					name: 'Save';
@@ -199,26 +199,8 @@ MDEditorPresenter >> initializeWindow: aWindowPresenter [
 		windowIcon: (self application iconNamed: #browseIconName)
 ]
 
-{ #category : 'testing' }
-MDEditorPresenter >> mayLoseEdits [
-
-	^ self textInputText isNotEmpty and: [ isTextDirty ]
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> mdFile [
-
-	^ mdFile ifNil: [ mdFile := MDFile new ]
-]
-
-{ #category : 'accessing' }
-MDEditorPresenter >> mdFile: aMDFile [
-
-	mdFile := aMDFile
-]
-
 { #category : 'actions' }
-MDEditorPresenter >> openFile [
+MDEditorPresenter >> loadFile [
 	"OPEN button is pressed: open window"
 
 	| selectedFile |
@@ -239,6 +221,24 @@ MDEditorPresenter >> openFile [
 		ifNil: [ self mdFile: MDFile new ]
 ]
 
+{ #category : 'testing' }
+MDEditorPresenter >> mayLoseEdits [
+
+	^ self textInputText isNotEmpty and: [ isTextDirty ]
+]
+
+{ #category : 'accessing' }
+MDEditorPresenter >> mdFile [
+
+	^ mdFile ifNil: [ mdFile := MDFile new ]
+]
+
+{ #category : 'accessing' }
+MDEditorPresenter >> mdFile: aMDFile [
+
+	mdFile := aMDFile
+]
+
 { #category : 'actions' }
 MDEditorPresenter >> renderDocument [
 	"RENDER button is pressed: render input to output text"
@@ -257,8 +257,14 @@ MDEditorPresenter >> renderedText [
 
 { #category : 'actions' }
 MDEditorPresenter >> saveFile [
-	self mdFile hasTitle
-		ifFalse: [ ].
+
+	self mdFile hasTitle ifFalse: [ 
+		| answer |
+		answer := self application newRequest
+		                 title: 'Enter a title.';
+		                 onCancel: [ '' ];
+		                 openModal.
+		self mdFile title: answer ].
 	self mdFile save: self textInputText asString.
 	isTextDirty := false.
 	self window ifNotNil: [ self updateTitle ]

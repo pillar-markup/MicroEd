@@ -18,6 +18,15 @@ MDFileNamer >> addExtensionIfNeeded: aString [
 	
 ]
 
+{ #category : 'initialization' }
+MDFileNamer >> curateString: aString [
+
+	| curated |
+	curated := aString select: [ :each | each isAlphaNumeric ].
+	curated ifEmpty: [ curated := self defaultEmptyName ].
+	^ curated
+]
+
 { #category : 'accessing' }
 MDFileNamer >> defaultEmptyName [
 
@@ -48,8 +57,8 @@ MDFileNamer >> newName [
 { #category : 'naming' }
 MDFileNamer >> newNameBasedOn: aString [
 	"Answer a String representing the receiver's file name"
-	
-	^ self addExtensionIfNeeded: aString
+
+	^ self addExtensionIfNeeded: (self curateString: aString)
 ]
 
 { #category : 'accessing' }

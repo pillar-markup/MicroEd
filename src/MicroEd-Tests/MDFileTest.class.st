@@ -3,11 +3,11 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'memoryFS',
-		'fileExample',
 		'toDelete',
 		'fileReferenceWithName',
-		'mdfile',
-		'parser'
+		'parser',
+		'mdFollowingConventionFile',
+		'fileReferenceFollowingConventions'
 	],
 	#category : 'MicroEd-Tests',
 	#package : 'MicroEd-Tests'
@@ -16,47 +16,50 @@ Class {
 { #category : 'running' }
 MDFileTest >> setUp [
 
+	| fileNamer |
 	super setUp.
 	memoryFS := FileSystem memory.
-	toDelete := OrderedCollection new.
-	mdfile := MDFile new.
 	
-	fileExample := memoryFS / 'example.md'.
+	mdFollowingConventionFile := MDFile new.
+	fileNamer := mdFollowingConventionFile fileNamer.
+	fileNamer date:
+		(Date readFrom: '2024-11-02' readStream pattern: 'y-m-d').
 
-	toDelete add: fileExample.
-	
-	fileExample writeStreamDo: [ :stream |
+	fileReferenceFollowingConventions := memoryFS / (mdFollowingConventionFile fileNamer newNameBasedOn: 'example').
+
+	fileReferenceFollowingConventions writeStreamDo: [ :stream |
 		stream nextPutAll: 'example file' ].
-	
-	fileReferenceWithName := (memoryFS / 'anotherFile.md')	ensureCreateFile.
-	
+
+	fileReferenceWithName := (memoryFS / 'anotherFile.md')
+		                         ensureCreateFile.
+
 	parser := MicrodownParser new
-]
-
-{ #category : 'running' }
-MDFileTest >> tearDown [ 
-
-	toDelete
-		select: [ :path | memoryFS exists: path ]
-		thenDo: [ :path | path ensureDelete ].
-	super tearDown
 ]
 
 { #category : 'tests - contents' }
 MDFileTest >> testContentsIsSaved [
 
-	self assert: fileExample contents equals: 'example file'.
+	self assert: fileReferenceFollowingConventions contents equals: 'example file'.
 
 	self
 		assert: (memoryFS / 'example.md') contents
 		equals: 'example file'
 ]
 
+{ #category : 'tests - fileReference' }
+MDFileTest >> testCreationFromAFileReferenceFollowingTheFileConventions [
+
+	| mdFile |
+	mdFile := MDFile new.
+	mdFile fileReference: fileReferenceFollowingConventions.
+	self assert: mdFile hasFile
+]
+
 { #category : 'tests' }
 MDFileTest >> testMDFileCreationWithExistingFile [
 
-	mdfile initializeWithFileReference: fileExample.
-	self assert: mdfile hasFile.
+	mdFollowingConventionFile initializeWithFileReference: fileReferenceFollowingConventions.
+	self assert: mdFollowingConventionFile hasFile.
 	
 ]
 
@@ -71,15 +74,11 @@ MDFileTest >> testMDFileCreationWithoutExistingFile [
 { #category : 'tests' }
 MDFileTest >> testMDFileExistingFileWithName [
 
-	
 	| fileReferenceWithoutName |
-	
 	fileReferenceWithoutName := (memoryFS / 'name.md') ensureCreateFile.
-	toDelete add: fileReferenceWithoutName. 
-	mdfile initializeWithFileReference: fileReferenceWithoutName.
-	self assert: (mdfile basename endsWith: 'name.md'). 
-
-	
+	mdFollowingConventionFile initializeWithFileReference:
+		fileReferenceWithoutName.
+	self assert: (mdFollowingConventionFile basename endsWith: 'name.md')
 ]
 
 { #category : 'tests' }
@@ -102,10 +101,10 @@ MDFileTest >> testMDFileHasFileReferenceAddMetaData [
 	
 	file := memoryFS / 'test2'.
 	file ensureCreateFile. 
-	mdfile initializeWithFileReference: file. 
-	mdfile addMetaDataElements. 
+	mdFollowingConventionFile initializeWithFileReference: file. 
+	mdFollowingConventionFile addMetaDataElements. 
 	
-	root := MicrodownParser parse: mdfile contents.
+	root := MicrodownParser parse: mdFollowingConventionFile contents.
 	self assert: root hasMetaDataElement.
 	
 	
@@ -118,14 +117,14 @@ MDFileTest >> testMDFileHasFileReferenceHasMetaData [
 	
 	file := memoryFS / 'test2'.
 	file ensureCreateFile. 
-	mdfile initializeWithFileReference: file. 
-	root := MicrodownParser parse: mdfile fileReference contents.
-	mdfile addMetaDataElements. 
+	mdFollowingConventionFile initializeWithFileReference: file. 
+	root := MicrodownParser parse: mdFollowingConventionFile fileReference contents.
+	mdFollowingConventionFile addMetaDataElements. 
 	
-	root := MicrodownParser parse: mdfile contents.
+	root := MicrodownParser parse: mdFollowingConventionFile contents.
 	self assert: root hasMetaDataElement.
 	
-	mdfile fileReference delete. 
+	mdFollowingConventionFile fileReference delete. 
 	
 	
 ]
@@ -137,8 +136,8 @@ MDFileTest >> testMDFileHasFileReferenceHasNotMetaData [
 	
 	file := memoryFS / 'test3'.
 	file ensureCreateFile. 
-	mdfile initializeWithFileReference: file. 
-	root := MicrodownParser parse: mdfile contents.
+	mdFollowingConventionFile initializeWithFileReference: file. 
+	root := MicrodownParser parse: mdFollowingConventionFile contents.
 	self deny: root hasMetaDataElement.
 	
 	
@@ -152,14 +151,6 @@ MDFileTest >> testMDFileHasFileReferenceWithFormatISO [
 	date := Date today yyyymmdd.
 	self assert: (file basename includesSubstring: date).
 	self deny: fileReferenceWithName exists
-]
-
-{ #category : 'tests' }
-MDFileTest >> testMDFileUnderstandFile [
-
-	mdfile initializeWithFileReference: fileExample.
-	self assert: mdfile fileReference class equals: FileReference.
-	
 ]
 
 { #category : 'tests - title' }

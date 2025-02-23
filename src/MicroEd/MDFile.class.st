@@ -79,15 +79,6 @@ MDFile >> contents: aContent [
 		stream nextPutAll: aContent ]
 ]
 
-{ #category : 'accessing' }
-MDFile >> curateString: aString [
-
-	| curated |
-	curated := aString select: [ :each | each isAlphaNumeric ].
-	curated ifEmpty: [ curated := fileNamer defaultEmptyName ].
-	^ curated
-]
-
 { #category : 'testing' }
 MDFile >> exists [
 
@@ -107,6 +98,12 @@ MDFile >> fileName [
 ]
 
 { #category : 'accessing' }
+MDFile >> fileNamer [
+
+	^ fileNamer
+]
+
+{ #category : 'accessing' }
 MDFile >> fileNamer: anISOFileNamer [ 
 	fileNamer := anISOFileNamer
 ]
@@ -120,7 +117,8 @@ MDFile >> fileReference [
 { #category : 'accessing' }
 MDFile >> fileReference: aFileReference [
 
-	fileReference := aFileReference
+	fileReference := aFileReference.
+	fileName := aFileReference basenameWithoutExtension. 
 ]
 
 { #category : 'testing' }
@@ -168,7 +166,7 @@ MDFile >> title [
 { #category : 'accessing' }
 MDFile >> title: aString [
 
-	title := self curateString: aString
+	title := fileNamer curateString: aString
 ]
 
 { #category : 'add' }
