@@ -14,7 +14,7 @@ BaselineOfMicroEd >> baseline: spec [
 		do: [ "We need the Extensions group from Microdown to use MicTextualMicrodownExporter"
 			spec
 				baseline: 'Microdown'
-				with: [ spec repository: 'github://pillar-markup/Microdown:v2.7.2/src' ].
+				with: [ spec repository: 'github://pillar-markup/Microdown:dev/src' ].
 			spec
 				package: 'MicroEd' with: [ spec requires: #( 'Microdown' ) ];
 				package: 'MicroEd-Spec' with: [ spec requires: #( 'MicroEd' ) ];
