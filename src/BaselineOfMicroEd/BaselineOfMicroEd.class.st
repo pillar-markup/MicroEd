@@ -16,9 +16,12 @@ BaselineOfMicroEd >> baseline: spec [
 				baseline: 'Microdown'
 				with: [ spec repository: 'github://pillar-markup/Microdown:dev/src' ].
 			spec
-				package: 'MicroEd' with: [ spec requires: #( 'Microdown' ) ];
-				package: 'MicroEd-Spec' with: [ spec requires: #( 'MicroEd' ) ];
-				package: 'MicroEd-Tests' with: [ spec requires: #( 'MicroEd' ) ];
+				package: 'MicroEd' 
+					with: [ spec requires: #( 'Microdown' ) ];
+				package: 'MicroEd-Spec' 
+					with: [ spec requires: #( 'MicroEd' ) ];
+				package: 'MicroEd-Tests' 
+					with: [ spec requires: #( 'MicroEd' ) ];
 				package: 'MicroEd-Spec-Tests'
-				with: [ spec requires: #( 'MicroEd' ) ] ]
+					with: [ spec requires: #( 'MicroEd' ) ] ]
 ]
